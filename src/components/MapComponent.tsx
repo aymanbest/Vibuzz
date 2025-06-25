@@ -2,7 +2,7 @@ import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import { DivIcon } from 'leaflet';
 import type { UserLocation, BusStop, BusPosition, BusLine } from '../types';
-import { calculateDistance, formatDistance } from '../utils';
+import { calculateDistance, formatDistance, formatTime } from '../utils';
 
 // Import Leaflet CSS
 import 'leaflet/dist/leaflet.css';
@@ -16,25 +16,34 @@ interface MapComponentProps {
   selectedLine?: BusLine | null;
 }
 
-// Custom marker icons
-const createCustomIcon = (color: string, label?: string) => {
+// Custom modern marker icons with improved visual design
+const createCustomIcon = (color: string, label?: string, pulse: boolean = false) => {
   return new DivIcon({
     className: 'custom-div-icon',
     html: `
       <div class="relative">
-        <div class="w-6 h-6 rounded-full border-2 border-white shadow-lg ${color}"></div>
-        ${label ? `<div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-medium text-gray-700 bg-white px-1 rounded shadow">${label}</div>` : ''}
+        <div class="w-8 h-8 rounded-full flex items-center justify-center border-2 border-white shadow-lg ${color} ${pulse ? 'animate-pulse-slow' : ''}">
+          ${label ? `<span class="text-white text-xs font-bold">${label}</span>` : ''}
+        </div>
+        ${label ? `<div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-semibold bg-white px-2 py-0.5 rounded-full shadow-md border border-gray-100">${label}</div>` : ''}
       </div>
     `,
-    iconSize: [24, 24],
-    iconAnchor: [12, 12],
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+    popupAnchor: [0, -16]
   });
 };
 
-const userIcon = createCustomIcon('bg-blue-500', 'You');
-const busIcon = createCustomIcon('bg-red-500', 'Bus');
-const stopIcon = createCustomIcon('bg-green-500');
-const closestStopIcon = createCustomIcon('bg-yellow-500', 'Closest');
+// Updated icons with modern design
+const userIcon = createCustomIcon('bg-primary-600', 'You', true);
+const busIcon = createCustomIcon('bg-error-600', 'Bus');
+const stopIcon = new DivIcon({
+  className: 'custom-div-icon',
+  html: `<div class="w-4 h-4 rounded-full bg-success-600 border-2 border-white shadow-sm"></div>`,
+  iconSize: [16, 16],
+  iconAnchor: [8, 8],
+});
+const closestStopIcon = createCustomIcon('bg-warning-500', 'Closest');
 
 const MapComponent: React.FC<MapComponentProps> = ({
   userLocation,
@@ -109,8 +118,8 @@ const MapComponent: React.FC<MapComponentProps> = ({
                   </h3>
                   <p className="text-sm font-medium text-gray-800">{stop.name}</p>
                   <div className="mt-2 text-xs text-gray-600">
-                    <p>ETA: {Math.round(stop.eta)} min</p>
-                    <p>Travel Time: {Math.round(stop.travelTimeTo)} min</p>
+                    <p>ETA: {formatTime(stop.eta)}</p>
+                    <p>Travel Time: {formatTime(stop.travelTimeTo)}</p>
                     {userLocation && (
                       <p>
                         Distance: {formatDistance(

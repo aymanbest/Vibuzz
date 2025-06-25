@@ -1,6 +1,6 @@
 import React from 'react';
 import type { BusStop, BusPosition, UserLocation, BusLine } from '../types';
-import { calculateDistance, formatDistance } from '../utils';
+import { calculateDistance, formatDistance, formatTime } from '../utils';
 
 interface InfoPanelProps {
   userLocation: UserLocation | null;
@@ -96,8 +96,8 @@ const InfoPanel: React.FC<InfoPanelProps> = ({
                 { lat: closestStop.coordinates.latitude, lng: closestStop.coordinates.longitude }
               )
             )}</p>
-            <p>🕒 ETA: {Math.round(closestStop.eta)} min</p>
-            <p>🚌 Travel Time: {Math.round(closestStop.travelTimeTo)} min</p>
+            <p>🕒 ETA: {formatTime(closestStop.eta)}</p>
+            <p>🚌 Travel Time: {formatTime(closestStop.travelTimeTo)}</p>
           </div>
         ) : (
           <p className="text-sm text-gray-500 mt-1">

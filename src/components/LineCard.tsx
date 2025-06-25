@@ -5,7 +5,9 @@ import {
   IconArrowRight, 
   IconClock,
   IconRoute,
-  IconChevronRight
+  IconChevronRight,
+  IconCircleDot,
+  IconCircleDotFilled
 } from '@tabler/icons-react';
 import type { BusLine } from '../types';
 
@@ -14,156 +16,198 @@ interface LineCardProps {
   isSelected: boolean;
   onSelect: (lineId: string) => void;
   showDirection?: boolean;
+  compact?: boolean;
 }
 
 const LineCard: React.FC<LineCardProps> = ({
   line,
   isSelected,
   onSelect,
-  showDirection = false
+  showDirection = false,
+  compact = false
 }) => {
-  const getDirectionIcon = () => {
-    switch (line.direction) {
-      case 'FORWARD':
-        return <IconArrowRight size={16} className="text-emerald-500" />;
-      case 'BACKWARD':
-        return <IconArrowRight size={16} className="text-orange-500 rotate-180" />;
-      default:
-        return <IconRoute size={16} className="text-blue-500" />;
-    }
-  };
-
   const getDirectionColor = () => {
     switch (line.direction) {
       case 'FORWARD':
-        return 'from-emerald-500 to-teal-600';
+        return 'bg-green-100 text-green-700 border-green-200';
       case 'BACKWARD':
-        return 'from-orange-500 to-red-600';
+        return 'bg-orange-100 text-orange-700 border-orange-200';
       default:
-        return 'from-blue-500 to-indigo-600';
+        return 'bg-primary-100 text-primary-700 border-primary-200';
     }
   };
 
+  if (compact) {
+    return (
+      <motion.div
+        whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 0.99 }}
+        onClick={() => onSelect(line.id)}
+        className={`
+          cursor-pointer rounded-lg border transition-all duration-300
+          ${isSelected 
+            ? 'bg-primary-50 border-primary-200 shadow-sm' 
+            : 'bg-white hover:bg-gray-50 border-gray-100 hover:border-gray-200'
+          }
+        `}
+      >
+        <div className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              {/* Line number with improved visibility */}
+              <div className={`
+                flex-shrink-0 w-11 h-11 text-white rounded-lg flex items-center justify-center font-bold shadow-sm
+                ${line.direction === 'FORWARD' 
+                  ? 'bg-gradient-to-br from-green-500 to-green-600' 
+                  : 'bg-gradient-to-br from-orange-500 to-orange-600'}
+              `}>
+                {line.line}
+              </div>
+              
+              {/* Line details with improved hierarchy */}
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center">
+                  <h4 className="font-medium text-gray-900 truncate">
+                    {line.label}
+                  </h4>
+                  
+                  {showDirection && (
+                    <div className={`ml-2 text-xs px-2 py-0.5 rounded-full border ${getDirectionColor()}`}>
+                      {line.direction === 'FORWARD' ? 'Outbound' : 'Return'}
+                    </div>
+                  )}
+                </div>
+                
+                {(line.firstStop && line.lastStop) && (
+                  <div className="text-xs text-gray-500 flex items-center mt-1">
+                    <span className="truncate max-w-[100px]">{line.firstStop.name}</span>
+                    <span className="mx-1.5 text-gray-400">→</span>
+                    <span className="truncate max-w-[100px]">{line.lastStop.name}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            {isSelected ? (
+              <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center shadow-sm">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+            ) : (
+              <div className="w-6 h-6 rounded-full border border-gray-200 flex items-center justify-center">
+                <IconChevronRight size={14} className="text-gray-400" />
+              </div>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
-      whileHover={{ scale: 1.02, y: -2 }}
+      whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={() => onSelect(line.id)}
       className={`
-        relative cursor-pointer rounded-2xl border-2 transition-all duration-300 overflow-hidden
+        relative cursor-pointer rounded-xl border transition-all duration-200
         ${isSelected 
-          ? `bg-gradient-to-br ${getDirectionColor()} text-white shadow-xl border-transparent` 
-          : 'bg-white hover:bg-gray-50 border-gray-200 hover:border-gray-300 shadow-md hover:shadow-lg'
+          ? 'bg-primary-50 border-primary-200 shadow-md' 
+          : 'bg-white hover:bg-gray-50 border-gray-200 hover:border-gray-300'
         }
       `}
     >
-      {/* Selection Indicator */}
-      {isSelected && (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.2 }}
-          className="absolute top-3 right-3 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-lg"
-        >
-          <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-        </motion.div>
-      )}
-
       <div className="p-4">
         {/* Header */}
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center space-x-2">
-            {showDirection && (
-              <div className="flex items-center">
-                {getDirectionIcon()}
-              </div>
-            )}
-            <div className="flex-1 min-w-0">
-              <h4 className={`font-semibold text-sm truncate ${
-                isSelected ? 'text-white' : 'text-gray-800'
-              }`}>
+        <div className="flex items-start justify-between mb-4">
+          {/* Line number and label */}
+          <div className="flex items-center space-x-3">
+            <div className={`
+              flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center text-white font-medium text-lg
+              ${line.direction === 'FORWARD' ? 'bg-green-600' : 'bg-orange-500'}
+            `}>
+              {line.line}
+            </div>
+            
+            <div>
+              <h4 className="font-medium text-gray-900">
                 {line.label}
               </h4>
+              
               {showDirection && (
-                <span className={`text-xs font-medium ${
-                  isSelected ? 'text-white/80' : 'text-gray-500'
+                <span className={`text-sm inline-flex items-center ${
+                  line.direction === 'FORWARD' ? 'text-green-700' : 'text-orange-700'
                 }`}>
-                  {line.direction === 'FORWARD' ? 'Forward' : 'Backward'}
+                  <IconArrowRight 
+                    size={14} 
+                    className={`mr-1 ${line.direction === 'BACKWARD' ? 'rotate-180' : ''}`} 
+                  />
+                  {line.direction === 'FORWARD' ? 'Forward Direction' : 'Return Direction'}
                 </span>
               )}
             </div>
           </div>
           
-          <IconChevronRight 
-            size={16} 
-            className={`${isSelected ? 'text-white/60' : 'text-gray-400'} transition-transform duration-200`}
-          />
+          {isSelected && (
+            <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
+              <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          )}
         </div>
 
         {/* Route Info */}
         {line.firstStop && line.lastStop && (
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <div className={`w-2 h-2 rounded-full ${
-                isSelected ? 'bg-white/60' : 'bg-emerald-400'
-              }`} />
-              <span className={`text-xs truncate ${
-                isSelected ? 'text-white/90' : 'text-gray-600'
-              }`}>
-                {line.firstStop.name}
-              </span>
-            </div>
-            
-            <div className="flex items-center space-x-2 ml-1">
-              <div className={`w-0.5 h-4 rounded-full ${
-                isSelected ? 'bg-white/40' : 'bg-gray-300'
-              }`} />
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <div className={`w-2 h-2 rounded-full ${
-                isSelected ? 'bg-white/60' : 'bg-red-400'
-              }`} />
-              <span className={`text-xs truncate ${
-                isSelected ? 'text-white/90' : 'text-gray-600'
-              }`}>
-                {line.lastStop.name}
-              </span>
+          <div className="bg-gray-50 rounded-lg p-3 mb-3">
+            <div className="flex space-x-3">
+              {/* Stops visualization */}
+              <div className="flex flex-col items-center">
+                <IconCircleDotFilled size={18} className="text-green-500" />
+                <div className="w-0.5 bg-gray-300 h-6"></div>
+                <IconCircleDot size={18} className="text-red-500" />
+              </div>
+              
+              {/* Stop names */}
+              <div className="flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="text-sm font-medium text-gray-900 truncate">
+                    {line.firstStop.name}
+                  </div>
+                  <div className="text-xs text-gray-500">Starting point</div>
+                </div>
+                <div className="mt-2">
+                  <div className="text-sm font-medium text-gray-900 truncate">
+                    {line.lastStop.name}
+                  </div>
+                  <div className="text-xs text-gray-500">Destination</div>
+                </div>
+              </div>
             </div>
           </div>
         )}
 
         {/* Footer */}
-        <div className="mt-3 pt-3 border-t border-gray-200/50 flex items-center justify-between">
-          <div className="flex items-center space-x-3 text-xs">
-            <div className="flex items-center space-x-1">
-              <IconMapPin size={12} />
-              <span className={`${isSelected ? 'text-white/80' : 'text-gray-500'}`}>
-                Live
-              </span>
+        <div className="flex items-center justify-between text-xs text-gray-500">
+          <div className="flex items-center space-x-3">
+            <div className="flex items-center">
+              <IconMapPin size={14} className="mr-1 text-primary-500" />
+              <span>Live tracking</span>
             </div>
-            <div className="flex items-center space-x-1">
-              <IconClock size={12} />
-              <span className={`${isSelected ? 'text-white/80' : 'text-gray-500'}`}>
-                Real-time
-              </span>
+            <div className="flex items-center">
+              <IconClock size={14} className="mr-1 text-primary-500" />
+              <span>Real-time</span>
             </div>
           </div>
           
           {line.company && (
-            <span className={`text-xs font-medium ${
-              isSelected ? 'text-white/70' : 'text-gray-400'
-            }`}>
+            <span className="text-gray-400">
               {line.company}
             </span>
           )}
         </div>
       </div>
-
-      {/* Gradient Overlay for unselected cards */}
-      {!isSelected && (
-        <div className="absolute inset-0 opacity-0 hover:opacity-5 bg-gradient-to-br from-indigo-500 to-blue-600 transition-opacity duration-300 pointer-events-none" />
-      )}
     </motion.div>
   );
 };

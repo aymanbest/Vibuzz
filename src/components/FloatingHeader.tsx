@@ -5,7 +5,8 @@ import {
   IconMapPin,
   IconRoute,
   IconCurrentLocation,
-  IconChevronLeft
+  IconChevronLeft,
+  IconCircleCheck
 } from '@tabler/icons-react';
 
 interface FloatingHeaderProps {
@@ -33,31 +34,31 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
     switch (currentStep) {
       case 1:
         return {
-          title: isMobile ? 'Select Route' : 'Choose Your Route',
-          subtitle: 'Select a bus line to get started',
+          title: isMobile ? 'Select Line' : 'Choose Bus Line',
+          subtitle: 'Select your bus route',
           icon: <IconBus size={isMobile ? 18 : 20} />,
-          gradient: 'from-blue-500 to-indigo-600'
+          color: 'primary-600'
         };
       case 2:
         return {
-          title: isMobile ? `Line ${selectedLineNumber}` : `Line ${selectedLineNumber} Direction`,
-          subtitle: 'Choose your direction',
+          title: isMobile ? `Line ${selectedLineNumber}` : `Line ${selectedLineNumber}`,
+          subtitle: 'Select direction',
           icon: <IconRoute size={isMobile ? 18 : 20} />,
-          gradient: 'from-purple-500 to-pink-600'
+          color: selectedDirection === 'FORWARD' ? 'green-600' : 'orange-500'
         };
       case 3:
         return {
           title: selectedLine?.label || 'Bus Tracking',
-          subtitle: `${selectedDirection === 'FORWARD' ? 'Forward' : 'Backward'} Direction`,
+          subtitle: `${selectedDirection === 'FORWARD' ? 'Outbound' : 'Return'} Route`,
           icon: <IconMapPin size={isMobile ? 18 : 20} />,
-          gradient: 'from-emerald-500 to-teal-600'
+          color: selectedDirection === 'FORWARD' ? 'green-600' : 'orange-500'
         };
       default:
         return {
           title: 'Bus Tracker',
-          subtitle: 'Real-time bus tracking',
+          subtitle: 'Real-time tracking',
           icon: <IconBus size={isMobile ? 18 : 20} />,
-          gradient: 'from-blue-500 to-indigo-600'
+          color: 'primary-600'
         };
     }
   };
@@ -66,95 +67,90 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
 
   return (
     <motion.div
-      initial={{ y: -60, opacity: 0 }}
+      initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-2xl border-b border-gray-100/50"
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm"
     >
-      <div className={`${isMobile ? 'px-3 py-1.5' : 'px-6 py-2.5'}`}>
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
+      <div className="px-4 py-2">
+        <div className="flex items-center justify-between max-w-6xl mx-auto">
           {/* Left side - Back button and step info */}
-          <div className="flex items-center space-x-2 md:space-x-3">
+          <div className="flex items-center">
             {onBack && currentStep > 1 && (
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={onBack}
-                className={`flex items-center space-x-1 md:space-x-2 px-2 md:px-3 py-1.5 md:py-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-900 transition-all duration-200 ${isMobile ? 'text-sm' : ''}`}
+                className="mr-3 p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                aria-label="Go back"
               >
-                <IconChevronLeft size={isMobile ? 14 : 16} />
-                {!isMobile && <span className="text-sm font-medium">Back</span>}
+                <IconChevronLeft size={isMobile ? 18 : 20} />
               </motion.button>
             )}
             
-            <div className="flex items-center space-x-2 md:space-x-3">
+            <div className="flex items-center">
               <div className={`
-                ${isMobile ? 'p-1.5' : 'p-2.5'} rounded-xl bg-gradient-to-r ${stepInfo.gradient} text-white shadow-lg
+                w-8 h-8 rounded-lg flex items-center justify-center text-white mr-3
+                bg-${stepInfo.color}
               `}>
                 {stepInfo.icon}
               </div>
               
               <div>
-                <h1 className={`
-                  font-bold text-gray-900
-                  ${isMobile ? 'text-sm' : 'text-lg'}
-                `}>
+                <h1 className="font-medium text-gray-900 text-base">
                   {stepInfo.title}
                 </h1>
-                {!isMobile && (
-                  <p className="text-gray-500 text-xs mt-0.5">
-                    {stepInfo.subtitle}
-                  </p>
-                )}
+                <p className="text-gray-500 text-xs">
+                  {stepInfo.subtitle}
+                </p>
               </div>
             </div>
           </div>
 
           {/* Right side - Progress and Location button */}
-          <div className="flex items-center space-x-2 md:space-x-4">
-            {/* Compact Progress indicator */}
-            <div className="flex items-center space-x-1 md:space-x-2">
-              {[1, 2, 3].map((step, index) => (
-                <div key={step} className="flex items-center">
-                  <div
-                    className={`
-                      ${isMobile ? 'w-6 h-6 text-xs' : 'w-8 h-8 text-xs'} rounded-full flex items-center justify-center font-bold transition-all duration-300
-                      ${step <= currentStep 
-                        ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg scale-110' 
+          <div className="flex items-center space-x-3">
+            {/* Step Indicators */}
+            <div className="hidden sm:flex items-center space-x-1">
+              {[1, 2, 3].map((step) => (
+                <div
+                  key={step}
+                  className={`
+                    w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium
+                    ${step === currentStep 
+                      ? 'bg-primary-600 text-white' 
+                      : step < currentStep
+                        ? 'bg-primary-100 text-primary-700'
                         : 'bg-gray-100 text-gray-400'
-                      }
-                    `}
-                  >
-                    {step}
-                  </div>
-                  {index < 2 && (
-                    <div className={`
-                      ${isMobile ? 'w-4' : 'w-8'} h-0.5 mx-0.5 md:mx-1 transition-all duration-300
-                      ${step < currentStep 
-                        ? 'bg-gradient-to-r from-emerald-500 to-teal-600' 
-                        : 'bg-gray-200'
-                      }
-                    `} />
+                    }
+                    ${step < currentStep ? 'ring-1 ring-primary-600' : ''}
+                  `}
+                >
+                  {step < currentStep ? (
+                    <IconCircleCheck size={16} className="text-primary-600" />
+                  ) : (
+                    step
                   )}
                 </div>
               ))}
             </div>
+            
+            {/* Mobile Steps */}
+            <div className="sm:hidden text-xs text-gray-500">
+              Step {currentStep} of 3
+            </div>
 
+            {/* Location Button */}
             {showLocationButton && (
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={onLocationClick}
                 className={`
-                  flex items-center space-x-1 md:space-x-2 px-3 md:px-4 py-2 md:py-2.5 
-                  bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700
-                  rounded-xl text-white font-medium ${isMobile ? 'text-xs' : 'text-sm'} shadow-lg hover:shadow-xl
-                  transition-all duration-200
+                  flex items-center px-3 py-1.5 rounded-lg
+                  bg-primary-600 text-white text-sm
                 `}
               >
-                <IconCurrentLocation size={isMobile ? 14 : 16} />
-                <span className={isMobile ? 'hidden sm:inline' : 'inline'}>
-                  Locate Me
+                <IconCurrentLocation size={16} className="mr-1.5" />
+                <span className={isMobile ? 'hidden sm:inline' : ''}>
+                  My Location
                 </span>
               </motion.button>
             )}

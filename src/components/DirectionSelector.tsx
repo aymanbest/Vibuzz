@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { formatTime } from '../utils';
 import { 
   IconArrowRight, 
   IconArrowLeft,
   IconMapPin,
   IconCheck,
-  IconRoute
+  IconRoute,
+  IconCircle,
+  IconCircleDotFilled,
+  IconList,
+  IconChevronsRight,
+  IconMapSearch
 } from '@tabler/icons-react';
-import type { BusLine } from '../types';
+import type { BusLine, BusStop } from '../types';
 
 interface DirectionSelectorProps {
   forwardLine: BusLine | null;
   backwardLine: BusLine | null;
   selectedDirection: 'FORWARD' | 'BACKWARD' | null;
   onDirectionSelect: (direction: 'FORWARD' | 'BACKWARD', line: BusLine) => void;
+  busStops?: BusStop[]; // Optional bus stops to display after direction selection
 }
 
 const DirectionSelector: React.FC<DirectionSelectorProps> = ({
@@ -21,220 +28,302 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
   backwardLine,
   selectedDirection,
   onDirectionSelect,
+  busStops = [],
 }) => {
+  const [showStops, setShowStops] = useState(false);
+  const [selectedLine, setSelectedLine] = useState<BusLine | null>(null);
+  
   const directions = [
     {
       key: 'FORWARD' as const,
       line: forwardLine,
-      icon: <IconArrowRight size={32} />,
+      icon: <IconArrowRight size={24} />,
       label: 'Forward Direction',
-      description: 'Going Direction',
-      gradient: 'from-green-400 to-emerald-600',
-      hoverGradient: 'hover:from-green-500 hover:to-emerald-700',
-      emoji: '→'
+      description: 'Outbound Route',
+      color: 'green'
     },
     {
       key: 'BACKWARD' as const,
       line: backwardLine,
-      icon: <IconArrowLeft size={32} />,
+      icon: <IconArrowLeft size={24} />,
       label: 'Backward Direction',
-      description: 'Return Direction',
-      gradient: 'from-orange-400 to-red-600',
-      hoverGradient: 'hover:from-orange-500 hover:to-red-700',
-      emoji: '←'
+      description: 'Return Route',
+      color: 'orange'
     }
   ];
 
   const availableDirections = directions.filter(d => d.line !== null);
 
+  const handleDirectionClick = (direction: 'FORWARD' | 'BACKWARD', line: BusLine) => {
+    // Just update the selected line and call the parent's callback
+    // Do NOT use setSelectedDirection as it doesn't exist in this component
+    // The parent component (App.tsx) handles direction state
+    setSelectedLine(line);
+    onDirectionSelect(direction, line);
+  };
+
+  // Handle the case when no directions are available
   if (availableDirections.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-12 border border-white/50">
-            <div className="text-center">
-              <div className="text-8xl mb-6">🚌</div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-3">No Directions Available</h3>
-              <p className="text-gray-600 text-lg">
-                This bus line doesn't have available directions at the moment.
-              </p>
-              <p className="text-gray-500 text-sm mt-2">
-                Please select a different bus line or try again later.
-              </p>
-            </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="bg-white rounded-xl shadow-md p-6 max-w-sm mx-auto text-center"
+        >
+          <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+            <IconRoute size={32} className="text-gray-400" />
           </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No Directions Available</h3>
+          <p className="text-gray-600 mb-4">
+            This bus line doesn't have any available directions at the moment.
+          </p>
+          <button 
+            onClick={() => window.history.back()}
+            className="w-full py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg flex items-center justify-center font-medium transition-colors"
+          >
+            Go Back
+          </button>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Show the bus stops after direction selection
+  if (showStops && selectedLine && busStops.length > 0) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="container-default max-w-md mx-auto py-4">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded-xl shadow-sm p-4 mb-4 flex items-center"
+          >
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center mr-4
+              ${selectedLine.direction === 'FORWARD' 
+                ? 'bg-green-100 text-green-600' 
+                : 'bg-orange-100 text-orange-600'
+              }`}
+            >
+              <span className="text-lg font-bold">{selectedLine.line}</span>
+            </div>
+            
+            <div className="flex-1">
+              <h1 className="text-lg font-bold text-gray-800 mb-1">
+                {selectedLine.label}
+              </h1>
+              <div className="flex items-center text-sm text-gray-600">
+                <span className={selectedLine.direction === 'FORWARD' ? 'text-green-600' : 'text-orange-600'}>
+                  {selectedLine.direction === 'FORWARD' ? 'Outbound' : 'Return'}
+                </span>
+                <span className="mx-2">•</span>
+                <span>{busStops.length} stops</span>
+              </div>
+            </div>
+            
+            <button 
+              onClick={() => setShowStops(false)}
+              className="p-2 rounded-full hover:bg-gray-100"
+            >
+              <IconArrowLeft size={20} className="text-gray-600" />
+            </button>
+          </motion.div>
+          
+          {/* Bus stops list */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="bg-white rounded-xl shadow-sm mb-4 overflow-hidden"
+          >
+            <div className="border-b border-gray-100 p-4">
+              <h2 className="font-medium text-gray-800 flex items-center">
+                <IconMapPin size={18} className="mr-2 text-primary-500" />
+                Bus Stops
+              </h2>
+            </div>
+            
+            <div className="p-4">
+              {busStops.map((stop, index) => (
+                <div key={stop.id} className="mb-3 last:mb-0">
+                  <div className="flex">
+                    <div className="flex flex-col items-center mr-3">
+                      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600">
+                        {index + 1}
+                      </div>
+                      {index < busStops.length - 1 && <div className="w-0.5 h-8 bg-gray-200"></div>}
+                    </div>
+                    
+                    <div className="flex-1">
+                      <div className="font-medium text-gray-800">{stop.name}</div>
+                      <div className="flex items-center text-xs text-gray-500 mt-1">
+                        <span className="flex items-center">
+                          <span className="w-2 h-2 bg-blue-400 rounded-full mr-1"></span>
+                          ETA: {formatTime(stop.eta)}
+                        </span>
+                        <span className="mx-2">•</span>
+                        <span className="flex items-center">
+                          <span className="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
+                          Travel: {formatTime(stop.travelTimeTo)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+          
+          {/* View Live Map Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            className="bg-white rounded-xl shadow-sm p-4"
+          >
+            <button
+              onClick={() => console.log('View live map')}
+              className="w-full py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg flex items-center justify-center font-medium transition-colors"
+            >
+              <IconMapSearch size={18} className="mr-2" />
+              View Live Map
+            </button>
+          </motion.div>
         </div>
       </div>
     );
   }
 
+  // Show view for selecting a direction with improved UI
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50">
-      <div className="container mx-auto px-6 py-8 max-w-6xl">
-        {/* Hero Section */}
+    <div className="min-h-screen bg-gray-50">
+      <div className="container-default py-6 max-w-xl mx-auto">
+        {/* Header with improved visual hierarchy */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          transition={{ duration: 0.4 }}
+          className="mb-8 text-center"
         >
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-3xl mb-6 shadow-2xl">
-            <IconRoute size={40} className="text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-2xl mb-5 text-white">
+            <IconRoute size={32} />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-            Choose Your Direction
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Select the direction you want to travel in for this bus line
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Choose Your Direction</h1>
+          <p className="text-gray-600 max-w-md mx-auto text-lg">
+            Select the direction you want to travel
           </p>
         </motion.div>
 
-        {/* Direction Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {availableDirections.map((direction, index) => {
+        {/* Direction Cards with modern design */}
+        <div className="grid grid-cols-1 gap-5 max-w-md mx-auto">
+          {directions.filter(d => d.line !== null).map((direction, index) => {
             const isSelected = selectedDirection === direction.key;
             const line = direction.line!;
+            const isForward = direction.key === 'FORWARD';
             
             return (
               <motion.div
                 key={direction.key}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => onDirectionSelect(direction.key, line)}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handleDirectionClick(direction.key, line)}
                 className={`
-                  relative cursor-pointer transition-all duration-300 transform
-                  ${isSelected 
-                    ? `bg-gradient-to-br ${direction.gradient} text-white shadow-2xl scale-105` 
-                    : `bg-white hover:bg-gray-50 border-2 border-gray-200 ${direction.hoverGradient} hover:text-white hover:border-transparent`
+                  bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer transition-all duration-300
+                  border-2 ${isSelected 
+                    ? isForward ? 'border-green-500' : 'border-orange-500' 
+                    : 'border-transparent hover:border-gray-200'
                   }
-                  rounded-3xl p-8 shadow-lg hover:shadow-xl overflow-hidden
                 `}
               >
-                {/* Selection Indicator */}
-                {isSelected && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute top-6 right-6 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg"
-                  >
-                    <IconCheck size={20} className="text-purple-600" />
-                  </motion.div>
-                )}
-
-                {/* Direction Icon */}
-                <div className={`
-                  w-20 h-20 mx-auto rounded-2xl flex items-center justify-center text-4xl mb-6
-                  ${isSelected 
-                    ? 'bg-white/20 backdrop-blur text-white' 
-                    : 'bg-gray-100 text-gray-600 group-hover:bg-white/20 group-hover:text-white'
-                  }
-                `}>
-                  {direction.icon}
-                </div>
-                
-                {/* Direction Info */}
-                <div className="text-center space-y-4">
-                  <div>
-                    <h3 className={`text-2xl font-bold mb-2 ${
-                      isSelected ? 'text-white' : 'text-gray-800'
-                    }`}>
-                      {direction.label}
-                    </h3>
-                    <p className={`text-sm ${
-                      isSelected ? 'text-white/80' : 'text-gray-600'
-                    }`}>
-                      {direction.description}
-                    </p>
-                  </div>
-
-                  {/* Route Preview */}
-                  {line.firstStop && line.lastStop && (
-                    <div className={`
-                      rounded-2xl p-4 text-left space-y-3
-                      ${isSelected 
-                        ? 'bg-white/10 backdrop-blur border border-white/20' 
-                        : 'bg-gray-50 border border-gray-200'
-                      }
-                    `}>
-                      <div className="flex items-center space-x-3">
+                <div className="p-5">
+                  {/* Header with direction info */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center">
+                      {/* Direction icon */}
+                      <div className={`
+                        w-12 h-12 rounded-full flex items-center justify-center mr-4
+                        ${isForward ? 'bg-green-100' : 'bg-orange-100'}
+                      `}>
                         <div className={`
-                          w-3 h-3 rounded-full
-                          ${isSelected ? 'bg-white/60' : 'bg-green-400'}
-                        `} />
-                        <div className="flex-1 min-w-0">
-                          <p className={`text-sm font-medium truncate ${
-                            isSelected ? 'text-white' : 'text-gray-800'
-                          }`}>
-                            {line.firstStop.name}
-                          </p>
-                          <p className={`text-xs ${
-                            isSelected ? 'text-white/70' : 'text-gray-500'
-                          }`}>
-                            Starting point
-                          </p>
+                          ${isForward ? 'text-green-600' : 'text-orange-600'}
+                        `}>
+                          {direction.icon}
                         </div>
                       </div>
-
-                      <div className="flex justify-center">
-                        <div className={`
-                          w-0.5 h-6 rounded-full
-                          ${isSelected ? 'bg-white/40' : 'bg-gray-300'}
-                        `} />
+                      
+                      {/* Direction label */}
+                      <div>
+                        <h3 className="font-semibold text-gray-800 text-lg mb-1">
+                          {direction.label}
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          {direction.description}
+                        </p>
                       </div>
-
-                      <div className="flex items-center space-x-3">
-                        <div className={`
-                          w-3 h-3 rounded-full
-                          ${isSelected ? 'bg-white/60' : 'bg-red-400'}
-                        `} />
-                        <div className="flex-1 min-w-0">
-                          <p className={`text-sm font-medium truncate ${
-                            isSelected ? 'text-white' : 'text-gray-800'
-                          }`}>
-                            {line.lastStop.name}
-                          </p>
-                          <p className={`text-xs ${
-                            isSelected ? 'text-white/70' : 'text-gray-500'
-                          }`}>
-                            Final destination
-                          </p>
+                    </div>
+                    
+                    {/* Selection indicator */}
+                    {isSelected && (
+                      <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
+                        <IconCheck size={16} stroke={3} className="text-white" />
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Route endpoints with improved visualization */}
+                  {line.firstStop && line.lastStop && (
+                    <div className="bg-gray-50 rounded-lg p-4 mt-2">
+                      <div className="flex items-start">
+                        {/* Visual route indicator */}
+                        <div className="flex flex-col items-center mr-4">
+                          <IconCircleDotFilled size={18} className={isForward ? "text-green-500" : "text-orange-500"} />
+                          <div className="w-0.5 bg-gray-300 h-10"></div>
+                          <IconCircle size={18} className="text-gray-400" />
+                        </div>
+                        
+                        {/* Stop names and details */}
+                        <div className="flex-1 flex flex-col justify-between">
+                          <div className="mb-4">
+                            <div className="text-sm font-medium text-gray-900">
+                              {line.firstStop.name}
+                            </div>
+                            <div className="text-xs text-gray-500">Starting point</div>
+                          </div>
+                          <div>
+                            <div className="text-sm font-medium text-gray-900">
+                              {line.lastStop.name}
+                            </div>
+                            <div className="text-xs text-gray-500">Final destination</div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   )}
-                </div>
-
-                {/* Decorative Background */}
-                {isSelected && (
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16" />
-                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full translate-y-12 -translate-x-12" />
+                  
+                  {/* Call to action button */}
+                  <div className="mt-4 flex">
+                    <button
+                      className={`
+                        flex items-center justify-center w-full py-2.5 rounded-lg font-medium text-sm
+                        ${isForward 
+                          ? 'bg-green-100 text-green-700 hover:bg-green-200' 
+                          : 'bg-orange-100 text-orange-700 hover:bg-orange-200'}
+                      `}
+                    >
+                      <IconMapPin size={16} className="mr-1.5" />
+                      Select Direction
+                    </button>
                   </div>
-                )}
+                </div>
               </motion.div>
             );
           })}
         </div>
-
-        {/* Additional Info */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-12 text-center"
-        >
-          <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6 border border-white/50 max-w-2xl mx-auto">
-            <div className="flex items-center justify-center space-x-2 text-gray-600">
-              <IconMapPin size={20} />
-              <span className="text-sm font-medium">
-                Real-time tracking will be available after selection
-              </span>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </div>
   );

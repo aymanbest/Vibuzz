@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { BusStop, BusPosition, UserLocation, BusLine } from '../types';
-import { calculateDistance, formatDistance } from '../utils';
+import { calculateDistance, formatDistance, formatTime } from '../utils';
 import BusStopsList from './BusStopsList';
 
 interface DesktopSidebarProps {
@@ -172,7 +172,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
                         lat: closestStop.coordinates.latitude,
                         lng: closestStop.coordinates.longitude
                       }))}</div>
-                      <div>🕒 ETA: {Math.round(closestStop.eta)} min</div>
+                      <div>🕒 ETA: {formatTime(closestStop.eta)}</div>
                       <div>🚌 Travel Time: {Math.round(closestStop.travelTimeTo)} min</div>
                     </div>
                   </div>

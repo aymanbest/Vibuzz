@@ -58,3 +58,9 @@ export function formatDistance(distanceKm: number): string {
   }
   return `${distanceKm.toFixed(1)}km`;
 }
+
+// Format time for display (ETA, travel time, etc.)
+export function formatTime(minutes: number): string {
+  if (!Number.isFinite(minutes)) return 'N/A';
+  return `${Math.round(minutes)} min`;
+}

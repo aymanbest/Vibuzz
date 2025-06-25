@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { formatTime } from '../utils';
 import { 
   IconMapPin, 
   IconCurrentLocation,
   IconBus,
-  IconRoute,
-  IconNavigation
+  IconList,
+  IconMap,
+  IconLocation,
+  IconChevronLeft,
+  IconClock
 } from '@tabler/icons-react';
 import type { BusLine, BusStop, BusPosition, UserLocation } from '../types';
 import MapComponent from './MapComponent';
-import DesktopSidebar from './DesktopSidebar';
-import MobileBottomSheet from './MobileBottomSheet';
+import BusStopsList from './BusStopsList';
+import { calculateDistance, formatDistance } from '../utils';
 
 interface BusTrackingViewProps {
   selectedLine: BusLine;
@@ -33,176 +37,551 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
   isLoading,
   onLocateClick
 }) => {
-  const [isMobile] = useState(window.innerWidth < 1024);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  // Default to map view for better UX
+const [view, setView] = useState<'stops' | 'map'>('map');
+  
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const handleStopSelect = (stop: BusStop) => {
-    // Handle stop selection if needed
-    console.log('Selected stop:', stop);
+  const handleStopSelect = (_stop: BusStop) => {
+    // Show map and focus on the selected stop
+    setView('map');
   };
 
   const handleRefreshLocation = () => {
     onLocateClick();
   };
 
-  // If no map view is needed, show a summary view
+  // If no map view is needed, show a summary view with stops list and location button
   if (!userLocation) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30">
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
-          {/* Hero Section */}
+      <div className="min-h-screen bg-gray-50">
+        <div className="container-default max-w-md mx-auto py-4">
+          {/* Header with line info */}
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded-xl shadow-sm p-4 mb-4 flex items-center"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl mb-6 shadow-xl">
-              <IconMapPin size={32} className="text-white" />
-            </div>
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
-              {selectedLine.label}
-            </h1>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-6">
-              {selectedLine.direction === 'FORWARD' ? 'Forward' : 'Backward'} Direction
-            </p>
-            
-            {/* Location Request */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={onLocateClick}
-              className="
-                inline-flex items-center space-x-3 px-8 py-4 
-                bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700
-                rounded-2xl text-white font-semibold text-lg shadow-xl hover:shadow-2xl
-                transition-all duration-300
-              "
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center mr-4
+              ${selectedLine.direction === 'FORWARD' 
+                ? 'bg-green-100 text-green-600' 
+                : 'bg-orange-100 text-orange-600'
+              }`}
             >
-              <IconCurrentLocation size={24} />
-              <span>Enable Location for Live Tracking</span>
-            </motion.button>
+              <span className="text-lg font-bold">{selectedLine.line}</span>
+            </div>
+            
+            <div className="flex-1">
+              <h1 className="text-lg font-bold text-gray-800 mb-1">
+                {selectedLine.label}
+              </h1>
+              <div className="flex items-center text-sm text-gray-600">
+                <span className={selectedLine.direction === 'FORWARD' ? 'text-green-600' : 'text-orange-600'}>
+                  {selectedLine.direction === 'FORWARD' ? 'Outbound' : 'Return'}
+                </span>
+                <span className="mx-2">•</span>
+                <span>{busStops.length} stops</span>
+              </div>
+            </div>
+            
+            <button 
+              onClick={() => window.history.back()}
+              className="p-2 rounded-full hover:bg-gray-100"
+            >
+              <IconChevronLeft size={20} className="text-gray-600" />
+            </button>
           </motion.div>
-
-          {/* Quick Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+          
+          {/* Bus stops list */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="bg-white rounded-xl shadow-sm mb-4 overflow-hidden"
           >
-            <div className="bg-white/80 backdrop-blur rounded-3xl shadow-lg p-6 border border-white/50 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <IconBus size={24} className="text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">{busPositions.length}</h3>
-              <p className="text-gray-600">Active Buses</p>
+            <div className="border-b border-gray-100 p-4">
+              <h2 className="font-medium text-gray-800 flex items-center">
+                <IconMapPin size={18} className="mr-2 text-primary-500" />
+                Bus Stops
+              </h2>
             </div>
             
-            <div className="bg-white/80 backdrop-blur rounded-3xl shadow-lg p-6 border border-white/50 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <IconMapPin size={24} className="text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">{busStops.length}</h3>
-              <p className="text-gray-600">Bus Stops</p>
-            </div>
-            
-            <div className="bg-white/80 backdrop-blur rounded-3xl shadow-lg p-6 border border-white/50 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <IconRoute size={24} className="text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">{selectedLine.line}</h3>
-              <p className="text-gray-600">Line Number</p>
+            <div className="max-h-[50vh] overflow-y-auto">
+              <BusStopsList 
+                stops={busStops}
+                userLocation={null}
+                closestStop={null}
+                onStopSelect={handleStopSelect}
+              />
             </div>
           </motion.div>
-
-          {/* Route Info */}
-          {selectedLine.firstStop && selectedLine.lastStop && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="bg-white/80 backdrop-blur rounded-3xl shadow-lg p-8 border border-white/50"
-            >
-              <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                <IconNavigation size={24} className="mr-3 text-indigo-600" />
-                Route Information
-              </h3>
-              
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-4 h-4 bg-emerald-400 rounded-full"></div>
-                  <div>
-                    <p className="font-semibold text-gray-800">{selectedLine.firstStop.name}</p>
-                    <p className="text-sm text-gray-600">Starting Point</p>
-                  </div>
+          
+          {/* Enable Location Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="bg-white rounded-xl shadow-sm overflow-hidden"
+          >
+            <div className="p-4">
+              <div className="flex items-center">
+                <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mr-4">
+                  <IconCurrentLocation size={24} className="text-primary-600" />
                 </div>
                 
-                <div className="ml-2 w-0.5 h-8 bg-gray-300 rounded-full"></div>
-                
-                <div className="flex items-center space-x-4">
-                  <div className="w-4 h-4 bg-red-400 rounded-full"></div>
-                  <div>
-                    <p className="font-semibold text-gray-800">{selectedLine.lastStop.name}</p>
-                    <p className="text-sm text-gray-600">Final Destination</p>
-                  </div>
+                <div className="flex-1">
+                  <h2 className="font-medium text-gray-800 mb-1">
+                    View Live Map
+                  </h2>
+                  <p className="text-sm text-gray-500 mb-3">
+                    Enable location to see real-time buses and your position
+                  </p>
+                  
+                  <button
+                    onClick={onLocateClick}
+                    className="w-full py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg flex items-center justify-center font-medium transition-colors"
+                  >
+                    <IconLocation size={18} className="mr-2" />
+                    Enable Location
+                  </button>
                 </div>
               </div>
-            </motion.div>
-          )}
+            </div>
+          </motion.div>
         </div>
       </div>
     );
   }
 
-  // Full tracking view with map
-  return (
-    <div className="h-screen flex">
-      {/* Desktop Sidebar */}
-      {!isMobile && (
-        <div className="w-96 bg-white shadow-xl">
-          <DesktopSidebar
-            userLocation={userLocation}
-            closestStop={closestStop}
-            busPositions={busPositions}
-            busStops={busStops}
-            selectedLine={selectedLine}
-            loading={isLoading}
-            error={null}
-            locationAccuracy={null}
-            onRefreshLocation={handleRefreshLocation}
-            onStopSelect={handleStopSelect}
-          />
+  // Mobile layout with improved UX
+  if (isMobile) {
+    return (
+      <div className="h-screen flex flex-col bg-gray-50">
+        {/* Mobile header with improved contrast and spacing */}
+        <div className="bg-white shadow-md z-10">
+          <div className="flex items-center p-3">
+            <button 
+              onClick={() => window.history.back()}
+              className="p-2 rounded-full hover:bg-gray-100 mr-2"
+            >
+              <IconChevronLeft size={20} className="text-gray-600" />
+            </button>
+            
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3
+              ${selectedLine.direction === 'FORWARD' 
+                ? 'bg-green-100 text-green-600' 
+                : 'bg-orange-100 text-orange-600'
+              }`}
+            >
+              <span className="font-bold">{selectedLine.line}</span>
+            </div>
+            
+            <div className="flex-1 min-w-0">
+              <h1 className="text-lg font-bold text-gray-900 truncate">
+                {selectedLine.label}
+              </h1>
+              <div className="flex items-center text-xs text-gray-500">
+                <span className={selectedLine.direction === 'FORWARD' ? 'text-green-600' : 'text-orange-600'}>
+                  {selectedLine.direction === 'FORWARD' ? 'Outbound' : 'Return'}
+                </span>
+                <span className="mx-1">•</span>
+                <span>{busStops.length} stops</span>
+                {isLoading && <span className="ml-1">• Loading...</span>}
+              </div>
+            </div>
+            
+            <button
+              onClick={handleRefreshLocation}
+              className="p-2 rounded-full hover:bg-gray-100 text-primary-600"
+              disabled={isLoading}
+            >
+              <IconCurrentLocation size={20} className={`${isLoading ? 'text-gray-400' : 'text-primary-600'}`} />
+            </button>
+          </div>
+          
+          {/* Improved tab bar with better visual feedback */}
+          <div className="flex border-t border-gray-100 px-2 py-1">
+            <button 
+              onClick={() => setView('stops')}
+              className={`flex-1 py-2.5 text-sm font-medium flex items-center justify-center rounded-md
+                ${view === 'stops' 
+                  ? 'bg-primary-50 text-primary-700' 
+                  : 'text-gray-600 hover:bg-gray-50'}
+              `}
+            >
+              <IconList size={18} className="mr-1.5" />
+              Stops
+            </button>
+            <button 
+              onClick={() => setView('map')}
+              className={`flex-1 py-2.5 text-sm font-medium flex items-center justify-center rounded-md ml-1
+                ${view === 'map' 
+                  ? 'bg-primary-50 text-primary-700' 
+                  : 'text-gray-600 hover:bg-gray-50'}
+              `}
+            >
+              <IconMap size={18} className="mr-1.5" />
+              Map
+            </button>
+          </div>
         </div>
-      )}
+        
+        {/* Content container with improved transitions */}
+        <div className="flex-1 overflow-hidden relative">
+          <AnimatePresence mode="wait">
+            {view === 'stops' ? (
+              <motion.div 
+                key="stops"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="absolute inset-0 overflow-y-auto pb-safe"
+              >
+                <div className="p-4">
+                  {/* Improved stats cards with better spacing and visual design */}
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                      <div className="flex items-center mb-2">
+                        <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-3">
+                          <IconBus size={18} className="text-blue-600" />
+                        </div>
+                        <div>
+                          <div className="text-lg font-bold">{busPositions.length}</div>
+                          <div className="text-xs text-gray-500">Active Buses</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                      <div className="flex items-center mb-2">
+                        <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center mr-3">
+                          <IconMapPin size={18} className="text-green-600" />
+                        </div>
+                        <div>
+                          <div className="text-lg font-bold">{busStops.length}</div>
+                          <div className="text-xs text-gray-500">Stops</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Bus stops list with improved design */}
+                  <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
+                    <div className="border-b border-gray-100 px-4 py-3 flex items-center justify-between">
+                      <h2 className="font-medium text-gray-900">Bus Stops</h2>
+                      {userLocation && (
+                        <span className="text-xs text-primary-600">Sorted by route</span>
+                      )}
+                    </div>
+                    
+                    <BusStopsList 
+                      stops={busStops}
+                      userLocation={userLocation}
+                      closestStop={closestStop}
+                      onStopSelect={(stop) => {
+                        setView('map');
+                        handleStopSelect(stop);
+                      }}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div 
+                key="map"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                className="absolute inset-0"
+              >
+                <MapComponent
+                  busStops={busStops}
+                  busPositions={busPositions}
+                  routePath={routePath}
+                  userLocation={userLocation}
+                  closestStop={closestStop}
+                  selectedLine={selectedLine}
+                />
+                
+                {/* Floating quick info panel */}
+                <div className="absolute bottom-20 left-4 right-4">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-3 border border-gray-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="font-medium text-gray-900">Quick Info</h3>
+                      <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full">{busPositions.length} buses</span>
+                    </div>
+                    
+                    {closestStop && (
+                      <div className="flex items-center mb-2">
+                        <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-2">
+                          <IconMapPin size={16} className="text-yellow-600" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-gray-800">{closestStop.name}</div>
+                          <div className="text-xs text-gray-500">
+                            {userLocation && formatDistance(calculateDistance(userLocation, {
+                              lat: closestStop.coordinates.latitude,
+                              lng: closestStop.coordinates.longitude
+                            }))} away
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <button
+                      onClick={() => setView('stops')}
+                      className="w-full py-2 bg-primary-600 text-white rounded-md text-sm font-medium"
+                    >
+                      View All Stops
+                    </button>
+                  </div>
+                </div>
+                
+                {/* Floating action buttons */}
+                <div className="absolute bottom-6 right-4 flex flex-col space-y-2">
+                  <button 
+                    onClick={handleRefreshLocation} 
+                    className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center border border-gray-200"
+                  >
+                    <IconCurrentLocation size={24} className="text-primary-600" />
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    );
+  }
 
-      {/* Map Container */}
-      <div className="flex-1 relative">
-        <MapComponent
-          busStops={busStops}
-          busPositions={busPositions}
-          routePath={routePath}
-          userLocation={userLocation}
-          closestStop={closestStop}
-        />
-
-        {/* Mobile Bottom Sheet */}
-        {isMobile && (
-          <MobileBottomSheet
-            userLocation={userLocation}
-            closestStop={closestStop}
-            busPositions={busPositions}
-            busStops={busStops}
-            selectedLine={selectedLine}
-            loading={isLoading}
-            error={null}
-            locationAccuracy={null}
-            onRefreshLocation={handleRefreshLocation}
-            onStopSelect={handleStopSelect}
-          />
-        )}
+  // Full tracking view with map and improved layout
+  return (
+    <div className="h-screen flex flex-col bg-gray-50">
+      {/* Mobile header with tab switcher */}
+      <div className="bg-white shadow-sm z-10">
+        <div className="flex items-center p-3">
+          <button 
+            onClick={() => window.history.back()}
+            className="p-2 rounded-full hover:bg-gray-100 mr-2"
+          >
+            <IconChevronLeft size={20} className="text-gray-600" />
+          </button>
+          
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3
+            ${selectedLine.direction === 'FORWARD' 
+              ? 'bg-green-100 text-green-600' 
+              : 'bg-orange-100 text-orange-600'
+            }`}
+          >
+            <span className="font-bold">{selectedLine.line}</span>
+          </div>
+          
+          <div className="flex-1 min-w-0">
+            <h1 className="text-lg font-bold text-gray-900 truncate">
+              {selectedLine.label}
+            </h1>
+            <div className="flex items-center text-xs text-gray-500">
+              <span className={selectedLine.direction === 'FORWARD' ? 'text-green-600' : 'text-orange-600'}>
+                {selectedLine.direction === 'FORWARD' ? 'Outbound' : 'Return'}
+              </span>
+              <span className="mx-1">•</span>
+              <span>{busStops.length} stops</span>
+              {isLoading && <span className="ml-1">• Loading...</span>}
+            </div>
+          </div>
+          
+          <button
+            onClick={handleRefreshLocation}
+            className="p-2 rounded-full hover:bg-gray-100 text-primary-600"
+            disabled={isLoading}
+          >
+            <IconCurrentLocation size={20} className={`${isLoading ? 'text-gray-400' : 'text-primary-600'}`} />
+          </button>
+        </div>
+        
+        {/* Tab switcher */}
+        <div className="flex border-t border-gray-100">
+          <button 
+            onClick={() => setView('stops')}
+            className={`flex-1 py-2.5 text-sm font-medium flex items-center justify-center
+              ${view === 'stops' 
+                ? 'text-primary-600 border-b-2 border-primary-600' 
+                : 'text-gray-600'}
+            `}
+          >
+            <IconList size={16} className="mr-1.5" />
+            Stops
+          </button>
+          <button 
+            onClick={() => setView('map')}
+            className={`flex-1 py-2.5 text-sm font-medium flex items-center justify-center
+              ${view === 'map' 
+                ? 'text-primary-600 border-b-2 border-primary-600' 
+                : 'text-gray-600'}
+            `}
+          >
+            <IconMap size={16} className="mr-1.5" />
+            Map
+          </button>
+        </div>
+      </div>
+      
+      {/* Content container */}
+      <div className="flex-1 overflow-hidden">
+        <AnimatePresence mode="wait">
+          {view === 'stops' ? (
+            <motion.div 
+              key="stops"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="h-full overflow-y-auto pb-safe"
+            >
+              <div className="p-4">
+                {/* Stats cards */}
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  <div className="bg-white rounded-lg shadow-sm p-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
+                        <IconBus size={16} className="text-blue-500" />
+                      </div>
+                      <span className="text-xs text-blue-500 font-medium">Active</span>
+                    </div>
+                    <div className="text-lg font-bold">{busPositions.length}</div>
+                    <div className="text-xs text-gray-500">Buses</div>
+                  </div>
+                  
+                  <div className="bg-white rounded-lg shadow-sm p-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center">
+                        <IconClock size={16} className="text-orange-500" />
+                      </div>
+                      <span className="text-xs text-orange-500 font-medium">ETA</span>
+                    </div>
+                    <div className="text-lg font-bold">{closestStop?.eta !== undefined ? formatTime(closestStop.eta) : '--'}</div>
+                    <div className="text-xs text-gray-500">Minutes</div>
+                  </div>
+                  
+                  <div className="bg-white rounded-lg shadow-sm p-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center">
+                        <IconMapPin size={16} className="text-green-500" />
+                      </div>
+                      <span className="text-xs text-green-500 font-medium">Total</span>
+                    </div>
+                    <div className="text-lg font-bold">{busStops.length}</div>
+                    <div className="text-xs text-gray-500">Stops</div>
+                  </div>
+                </div>
+                
+                {/* Closest stop card if available */}
+                {closestStop && (
+                  <div className="bg-white rounded-lg shadow-sm p-4 mb-4 border border-yellow-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="font-medium text-gray-800 flex items-center">
+                        <IconLocation size={18} className="mr-2 text-yellow-500" />
+                        Closest Stop
+                      </h3>
+                      <span className="text-sm font-medium text-yellow-500">
+                        {formatTime(closestStop.eta)}
+                      </span>
+                    </div>
+                    
+                    <p className="text-sm text-gray-700 mb-2">{closestStop.name}</p>
+                    
+                    <button 
+                      onClick={() => {
+                        setView('map');
+                        handleStopSelect(closestStop);
+                      }}
+                      className="w-full py-2 bg-yellow-100 text-yellow-700 rounded flex items-center justify-center text-sm font-medium"
+                    >
+                      <IconMap size={16} className="mr-1.5" />
+                      View on map
+                    </button>
+                  </div>
+                )}
+                
+                {/* Bus stops list */}
+                <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                  <BusStopsList 
+                    stops={busStops}
+                    userLocation={userLocation}
+                    closestStop={closestStop}
+                    onStopSelect={(stop) => {
+                      setView('map');
+                      handleStopSelect(stop);
+                    }}
+                    listType="modern"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div 
+              key="map"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="h-full relative"
+            >
+              <MapComponent
+                busStops={busStops}
+                busPositions={busPositions}
+                routePath={routePath}
+                userLocation={userLocation}
+                closestStop={closestStop}
+                selectedLine={selectedLine}
+              />
+              
+              {/* Floating action buttons */}
+              <div className="absolute bottom-6 right-4 flex flex-col space-y-2">
+                <button 
+                  onClick={handleRefreshLocation} 
+                  className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center"
+                >
+                  <IconCurrentLocation size={24} className="text-primary-600" />
+                </button>
+              </div>
+              
+              {/* Mini bus stats */}
+              <div className="absolute top-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2">
+                      <IconBus size={16} className="text-blue-600" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-gray-600">Active Buses</div>
+                      <div className="font-bold">{busPositions.length}</div>
+                    </div>
+                  </div>
+                  
+                  {closestStop && (
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-2">
+                        <IconClock size={16} className="text-yellow-600" />
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-600">Closest ETA</div>
+                        <div className="font-bold">{formatTime(closestStop.eta)}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
-};
+}
 
 export default BusTrackingView;
