@@ -1,4 +1,12 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { 
+  IconBus, 
+  IconArrowRight, 
+  IconArrowLeft,
+  IconCoin,
+  IconCheck
+} from '@tabler/icons-react';
 import type { BusLine } from '../types';
 
 interface LineCardProps {
@@ -14,32 +22,65 @@ const LineCard: React.FC<LineCardProps> = ({
   onSelect,
   showDirection = true 
 }) => {
+  const directionConfig = {
+    FORWARD: {
+      icon: <IconArrowRight size={20} />,
+      label: 'Forward',
+      gradient: 'from-green-500 to-emerald-600',
+      bgColor: 'bg-green-100',
+      textColor: 'text-green-700'
+    },
+    BACKWARD: {
+      icon: <IconArrowLeft size={20} />,
+      label: 'Backward', 
+      gradient: 'from-orange-500 to-red-600',
+      bgColor: 'bg-orange-100',
+      textColor: 'text-orange-700'
+    }
+  };
+
+  const config = directionConfig[line.direction];
+
   return (
-    <div
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       onClick={() => onSelect(line.id)}
       className={`
-        group relative cursor-pointer transition-all duration-300 transform hover:scale-105
+        relative cursor-pointer transition-all duration-300
         ${isSelected 
-          ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-xl' 
-          : 'bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-blue-300'
+          ? `bg-gradient-to-br ${config.gradient} text-white shadow-2xl transform scale-105` 
+          : 'bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-indigo-300 hover:shadow-lg'
         }
-        rounded-2xl p-6 shadow-lg hover:shadow-xl
+        rounded-2xl p-6 shadow-md
+        overflow-hidden
       `}
     >
-      {/* Line Number Badge */}
+      {/* Selection indicator */}
+      {isSelected && (
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className="absolute top-4 right-4 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg"
+        >
+          <IconCheck size={16} className="text-indigo-600" />
+        </motion.div>
+      )}
+
+      {/* Line number badge */}
       <div className={`
-        absolute -top-3 -right-3 w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-lg
-        ${isSelected ? 'bg-white text-blue-600' : 'bg-blue-500 text-white'}
+        absolute -top-3 -left-3 w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold shadow-lg
+        ${isSelected ? 'bg-white text-indigo-600' : `bg-gradient-to-br ${config.gradient} text-white`}
       `}>
         {line.line}
       </div>
 
       {/* Content */}
-      <div className="space-y-3">
+      <div className="space-y-4 mt-4">
         {/* Title */}
         <div>
           <h3 className={`
-            text-lg font-bold mb-1
+            text-lg font-bold mb-2
             ${isSelected ? 'text-white' : 'text-gray-800'}
           `}>
             {line.label}
@@ -47,15 +88,14 @@ const LineCard: React.FC<LineCardProps> = ({
           
           {showDirection && (
             <div className={`
-              inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+              inline-flex items-center px-3 py-1.5 rounded-xl text-sm font-medium space-x-2
               ${isSelected 
-                ? 'bg-white/20 text-white' 
-                : line.direction === 'FORWARD' 
-                  ? 'bg-green-100 text-green-700' 
-                  : 'bg-orange-100 text-orange-700'
+                ? 'bg-white/20 text-white backdrop-blur-sm' 
+                : `${config.bgColor} ${config.textColor}`
               }
             `}>
-              {line.direction === 'FORWARD' ? '➡️ Forward' : '⬅️ Backward'}
+              {config.icon}
+              <span>{config.label}</span>
             </div>
           )}
         </div>
@@ -63,45 +103,68 @@ const LineCard: React.FC<LineCardProps> = ({
         {/* Route Info */}
         {line.firstStop && line.lastStop && (
           <div className={`
-            text-sm space-y-1
+            space-y-3 text-sm
             ${isSelected ? 'text-white/90' : 'text-gray-600'}
           `}>
-            <div className="flex items-center">
-              <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-              <span className="truncate">{line.firstStop.name}</span>
+            <div className="flex items-start space-x-3">
+              <div className={`
+                w-3 h-3 rounded-full mt-1 flex-shrink-0
+                ${isSelected ? 'bg-white/60' : 'bg-green-400'}
+              `} />
+              <div className="flex-1 min-w-0">
+                <p className="font-medium truncate">{line.firstStop.name}</p>
+                <p className={`text-xs ${isSelected ? 'text-white/70' : 'text-gray-500'}`}>
+                  Starting point
+                </p>
+              </div>
             </div>
-            <div className="flex items-center">
-              <span className="w-2 h-2 bg-red-400 rounded-full mr-2"></span>
-              <span className="truncate">{line.lastStop.name}</span>
+            
+            <div className="flex items-center justify-center">
+              <div className={`
+                w-0.5 h-8 rounded-full
+                ${isSelected ? 'bg-white/40' : 'bg-gray-300'}
+              `} />
+            </div>
+            
+            <div className="flex items-start space-x-3">
+              <div className={`
+                w-3 h-3 rounded-full mt-1 flex-shrink-0
+                ${isSelected ? 'bg-white/60' : 'bg-red-400'}
+              `} />
+              <div className="flex-1 min-w-0">
+                <p className="font-medium truncate">{line.lastStop.name}</p>
+                <p className={`text-xs ${isSelected ? 'text-white/70' : 'text-gray-500'}`}>
+                  Final destination
+                </p>
+              </div>
             </div>
           </div>
         )}
 
         {/* Additional Info */}
         <div className={`
-          flex items-center justify-between text-xs
-          ${isSelected ? 'text-white/75' : 'text-gray-500'}
+          flex items-center justify-between text-xs pt-4 border-t
+          ${isSelected ? 'text-white/75 border-white/20' : 'text-gray-500 border-gray-200'}
         `}>
-          <span className="flex items-center">
-            <span className="mr-1">🎫</span>
-            {line.ticketPrice ? `${line.ticketPrice} MAD` : 'Free'}
+          <span className="flex items-center space-x-1">
+            <IconCoin size={14} />
+            <span>{line.ticketPrice ? `${line.ticketPrice} MAD` : 'Free'}</span>
           </span>
-          <span className="flex items-center">
-            <span className="mr-1">🚌</span>
-            {line.type}
+          <span className="flex items-center space-x-1">
+            <IconBus size={14} />
+            <span>{line.type}</span>
           </span>
         </div>
       </div>
 
-      {/* Selection Indicator */}
+      {/* Decorative background pattern */}
       {isSelected && (
-        <div className="absolute top-4 left-4">
-          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-            <span className="text-blue-600 text-sm">✓</span>
-          </div>
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full translate-y-12 -translate-x-12" />
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
