@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Leaflet CSS overrides */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-popup-content-wrapper {
+  @apply bg-white rounded-lg shadow-lg;
+}
+
+.leaflet-popup-content {
+  @apply text-sm;
+}
+
+.custom-marker {
+  @apply w-6 h-6 rounded-full border-2 border-white shadow-lg;
+}
+
+.user-marker {
+  @apply bg-blue-500;
+}
+
+.bus-marker {
+  @apply bg-red-500;
+}
+
+.stop-marker {
+  @apply bg-green-500;
+}
+
+/* Custom scrollbar for WebKit browsers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded-full;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Mobile optimizations */
+@media (max-width: 1024px) {
+  .leaflet-container {
+    touch-action: pan-x pan-y;
+  }
+  
+  .leaflet-control-zoom {
+    margin-left: 10px !important;
+    margin-top: 100px !important;
+  }
+  
+  .leaflet-popup-content-wrapper {
+    font-size: 14px;
+  }
+}
+
+/* Smooth transitions */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Glass morphism effect */
+.glass-morphism {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Custom focus styles */
+.focus-visible {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}

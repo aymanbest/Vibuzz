@@ -1,0 +1,2607 @@
+{
+    "positions": {
+        "8750": [
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2151016,
+                    "longitude": -6.6339316
+                },
+                "date": "2025-06-25T18:31:41.000Z",
+                "direction": "FORWARD",
+                "heading": 214,
+                "bearing": 214,
+                "speed": 16,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2154116,
+                    "longitude": -6.6335816
+                },
+                "date": "2025-06-25T18:31:31.000Z",
+                "direction": "FORWARD",
+                "heading": 213,
+                "bearing": 213,
+                "speed": 20,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2161433,
+                    "longitude": -6.6329466
+                },
+                "date": "2025-06-25T18:31:14.000Z",
+                "direction": "FORWARD",
+                "heading": 218,
+                "bearing": 218,
+                "speed": 25,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2168866,
+                    "longitude": -6.6322433
+                },
+                "date": "2025-06-25T18:30:58.000Z",
+                "direction": "FORWARD",
+                "heading": 216,
+                "bearing": 216,
+                "speed": 27,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2174349,
+                    "longitude": -6.63177
+                },
+                "date": "2025-06-25T18:30:28.000Z",
+                "direction": "FORWARD",
+                "heading": 219,
+                "bearing": 219,
+                "speed": 23,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2181566,
+                    "longitude": -6.6310733
+                },
+                "date": "2025-06-25T18:30:18.000Z",
+                "direction": "FORWARD",
+                "heading": 215,
+                "bearing": 215,
+                "speed": 46,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2189033,
+                    "longitude": -6.6304616
+                },
+                "date": "2025-06-25T18:30:10.000Z",
+                "direction": "FORWARD",
+                "heading": 210,
+                "bearing": 210,
+                "speed": 44,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2197583,
+                    "longitude": -6.6298433
+                },
+                "date": "2025-06-25T18:30:02.000Z",
+                "direction": "FORWARD",
+                "heading": 211,
+                "bearing": 211,
+                "speed": 44,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2206266,
+                    "longitude": -6.6292883
+                },
+                "date": "2025-06-25T18:28:45.000Z",
+                "direction": "FORWARD",
+                "heading": 206,
+                "bearing": 206,
+                "speed": 1,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2213533,
+                    "longitude": -6.6287483
+                },
+                "date": "2025-06-25T18:28:16.000Z",
+                "direction": "FORWARD",
+                "heading": 211,
+                "bearing": 211,
+                "speed": 25,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2215683,
+                    "longitude": -6.6285983
+                },
+                "date": "2025-06-25T18:28:12.000Z",
+                "direction": "FORWARD",
+                "heading": 226,
+                "bearing": 226,
+                "speed": 20,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2213549,
+                    "longitude": -6.6279933
+                },
+                "date": "2025-06-25T18:28:01.000Z",
+                "direction": "FORWARD",
+                "heading": 303,
+                "bearing": 303,
+                "speed": 46,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2205983,
+                    "longitude": -6.6266033
+                },
+                "date": "2025-06-25T18:26:24.000Z",
+                "direction": "FORWARD",
+                "heading": 306,
+                "bearing": 306,
+                "speed": 45,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8750",
+                "coordinates": {
+                    "latitude": 34.2200983,
+                    "longitude": -6.6256933
+                },
+                "date": "2025-06-25T18:26:17.000Z",
+                "direction": "FORWARD",
+                "heading": 302,
+                "bearing": 302,
+                "speed": 54,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            }
+        ],
+        "8772": [
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2500383,
+                    "longitude": -6.5560983
+                },
+                "date": "2025-06-25T18:44:18.000Z",
+                "direction": "FORWARD",
+                "heading": 319,
+                "bearing": 319,
+                "speed": 27,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.249295,
+                    "longitude": -6.5554049
+                },
+                "date": "2025-06-25T18:44:08.000Z",
+                "direction": "FORWARD",
+                "heading": 317,
+                "bearing": 317,
+                "speed": 25,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2490516,
+                    "longitude": -6.5552166
+                },
+                "date": "2025-06-25T18:43:49.000Z",
+                "direction": "FORWARD",
+                "heading": 334,
+                "bearing": 334,
+                "speed": 18,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2481516,
+                    "longitude": -6.5544516
+                },
+                "date": "2025-06-25T18:43:33.000Z",
+                "direction": "FORWARD",
+                "heading": 324,
+                "bearing": 324,
+                "speed": 35,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.247375,
+                    "longitude": -6.5537416
+                },
+                "date": "2025-06-25T18:43:10.000Z",
+                "direction": "FORWARD",
+                "heading": 311,
+                "bearing": 311,
+                "speed": 15,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2471566,
+                    "longitude": -6.553495
+                },
+                "date": "2025-06-25T18:43:00.000Z",
+                "direction": "FORWARD",
+                "heading": 306,
+                "bearing": 306,
+                "speed": 11,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2467399,
+                    "longitude": -6.5532066
+                },
+                "date": "2025-06-25T18:42:19.000Z",
+                "direction": "FORWARD",
+                "heading": 328,
+                "bearing": 328,
+                "speed": 22,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2459949,
+                    "longitude": -6.5525449
+                },
+                "date": "2025-06-25T18:41:57.000Z",
+                "direction": "FORWARD",
+                "heading": 328,
+                "bearing": 328,
+                "speed": 16,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2454066,
+                    "longitude": -6.5520133
+                },
+                "date": "2025-06-25T18:41:44.000Z",
+                "direction": "FORWARD",
+                "heading": 312,
+                "bearing": 312,
+                "speed": 13,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2450266,
+                    "longitude": -6.5517133
+                },
+                "date": "2025-06-25T18:41:23.000Z",
+                "direction": "FORWARD",
+                "heading": 327,
+                "bearing": 327,
+                "speed": 32,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.24482,
+                    "longitude": -6.5515583
+                },
+                "date": "2025-06-25T18:41:22.000Z",
+                "direction": "FORWARD",
+                "heading": 311,
+                "bearing": 311,
+                "speed": 23,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2445649,
+                    "longitude": -6.551325
+                },
+                "date": "2025-06-25T18:41:06.000Z",
+                "direction": "FORWARD",
+                "heading": 323,
+                "bearing": 323,
+                "speed": 1,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2443199,
+                    "longitude": -6.5510933
+                },
+                "date": "2025-06-25T18:40:34.000Z",
+                "direction": "FORWARD",
+                "heading": 329,
+                "bearing": 329,
+                "speed": 25,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.24378,
+                    "longitude": -6.5505683
+                },
+                "date": "2025-06-25T18:40:25.000Z",
+                "direction": "FORWARD",
+                "heading": 311,
+                "bearing": 311,
+                "speed": 18,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2437016,
+                    "longitude": -6.5504833
+                },
+                "date": "2025-06-25T18:39:59.000Z",
+                "direction": "FORWARD",
+                "heading": 344,
+                "bearing": 344,
+                "speed": 2,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2427083,
+                    "longitude": -6.5496266
+                },
+                "date": "2025-06-25T18:39:36.000Z",
+                "direction": "FORWARD",
+                "heading": 321,
+                "bearing": 321,
+                "speed": 33,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.24164,
+                    "longitude": -6.548735
+                },
+                "date": "2025-06-25T18:39:20.000Z",
+                "direction": "FORWARD",
+                "heading": 325,
+                "bearing": 325,
+                "speed": 29,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.24084,
+                    "longitude": -6.5480716
+                },
+                "date": "2025-06-25T18:39:01.000Z",
+                "direction": "FORWARD",
+                "heading": 319,
+                "bearing": 319,
+                "speed": 28,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.23981,
+                    "longitude": -6.5471683
+                },
+                "date": "2025-06-25T18:38:11.000Z",
+                "direction": "FORWARD",
+                "heading": 323,
+                "bearing": 323,
+                "speed": 31,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2390166,
+                    "longitude": -6.5464849
+                },
+                "date": "2025-06-25T18:37:57.000Z",
+                "direction": "FORWARD",
+                "heading": 323,
+                "bearing": 323,
+                "speed": 40,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2382533,
+                    "longitude": -6.5458233
+                },
+                "date": "2025-06-25T18:37:46.000Z",
+                "direction": "FORWARD",
+                "heading": 322,
+                "bearing": 322,
+                "speed": 49,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2374866,
+                    "longitude": -6.54507
+                },
+                "date": "2025-06-25T18:37:34.000Z",
+                "direction": "FORWARD",
+                "heading": 322,
+                "bearing": 322,
+                "speed": 12,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2368716,
+                    "longitude": -6.5446266
+                },
+                "date": "2025-06-25T18:37:00.000Z",
+                "direction": "FORWARD",
+                "heading": 323,
+                "bearing": 323,
+                "speed": 26,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2361533,
+                    "longitude": -6.5439666
+                },
+                "date": "2025-06-25T18:36:46.000Z",
+                "direction": "FORWARD",
+                "heading": 329,
+                "bearing": 329,
+                "speed": 36,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.23542,
+                    "longitude": -6.54332
+                },
+                "date": "2025-06-25T18:36:37.000Z",
+                "direction": "FORWARD",
+                "heading": 328,
+                "bearing": 328,
+                "speed": 38,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2346933,
+                    "longitude": -6.5426766
+                },
+                "date": "2025-06-25T18:36:27.000Z",
+                "direction": "FORWARD",
+                "heading": 324,
+                "bearing": 324,
+                "speed": 41,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2339483,
+                    "longitude": -6.5420549
+                },
+                "date": "2025-06-25T18:36:17.000Z",
+                "direction": "FORWARD",
+                "heading": 312,
+                "bearing": 312,
+                "speed": 35,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.23344,
+                    "longitude": -6.54121
+                },
+                "date": "2025-06-25T18:36:07.000Z",
+                "direction": "FORWARD",
+                "heading": 297,
+                "bearing": 297,
+                "speed": 44,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2332233,
+                    "longitude": -6.5404999
+                },
+                "date": "2025-06-25T18:36:00.000Z",
+                "direction": "FORWARD",
+                "heading": 280,
+                "bearing": 280,
+                "speed": 45,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2330483,
+                    "longitude": -6.5393549
+                },
+                "date": "2025-06-25T18:35:49.000Z",
+                "direction": "FORWARD",
+                "heading": 277,
+                "bearing": 277,
+                "speed": 48,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.23272,
+                    "longitude": -6.5369516
+                },
+                "date": "2025-06-25T18:35:36.000Z",
+                "direction": "FORWARD",
+                "heading": 279,
+                "bearing": 279,
+                "speed": 66,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2325416,
+                    "longitude": -6.5357266
+                },
+                "date": "2025-06-25T18:35:29.000Z",
+                "direction": "FORWARD",
+                "heading": 288,
+                "bearing": 288,
+                "speed": 57,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.23202,
+                    "longitude": -6.5347116
+                },
+                "date": "2025-06-25T18:35:22.000Z",
+                "direction": "FORWARD",
+                "heading": 319,
+                "bearing": 319,
+                "speed": 26,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2317733,
+                    "longitude": -6.53453
+                },
+                "date": "2025-06-25T18:35:06.000Z",
+                "direction": "FORWARD",
+                "heading": 335,
+                "bearing": 335,
+                "speed": 12,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2312433,
+                    "longitude": -6.5341516
+                },
+                "date": "2025-06-25T18:34:55.000Z",
+                "direction": "FORWARD",
+                "heading": 319,
+                "bearing": 319,
+                "speed": 30,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2311666,
+                    "longitude": -6.5340216
+                },
+                "date": "2025-06-25T18:34:50.000Z",
+                "direction": "FORWARD",
+                "heading": 291,
+                "bearing": 291,
+                "speed": 29,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.23119,
+                    "longitude": -6.5328899
+                },
+                "date": "2025-06-25T18:34:41.000Z",
+                "direction": "FORWARD",
+                "heading": 255,
+                "bearing": 255,
+                "speed": 40,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2321683,
+                    "longitude": -6.5318366
+                },
+                "date": "2025-06-25T18:34:27.000Z",
+                "direction": "FORWARD",
+                "heading": 218,
+                "bearing": 218,
+                "speed": 39,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2329133,
+                    "longitude": -6.5311533
+                },
+                "date": "2025-06-25T18:34:12.000Z",
+                "direction": "FORWARD",
+                "heading": 214,
+                "bearing": 214,
+                "speed": 43,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.234495,
+                    "longitude": -6.5298066
+                },
+                "date": "2025-06-25T18:34:00.000Z",
+                "direction": "FORWARD",
+                "heading": 215,
+                "bearing": 215,
+                "speed": 72,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2361683,
+                    "longitude": -6.5284283
+                },
+                "date": "2025-06-25T18:33:47.000Z",
+                "direction": "FORWARD",
+                "heading": 217,
+                "bearing": 217,
+                "speed": 58,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2369816,
+                    "longitude": -6.5277866
+                },
+                "date": "2025-06-25T18:33:36.000Z",
+                "direction": "FORWARD",
+                "heading": 220,
+                "bearing": 220,
+                "speed": 31,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2371,
+                    "longitude": -6.5275033
+                },
+                "date": "2025-06-25T18:33:30.000Z",
+                "direction": "FORWARD",
+                "heading": 301,
+                "bearing": 301,
+                "speed": 11,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2370466,
+                    "longitude": -6.5274216
+                },
+                "date": "2025-06-25T18:33:16.000Z",
+                "direction": "FORWARD",
+                "heading": 322,
+                "bearing": 322,
+                "speed": 16,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2366933,
+                    "longitude": -6.5272166
+                },
+                "date": "2025-06-25T18:33:12.000Z",
+                "direction": "FORWARD",
+                "heading": 352,
+                "bearing": 352,
+                "speed": 42,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2348683,
+                    "longitude": -6.5264716
+                },
+                "date": "2025-06-25T18:32:55.000Z",
+                "direction": "FORWARD",
+                "heading": 340,
+                "bearing": 340,
+                "speed": 34,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.233975,
+                    "longitude": -6.5260766
+                },
+                "date": "2025-06-25T18:32:43.000Z",
+                "direction": "FORWARD",
+                "heading": 332,
+                "bearing": 332,
+                "speed": 33,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2339183,
+                    "longitude": -6.5260466
+                },
+                "date": "2025-06-25T18:32:42.000Z",
+                "direction": "FORWARD",
+                "heading": 313,
+                "bearing": 313,
+                "speed": 28,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2339416,
+                    "longitude": -6.52472
+                },
+                "date": "2025-06-25T18:32:24.000Z",
+                "direction": "FORWARD",
+                "heading": 253,
+                "bearing": 253,
+                "speed": 43,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8772",
+                "coordinates": {
+                    "latitude": 34.2342166,
+                    "longitude": -6.5235533
+                },
+                "date": "2025-06-25T18:32:08.000Z",
+                "direction": "FORWARD",
+                "heading": 254,
+                "bearing": 254,
+                "speed": 29,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            }
+        ],
+        "8872": [
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2149616,
+                    "longitude": -6.6340633
+                },
+                "date": "2025-06-25T18:39:11.000Z",
+                "direction": "FORWARD",
+                "heading": 217,
+                "bearing": 217,
+                "speed": 13,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.21584,
+                    "longitude": -6.6332533
+                },
+                "date": "2025-06-25T18:39:00.000Z",
+                "direction": "FORWARD",
+                "heading": 218,
+                "bearing": 218,
+                "speed": 58,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.21735,
+                    "longitude": -6.6317933
+                },
+                "date": "2025-06-25T18:38:41.000Z",
+                "direction": "FORWARD",
+                "heading": 217,
+                "bearing": 217,
+                "speed": 40,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.218985,
+                    "longitude": -6.6303749
+                },
+                "date": "2025-06-25T18:38:28.000Z",
+                "direction": "FORWARD",
+                "heading": 211,
+                "bearing": 211,
+                "speed": 52,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2198333,
+                    "longitude": -6.6297616
+                },
+                "date": "2025-06-25T18:38:20.000Z",
+                "direction": "FORWARD",
+                "heading": 212,
+                "bearing": 212,
+                "speed": 54,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2207016,
+                    "longitude": -6.62921
+                },
+                "date": "2025-06-25T18:38:08.000Z",
+                "direction": "FORWARD",
+                "heading": 212,
+                "bearing": 212,
+                "speed": 36,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.221485,
+                    "longitude": -6.6286683
+                },
+                "date": "2025-06-25T18:37:58.000Z",
+                "direction": "FORWARD",
+                "heading": 215,
+                "bearing": 215,
+                "speed": 29,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.22159,
+                    "longitude": -6.6284966
+                },
+                "date": "2025-06-25T18:37:52.000Z",
+                "direction": "FORWARD",
+                "heading": 281,
+                "bearing": 281,
+                "speed": 7,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2208316,
+                    "longitude": -6.62697
+                },
+                "date": "2025-06-25T18:37:20.000Z",
+                "direction": "FORWARD",
+                "heading": 301,
+                "bearing": 301,
+                "speed": 52,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.22029,
+                    "longitude": -6.6259716
+                },
+                "date": "2025-06-25T18:37:11.000Z",
+                "direction": "FORWARD",
+                "heading": 302,
+                "bearing": 302,
+                "speed": 51,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2197799,
+                    "longitude": -6.6250066
+                },
+                "date": "2025-06-25T18:37:01.000Z",
+                "direction": "FORWARD",
+                "heading": 303,
+                "bearing": 303,
+                "speed": 38,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2192733,
+                    "longitude": -6.6240549
+                },
+                "date": "2025-06-25T18:36:52.000Z",
+                "direction": "FORWARD",
+                "heading": 303,
+                "bearing": 303,
+                "speed": 48,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2187383,
+                    "longitude": -6.6230783
+                },
+                "date": "2025-06-25T18:36:42.000Z",
+                "direction": "FORWARD",
+                "heading": 308,
+                "bearing": 308,
+                "speed": 9,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2185816,
+                    "longitude": -6.6227816
+                },
+                "date": "2025-06-25T18:36:33.000Z",
+                "direction": "FORWARD",
+                "heading": 303,
+                "bearing": 303,
+                "speed": 38,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2179516,
+                    "longitude": -6.62173
+                },
+                "date": "2025-06-25T18:36:21.000Z",
+                "direction": "FORWARD",
+                "heading": 295,
+                "bearing": 295,
+                "speed": 19,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2187433,
+                    "longitude": -6.6209383
+                },
+                "date": "2025-06-25T18:36:10.000Z",
+                "direction": "FORWARD",
+                "heading": 215,
+                "bearing": 215,
+                "speed": 60,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2203366,
+                    "longitude": -6.6196699
+                },
+                "date": "2025-06-25T18:35:57.000Z",
+                "direction": "FORWARD",
+                "heading": 212,
+                "bearing": 212,
+                "speed": 67,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.222035,
+                    "longitude": -6.6184233
+                },
+                "date": "2025-06-25T18:35:43.000Z",
+                "direction": "FORWARD",
+                "heading": 216,
+                "bearing": 216,
+                "speed": 64,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2235483,
+                    "longitude": -6.6171299
+                },
+                "date": "2025-06-25T18:35:32.000Z",
+                "direction": "FORWARD",
+                "heading": 212,
+                "bearing": 212,
+                "speed": 27,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.22429,
+                    "longitude": -6.61652
+                },
+                "date": "2025-06-25T18:34:59.000Z",
+                "direction": "FORWARD",
+                "heading": 217,
+                "bearing": 217,
+                "speed": 43,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.225055,
+                    "longitude": -6.6158633
+                },
+                "date": "2025-06-25T18:34:49.000Z",
+                "direction": "FORWARD",
+                "heading": 211,
+                "bearing": 211,
+                "speed": 38,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2254833,
+                    "longitude": -6.6155066
+                },
+                "date": "2025-06-25T18:34:42.000Z",
+                "direction": "FORWARD",
+                "heading": 232,
+                "bearing": 232,
+                "speed": 35,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.227185,
+                    "longitude": -6.6141583
+                },
+                "date": "2025-06-25T18:34:26.000Z",
+                "direction": "FORWARD",
+                "heading": 219,
+                "bearing": 219,
+                "speed": 48,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2279966,
+                    "longitude": -6.6134633
+                },
+                "date": "2025-06-25T18:34:20.000Z",
+                "direction": "FORWARD",
+                "heading": 213,
+                "bearing": 213,
+                "speed": 54,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2305516,
+                    "longitude": -6.6112566
+                },
+                "date": "2025-06-25T18:33:49.000Z",
+                "direction": "FORWARD",
+                "heading": 138,
+                "bearing": 138,
+                "speed": 16,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2307466,
+                    "longitude": -6.6116416
+                },
+                "date": "2025-06-25T18:33:38.000Z",
+                "direction": "FORWARD",
+                "heading": 123,
+                "bearing": 123,
+                "speed": 36,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2312883,
+                    "longitude": -6.612545
+                },
+                "date": "2025-06-25T18:33:28.000Z",
+                "direction": "FORWARD",
+                "heading": 120,
+                "bearing": 120,
+                "speed": 26,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2317533,
+                    "longitude": -6.6133316
+                },
+                "date": "2025-06-25T18:33:15.000Z",
+                "direction": "FORWARD",
+                "heading": 137,
+                "bearing": 137,
+                "speed": 20,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2318716,
+                    "longitude": -6.6135616
+                },
+                "date": "2025-06-25T18:32:57.000Z",
+                "direction": "FORWARD",
+                "heading": 127,
+                "bearing": 127,
+                "speed": 23,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2324366,
+                    "longitude": -6.6144649
+                },
+                "date": "2025-06-25T18:32:44.000Z",
+                "direction": "FORWARD",
+                "heading": 113,
+                "bearing": 113,
+                "speed": 43,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.23293,
+                    "longitude": -6.61542
+                },
+                "date": "2025-06-25T18:32:32.000Z",
+                "direction": "FORWARD",
+                "heading": 122,
+                "bearing": 122,
+                "speed": 20,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2338866,
+                    "longitude": -6.61641
+                },
+                "date": "2025-06-25T18:32:07.000Z",
+                "direction": "FORWARD",
+                "heading": 151,
+                "bearing": 151,
+                "speed": 26,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2342166,
+                    "longitude": -6.6166316
+                },
+                "date": "2025-06-25T18:31:46.000Z",
+                "direction": "FORWARD",
+                "heading": 142,
+                "bearing": 142,
+                "speed": 26,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2349133,
+                    "longitude": -6.6180966
+                },
+                "date": "2025-06-25T18:31:24.000Z",
+                "direction": "FORWARD",
+                "heading": 119,
+                "bearing": 119,
+                "speed": 41,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2352966,
+                    "longitude": -6.6191499
+                },
+                "date": "2025-06-25T18:31:12.000Z",
+                "direction": "FORWARD",
+                "heading": 113,
+                "bearing": 113,
+                "speed": 24,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2367783,
+                    "longitude": -6.6180133
+                },
+                "date": "2025-06-25T18:30:45.000Z",
+                "direction": "FORWARD",
+                "heading": 214,
+                "bearing": 214,
+                "speed": 46,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.237575,
+                    "longitude": -6.6174583
+                },
+                "date": "2025-06-25T18:30:35.000Z",
+                "direction": "FORWARD",
+                "heading": 208,
+                "bearing": 208,
+                "speed": 40,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2384066,
+                    "longitude": -6.616825
+                },
+                "date": "2025-06-25T18:30:20.000Z",
+                "direction": "FORWARD",
+                "heading": 206,
+                "bearing": 206,
+                "speed": 23,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2393966,
+                    "longitude": -6.6161166
+                },
+                "date": "2025-06-25T18:30:05.000Z",
+                "direction": "FORWARD",
+                "heading": 205,
+                "bearing": 205,
+                "speed": 20,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2394133,
+                    "longitude": -6.6161033
+                },
+                "date": "2025-06-25T18:29:40.000Z",
+                "direction": "FORWARD",
+                "heading": 189,
+                "bearing": 189,
+                "speed": 8,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2405433,
+                    "longitude": -6.6153033
+                },
+                "date": "2025-06-25T18:29:20.000Z",
+                "direction": "FORWARD",
+                "heading": 209,
+                "bearing": 209,
+                "speed": 30,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2413283,
+                    "longitude": -6.6147316
+                },
+                "date": "2025-06-25T18:29:01.000Z",
+                "direction": "FORWARD",
+                "heading": 209,
+                "bearing": 209,
+                "speed": 23,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2421566,
+                    "longitude": -6.6141516
+                },
+                "date": "2025-06-25T18:28:39.000Z",
+                "direction": "FORWARD",
+                "heading": 205,
+                "bearing": 205,
+                "speed": 22,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.242485,
+                    "longitude": -6.6138816
+                },
+                "date": "2025-06-25T18:28:22.000Z",
+                "direction": "FORWARD",
+                "heading": 188,
+                "bearing": 188,
+                "speed": 28,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2433733,
+                    "longitude": -6.613595
+                },
+                "date": "2025-06-25T18:28:08.000Z",
+                "direction": "FORWARD",
+                "heading": 199,
+                "bearing": 199,
+                "speed": 36,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2437416,
+                    "longitude": -6.6133866
+                },
+                "date": "2025-06-25T18:28:02.000Z",
+                "direction": "FORWARD",
+                "heading": 220,
+                "bearing": 220,
+                "speed": 23,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2444333,
+                    "longitude": -6.6131649
+                },
+                "date": "2025-06-25T18:27:52.000Z",
+                "direction": "FORWARD",
+                "heading": 168,
+                "bearing": 168,
+                "speed": 14,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.244985,
+                    "longitude": -6.6128283
+                },
+                "date": "2025-06-25T18:27:20.000Z",
+                "direction": "FORWARD",
+                "heading": 208,
+                "bearing": 208,
+                "speed": 32,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2457766,
+                    "longitude": -6.6122049
+                },
+                "date": "2025-06-25T18:27:05.000Z",
+                "direction": "FORWARD",
+                "heading": 204,
+                "bearing": 204,
+                "speed": 20,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2462066,
+                    "longitude": -6.6118066
+                },
+                "date": "2025-06-25T18:26:52.000Z",
+                "direction": "FORWARD",
+                "heading": 221,
+                "bearing": 221,
+                "speed": 29,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2469283,
+                    "longitude": -6.6110866
+                },
+                "date": "2025-06-25T18:26:36.000Z",
+                "direction": "FORWARD",
+                "heading": 224,
+                "bearing": 224,
+                "speed": 29,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2476266,
+                    "longitude": -6.6103883
+                },
+                "date": "2025-06-25T18:26:25.000Z",
+                "direction": "FORWARD",
+                "heading": 217,
+                "bearing": 217,
+                "speed": 44,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "8872",
+                "coordinates": {
+                    "latitude": 34.2483316,
+                    "longitude": -6.6096016
+                },
+                "date": "2025-06-25T18:26:22.000Z",
+                "direction": "FORWARD",
+                "heading": 218,
+                "bearing": 218,
+                "speed": 29,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            }
+        ],
+        "9918": [
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2633366,
+                    "longitude": -6.57182
+                },
+                "date": "2025-06-25T18:43:55.000Z",
+                "direction": "FORWARD",
+                "heading": 263,
+                "bearing": 263,
+                "speed": 28,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2634849,
+                    "longitude": -6.5707316
+                },
+                "date": "2025-06-25T18:43:47.000Z",
+                "direction": "FORWARD",
+                "heading": 267,
+                "bearing": 267,
+                "speed": 22,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2634849,
+                    "longitude": -6.5707316
+                },
+                "date": "2025-06-25T18:43:39.000Z",
+                "direction": "FORWARD",
+                "heading": 267,
+                "bearing": 267,
+                "speed": 19,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2635183,
+                    "longitude": -6.5698216
+                },
+                "date": "2025-06-25T18:42:33.000Z",
+                "direction": "FORWARD",
+                "heading": 269,
+                "bearing": 269,
+                "speed": 28,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.26355,
+                    "longitude": -6.5689216
+                },
+                "date": "2025-06-25T18:42:22.000Z",
+                "direction": "FORWARD",
+                "heading": 253,
+                "bearing": 253,
+                "speed": 28,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2659683,
+                    "longitude": -6.5640383
+                },
+                "date": "2025-06-25T18:39:01.000Z",
+                "direction": "FORWARD",
+                "heading": 252,
+                "bearing": 252,
+                "speed": 30,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2667666,
+                    "longitude": -6.5629483
+                },
+                "date": "2025-06-25T18:38:48.000Z",
+                "direction": "FORWARD",
+                "heading": 212,
+                "bearing": 212,
+                "speed": 36,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2673766,
+                    "longitude": -6.5623516
+                },
+                "date": "2025-06-25T18:38:30.000Z",
+                "direction": "FORWARD",
+                "heading": 294,
+                "bearing": 294,
+                "speed": 15,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2671299,
+                    "longitude": -6.5619716
+                },
+                "date": "2025-06-25T18:37:31.000Z",
+                "direction": "FORWARD",
+                "heading": 311,
+                "bearing": 311,
+                "speed": 9,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2669266,
+                    "longitude": -6.5615883
+                },
+                "date": "2025-06-25T18:37:15.000Z",
+                "direction": "FORWARD",
+                "heading": 308,
+                "bearing": 308,
+                "speed": 8,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.26684,
+                    "longitude": -6.5613116
+                },
+                "date": "2025-06-25T18:37:08.000Z",
+                "direction": "FORWARD",
+                "heading": 331,
+                "bearing": 331,
+                "speed": 11,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.26664,
+                    "longitude": -6.5613183
+                },
+                "date": "2025-06-25T18:37:00.000Z",
+                "direction": "FORWARD",
+                "heading": 11,
+                "bearing": 11,
+                "speed": 14,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2658483,
+                    "longitude": -6.56142
+                },
+                "date": "2025-06-25T18:36:26.000Z",
+                "direction": "FORWARD",
+                "heading": 3,
+                "bearing": 3,
+                "speed": 22,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2649349,
+                    "longitude": -6.5615483
+                },
+                "date": "2025-06-25T18:36:09.000Z",
+                "direction": "FORWARD",
+                "heading": 12,
+                "bearing": 12,
+                "speed": 24,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2639649,
+                    "longitude": -6.5617233
+                },
+                "date": "2025-06-25T18:35:55.000Z",
+                "direction": "FORWARD",
+                "heading": 11,
+                "bearing": 11,
+                "speed": 17,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2639116,
+                    "longitude": -6.5617233
+                },
+                "date": "2025-06-25T18:35:51.000Z",
+                "direction": "FORWARD",
+                "heading": 45,
+                "bearing": 45,
+                "speed": 10,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2630766,
+                    "longitude": -6.5618816
+                },
+                "date": "2025-06-25T18:35:41.000Z",
+                "direction": "FORWARD",
+                "heading": 8,
+                "bearing": 8,
+                "speed": 26,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2624916,
+                    "longitude": -6.562015
+                },
+                "date": "2025-06-25T18:35:17.000Z",
+                "direction": "FORWARD",
+                "heading": 69,
+                "bearing": 69,
+                "speed": 13,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2621166,
+                    "longitude": -6.5625333
+                },
+                "date": "2025-06-25T18:34:55.000Z",
+                "direction": "FORWARD",
+                "heading": 47,
+                "bearing": 47,
+                "speed": 13,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2618316,
+                    "longitude": -6.5627749
+                },
+                "date": "2025-06-25T18:34:45.000Z",
+                "direction": "FORWARD",
+                "heading": 28,
+                "bearing": 28,
+                "speed": 8,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2612183,
+                    "longitude": -6.563375
+                },
+                "date": "2025-06-25T18:33:06.000Z",
+                "direction": "FORWARD",
+                "heading": 35,
+                "bearing": 35,
+                "speed": 23,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.260695,
+                    "longitude": -6.5636716
+                },
+                "date": "2025-06-25T18:32:57.000Z",
+                "direction": "FORWARD",
+                "heading": 19,
+                "bearing": 19,
+                "speed": 12,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2600366,
+                    "longitude": -6.564335
+                },
+                "date": "2025-06-25T18:32:42.000Z",
+                "direction": "FORWARD",
+                "heading": 37,
+                "bearing": 37,
+                "speed": 36,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2592683,
+                    "longitude": -6.5650033
+                },
+                "date": "2025-06-25T18:32:28.000Z",
+                "direction": "FORWARD",
+                "heading": 27,
+                "bearing": 27,
+                "speed": 15,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2591733,
+                    "longitude": -6.5650083
+                },
+                "date": "2025-06-25T18:32:23.000Z",
+                "direction": "FORWARD",
+                "heading": 322,
+                "bearing": 322,
+                "speed": 10,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2578383,
+                    "longitude": -6.5628199
+                },
+                "date": "2025-06-25T18:31:59.000Z",
+                "direction": "FORWARD",
+                "heading": 317,
+                "bearing": 317,
+                "speed": 36,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2570816,
+                    "longitude": -6.5620983
+                },
+                "date": "2025-06-25T18:31:45.000Z",
+                "direction": "FORWARD",
+                "heading": 322,
+                "bearing": 322,
+                "speed": 13,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2570699,
+                    "longitude": -6.56206
+                },
+                "date": "2025-06-25T18:31:31.000Z",
+                "direction": "FORWARD",
+                "heading": 343,
+                "bearing": 343,
+                "speed": 4,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2566283,
+                    "longitude": -6.5617249
+                },
+                "date": "2025-06-25T18:31:21.000Z",
+                "direction": "FORWARD",
+                "heading": 326,
+                "bearing": 326,
+                "speed": 40,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2558299,
+                    "longitude": -6.5610983
+                },
+                "date": "2025-06-25T18:31:12.000Z",
+                "direction": "FORWARD",
+                "heading": 320,
+                "bearing": 320,
+                "speed": 34,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2550699,
+                    "longitude": -6.5604083
+                },
+                "date": "2025-06-25T18:31:00.000Z",
+                "direction": "FORWARD",
+                "heading": 314,
+                "bearing": 314,
+                "speed": 21,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2547033,
+                    "longitude": -6.5600783
+                },
+                "date": "2025-06-25T18:30:30.000Z",
+                "direction": "FORWARD",
+                "heading": 329,
+                "bearing": 329,
+                "speed": 29,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2539216,
+                    "longitude": -6.559425
+                },
+                "date": "2025-06-25T18:30:16.000Z",
+                "direction": "FORWARD",
+                "heading": 318,
+                "bearing": 318,
+                "speed": 30,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.253145,
+                    "longitude": -6.5586966
+                },
+                "date": "2025-06-25T18:30:02.000Z",
+                "direction": "FORWARD",
+                "heading": 321,
+                "bearing": 321,
+                "speed": 22,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2523566,
+                    "longitude": -6.5580583
+                },
+                "date": "2025-06-25T18:29:45.000Z",
+                "direction": "FORWARD",
+                "heading": 325,
+                "bearing": 325,
+                "speed": 32,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.25158,
+                    "longitude": -6.5573783
+                },
+                "date": "2025-06-25T18:29:37.000Z",
+                "direction": "FORWARD",
+                "heading": 319,
+                "bearing": 319,
+                "speed": 38,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2506633,
+                    "longitude": -6.5565733
+                },
+                "date": "2025-06-25T18:29:14.000Z",
+                "direction": "FORWARD",
+                "heading": 283,
+                "bearing": 283,
+                "speed": 1,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2506083,
+                    "longitude": -6.5564883
+                },
+                "date": "2025-06-25T18:28:12.000Z",
+                "direction": "FORWARD",
+                "heading": 306,
+                "bearing": 306,
+                "speed": 14,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.249505,
+                    "longitude": -6.5555949
+                },
+                "date": "2025-06-25T18:27:53.000Z",
+                "direction": "FORWARD",
+                "heading": 336,
+                "bearing": 336,
+                "speed": 27,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2492866,
+                    "longitude": -6.5553833
+                },
+                "date": "2025-06-25T18:27:46.000Z",
+                "direction": "FORWARD",
+                "heading": 317,
+                "bearing": 317,
+                "speed": 22,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.249035,
+                    "longitude": -6.55522
+                },
+                "date": "2025-06-25T18:27:40.000Z",
+                "direction": "FORWARD",
+                "heading": 333,
+                "bearing": 333,
+                "speed": 12,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2482916,
+                    "longitude": -6.5545849
+                },
+                "date": "2025-06-25T18:27:12.000Z",
+                "direction": "FORWARD",
+                "heading": 324,
+                "bearing": 324,
+                "speed": 27,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2475383,
+                    "longitude": -6.5538816
+                },
+                "date": "2025-06-25T18:26:59.000Z",
+                "direction": "FORWARD",
+                "heading": 330,
+                "bearing": 330,
+                "speed": 25,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.24707,
+                    "longitude": -6.5534733
+                },
+                "date": "2025-06-25T18:26:47.000Z",
+                "direction": "FORWARD",
+                "heading": 315,
+                "bearing": 315,
+                "speed": 10,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            },
+            {
+                "company": "FOUGHALBUS-KENITRA",
+                "number": "1",
+                "trackerId": "9918",
+                "coordinates": {
+                    "latitude": 34.2468399,
+                    "longitude": -6.5532933
+                },
+                "date": "2025-06-25T18:26:23.000Z",
+                "direction": "FORWARD",
+                "heading": 330,
+                "bearing": 330,
+                "speed": 22,
+                "precision": "REAL_TIME",
+                "metadata": {}
+            }
+        ]
+    },
+    "latestPositions": [],
+    "endOfService": null,
+    "startsIn": null
+}

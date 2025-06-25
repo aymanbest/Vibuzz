@@ -1,0 +1,1234 @@
+[
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-001001",
+            "name": "TERMINUS MKHALIF     محطة المخاليف",
+            "coordinates": {
+                "latitude": 34.2346135,
+                "longitude": -6.5230929
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-1-FORWARD",
+        "label": "Ligne 1",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-001039",
+            "name": "TERMINUS HANCHA     الحنشة نهاية الخط",
+            "coordinates": {
+                "latitude": 34.2151566,
+                "longitude": -6.6338547
+            }
+        },
+        "line": "1",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-001001",
+            "name": "TERMINUS HANCHA     الحنشة نهاية الخط",
+            "coordinates": {
+                "latitude": 34.2151566,
+                "longitude": -6.6338547
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-1-BACKWARD",
+        "label": "Ligne 1",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-001038",
+            "name": "TERMINUS MKHALIF     محطة المخاليف",
+            "coordinates": {
+                "latitude": 34.2346135,
+                "longitude": -6.5230929
+            }
+        },
+        "line": "1",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-002001",
+            "name": "TERMINUS AIN ARISS     نهاية الخط عين عريس",
+            "coordinates": {
+                "latitude": 34.2168565,
+                "longitude": -6.5073458
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-2-FORWARD",
+        "label": "Ligne 2",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-002039",
+            "name": "TERMINUS HANCHA     نهاية الخط الحنشة",
+            "coordinates": {
+                "latitude": 34.2151566,
+                "longitude": -6.6338547
+            }
+        },
+        "line": "2",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-002001",
+            "name": "TERMINUS HANCHA     نهاية الخط الحنشة",
+            "coordinates": {
+                "latitude": 34.2151566,
+                "longitude": -6.6338547
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-2-BACKWARD",
+        "label": "Ligne 2",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-002038",
+            "name": "TERMINUS AIN ARISS     نهاية الخط عين عريس",
+            "coordinates": {
+                "latitude": 34.2168565,
+                "longitude": -6.5073458
+            }
+        },
+        "line": "2",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-003001",
+            "name": "TERMINUS MEHDIA MALL      نهاية الخط المركز التجاري",
+            "coordinates": {
+                "latitude": 34.247128,
+                "longitude": -6.6551643
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-3-BACKWARD",
+        "label": "Ligne 3",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-003035",
+            "name": "TERMINUS AIN SBAA      نهاية الخط عين السبع",
+            "coordinates": {
+                "latitude": 34.2307776,
+                "longitude": -6.5339983
+            }
+        },
+        "line": "3",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-003001",
+            "name": "TERMINUS AIN SBAA      نهاية الخط عين السبع",
+            "coordinates": {
+                "latitude": 34.2307776,
+                "longitude": -6.5339983
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-3-FORWARD",
+        "label": "Ligne 3",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-003036",
+            "name": "TERMINUS MEHDIA MALL      نهاية الخط المركز التجاري",
+            "coordinates": {
+                "latitude": 34.2472611,
+                "longitude": -6.6554268
+            }
+        },
+        "line": "3",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-004001",
+            "name": "TERMINUS OULAD TALEB     نهاية الخط أولاد الطالب",
+            "coordinates": {
+                "latitude": 34.1155824155692,
+                "longitude": -6.55980167197354
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-4-FORWARD",
+        "label": "Ligne 4",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-004052",
+            "name": "TERMINUS HADDADA      نهاية الخط الحدادة",
+            "coordinates": {
+                "latitude": 34.2704518,
+                "longitude": -6.6279921
+            }
+        },
+        "line": "4",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-004001",
+            "name": "TERMINUS HADDADA      نهاية الخط الحدادة",
+            "coordinates": {
+                "latitude": 34.2704518,
+                "longitude": -6.6279921
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-4-BACKWARD",
+        "label": "Ligne 4",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-004052",
+            "name": "TERMINUS OULAD TALEB     نهاية الخط أولاد الطالب",
+            "coordinates": {
+                "latitude": 34.1155824155692,
+                "longitude": -6.55980167197354
+            }
+        },
+        "line": "4",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-005001",
+            "name": "TERMINUS OULAD OUJIH     نهاية الخط أولاد اوجيه",
+            "coordinates": {
+                "latitude": 34.2533529,
+                "longitude": -6.6204103
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-5-BACKWARD",
+        "label": "Ligne 5",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-005028",
+            "name": "TERMINUS OULAD ARFA     نهاية الخط أولاد عرفة",
+            "coordinates": {
+                "latitude": 34.2418942,
+                "longitude": -6.5404098
+            }
+        },
+        "line": "5",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-005001",
+            "name": "TERMINUS OULAD ARFA     نهاية الخط أولاد عرفة",
+            "coordinates": {
+                "latitude": 34.2418942,
+                "longitude": -6.5404098
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-5-FORWARD",
+        "label": "Ligne 5",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-005030",
+            "name": "TERMINUS OULAD OUJIH     نهاية الخط أولاد اوجيه",
+            "coordinates": {
+                "latitude": 34.2533529,
+                "longitude": -6.6204103
+            }
+        },
+        "line": "5",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-006001",
+            "name": "UNIVERSITE IBN TOFAIL     نهاية الخط الكليات",
+            "coordinates": {
+                "latitude": 34.24578897335522,
+                "longitude": -6.59052542007121
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-6-BACKWARD",
+        "label": "Ligne 6",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-006011",
+            "name": "SALLE COUVERTE SAKNIA      القاعة المغطات الساكنية",
+            "coordinates": {
+                "latitude": 34.2489874,
+                "longitude": -6.5565371
+            }
+        },
+        "line": "6",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-006001",
+            "name": "SALLE COUVERTE SAKNIA      القاعة المغطات الساكنية",
+            "coordinates": {
+                "latitude": 34.24919506,
+                "longitude": -6.55660274
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-6-FORWARD",
+        "label": "Ligne 6",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-006010",
+            "name": "TERMINUS UNIVERSITE IBN TOFAIL     نهايةجامعة ابن طفيل",
+            "coordinates": {
+                "latitude": 34.24578897335522,
+                "longitude": -6.59052542007121
+            }
+        },
+        "line": "6",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-007001",
+            "name": "TERMINUS.PAM     نهاية الخط البام",
+            "coordinates": {
+                "latitude": 34.2499339,
+                "longitude": -6.5405985
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-7-FORWARD",
+        "label": "Ligne 7",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-007033",
+            "name": "TERMINUS HANCHA     نهاية الخط الحنشة",
+            "coordinates": {
+                "latitude": 34.2151566,
+                "longitude": -6.6338547
+            }
+        },
+        "line": "7",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-007001",
+            "name": "TERMINUS HANCHA     نهاية الخط الحنشة",
+            "coordinates": {
+                "latitude": 34.2151566,
+                "longitude": -6.6338547
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-7-BACKWARD",
+        "label": "Ligne 7",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-007033",
+            "name": "TERMINUS.PAM     نهاية الخط البام",
+            "coordinates": {
+                "latitude": 34.2499339,
+                "longitude": -6.5405985
+            }
+        },
+        "line": "7",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-008001",
+            "name": "TERMINUS BAFRA     نهاية الخط القاعدة الجوية",
+            "coordinates": {
+                "latitude": 34.2755976,
+                "longitude": -6.6110967
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-8-BACKWARD",
+        "label": "Ligne 8",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-008027",
+            "name": "TERMINUS.PAM     نهاية الخط البام",
+            "coordinates": {
+                "latitude": 34.2499339,
+                "longitude": -6.5405985
+            }
+        },
+        "line": "8",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-008001",
+            "name": "TERMINUS.PAM     نهاية الخط البام",
+            "coordinates": {
+                "latitude": 34.2499339,
+                "longitude": -6.5405985
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-8-FORWARD",
+        "label": "Ligne 8",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-008027",
+            "name": "TERMINUS BAFRA     نهاية الخط القاعدة الجوية",
+            "coordinates": {
+                "latitude": 34.2755976,
+                "longitude": -6.6110967
+            }
+        },
+        "line": "8",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-009001",
+            "name": "TERMINUS LYCEE MOHAMMED V     نهاية الخط تانوية محمد الخامس",
+            "coordinates": {
+                "latitude": 34.2562538,
+                "longitude": -6.5630235
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-9-FORWARD",
+        "label": "Ligne 9",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-009022",
+            "name": "TERMINUS MEHDIA     نهاية الخط مهدية",
+            "coordinates": {
+                "latitude": 34.2528829,
+                "longitude": -6.6758931
+            }
+        },
+        "line": "9",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-009001",
+            "name": "TERMINUS MEHDIA     نهاية الخط مهدية",
+            "coordinates": {
+                "latitude": 34.2528829,
+                "longitude": -6.6758931
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-9-BACKWARD",
+        "label": "Ligne 9",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-009022",
+            "name": "TERMINUS LYCEE MOHAMMED V     نهاية الخط تانوية محمد الخامس",
+            "coordinates": {
+                "latitude": 34.2562538,
+                "longitude": -6.5630235
+            }
+        },
+        "line": "9",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-010001",
+            "name": "TERMINUS LYCEE MOHAMMED V     نهاية الخط تانوية محمد الخامس",
+            "coordinates": {
+                "latitude": 34.2562538,
+                "longitude": -6.5630235
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-10-FORWARD",
+        "label": "Ligne 10",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-010023",
+            "name": "TERMINUS MEHDIA     نهاية الخط مهدية",
+            "coordinates": {
+                "latitude": 34.2528829,
+                "longitude": -6.6758931
+            }
+        },
+        "line": "10",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-010001",
+            "name": "TERMINUS MEHDIA     نهاية الخط مهدية",
+            "coordinates": {
+                "latitude": 34.2528829,
+                "longitude": -6.6758931
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-10-BACKWARD",
+        "label": "Ligne 10",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-010023",
+            "name": "TERMINUS BIRANZARANE AV RIAD      نهاية الخط تانوية محمد الخامس",
+            "coordinates": {
+                "latitude": 34.261555,
+                "longitude": -6.5633031
+            }
+        },
+        "line": "10",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-011001",
+            "name": "TERMINUS MEHDIA MALL     نهاية الخط المركز التجاري",
+            "coordinates": {
+                "latitude": 34.2473016,
+                "longitude": -6.6551837
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-11-BACKWARD",
+        "label": "Ligne 11",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-011033",
+            "name": "TERMINUS L'HABITAT     نهاية الخط لابيطا",
+            "coordinates": {
+                "latitude": 34.253104,
+                "longitude": -6.546937
+            }
+        },
+        "line": "11",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-011001",
+            "name": "TERMINUS L'HABITAT     نهاية الخط لابيطا",
+            "coordinates": {
+                "latitude": 34.253104,
+                "longitude": -6.546937
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-11-FORWARD",
+        "label": "Ligne 11",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-011033",
+            "name": "TERMINUS MEHDIA MALL     نهاية الخط المركز التجاري",
+            "coordinates": {
+                "latitude": 34.2473016,
+                "longitude": -6.6551837
+            }
+        },
+        "line": "11",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-012001",
+            "name": "TERMINUS MEHDIA MALL     نهاية الخط المركز التجاري",
+            "coordinates": {
+                "latitude": 34.2473016,
+                "longitude": -6.6551837
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-12-BACKWARD",
+        "label": "Ligne 12",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-012031",
+            "name": "TERMINUS BIRANZARANE AV RIAD      نهاية الخط بئر انزران",
+            "coordinates": {
+                "latitude": 34.261555,
+                "longitude": -6.5633031
+            }
+        },
+        "line": "12",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-012001",
+            "name": "TERMINUS BIRANZARANE AV RIAD      نهاية الخط بئر انزران",
+            "coordinates": {
+                "latitude": 34.261555,
+                "longitude": -6.5633031
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-12-FORWARD",
+        "label": "Ligne 12",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-012031",
+            "name": "TERMINUS MEHDIA MALL     نهاية الخط المركز التجاري",
+            "coordinates": {
+                "latitude": 34.2473016,
+                "longitude": -6.6551837
+            }
+        },
+        "line": "12",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-013001",
+            "name": "TERMINUS KASBAT MAHDIA     نهاية الخط قصبة مهدية",
+            "coordinates": {
+                "latitude": 34.2645777,
+                "longitude": -6.6541649
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-13-BACKWARD",
+        "label": "Ligne 13",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-013022",
+            "name": "TERMINUS BIRANZARANE AV RIAD      نهاية الخط بئر انزران",
+            "coordinates": {
+                "latitude": 34.261555,
+                "longitude": -6.5633031
+            }
+        },
+        "line": "13",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-013001",
+            "name": "TERMINUS BIRANZARANE AV RIAD      نهاية الخط بئر انزران",
+            "coordinates": {
+                "latitude": 34.261555,
+                "longitude": -6.5633031
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-13-FORWARD",
+        "label": "Ligne 13",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-013022",
+            "name": "TERMINUS KASBAT MAHDIA     نهاية الخط قصبة مهدية",
+            "coordinates": {
+                "latitude": 34.2645777,
+                "longitude": -6.6541649
+            }
+        },
+        "line": "13",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-014001",
+            "name": "TERMINUS OULAD OUJIH     نهاية الحط أولاد اوجيه",
+            "coordinates": {
+                "latitude": 34.2533529,
+                "longitude": -6.6204103
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-14-BACKWARD",
+        "label": "Ligne 14",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-014024",
+            "name": "UNIVERSITE IBN TOFAIL     نهاية الخط جامعة إبن طفيل",
+            "coordinates": {
+                "latitude": 34.24578897335522,
+                "longitude": -6.59052542007121
+            }
+        },
+        "line": "14",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-014001",
+            "name": "UNIVERSITE IBN TOFAIL     نهاية الخط جامعة إبن طفيل",
+            "coordinates": {
+                "latitude": 34.24578897335522,
+                "longitude": -6.59052542007121
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-14-FORWARD",
+        "label": "Ligne 14",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-014025",
+            "name": "TERMINUS OULAD OUJIH     نهاية الحط أولاد اوجيه",
+            "coordinates": {
+                "latitude": 34.2533529,
+                "longitude": -6.6204103
+            }
+        },
+        "line": "14",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-015001",
+            "name": "TERMINUS MARJANE      نهاية الخط مرجان",
+            "coordinates": {
+                "latitude": 34.2401644,
+                "longitude": -6.5715084
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-15-BACKWARD",
+        "label": "Ligne 15",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-015020",
+            "name": "TERMINUS BASSATINE HAJ MANSOUR     نهاية الخط بساتين الحاج منصور",
+            "coordinates": {
+                "latitude": 34.2546085,
+                "longitude": -6.5223652
+            }
+        },
+        "line": "15",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-015001",
+            "name": "TERMINUS BASSATINE HAJ MANSOUR     نهاية الخط بساتين الحاج منصور",
+            "coordinates": {
+                "latitude": 34.2546085,
+                "longitude": -6.5223652
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-15-FORWARD",
+        "label": "Ligne 15",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-015020",
+            "name": "TERMINUS MARJANE      نهاية الخط مرجان",
+            "coordinates": {
+                "latitude": 34.2401644,
+                "longitude": -6.5715084
+            }
+        },
+        "line": "15",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-016001",
+            "name": "TERMINUS OULAD OUJIH     نهاية الخط أولاد اجيه",
+            "coordinates": {
+                "latitude": 34.2533529,
+                "longitude": -6.6204103
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-16-BACKWARD",
+        "label": "Ligne 16",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-016030",
+            "name": "TERMINUS BASSATINE HAJ MANSOUR     نهايةالخط البساتين الحاج منصور",
+            "coordinates": {
+                "latitude": 34.2546085,
+                "longitude": -6.5223652
+            }
+        },
+        "line": "16",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-016001",
+            "name": "TERMINUS BASSATINE HAJ MANSOUR     نهايةالخط البساتين الحاج منصور",
+            "coordinates": {
+                "latitude": 34.2546085,
+                "longitude": -6.5223652
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-16-FORWARD",
+        "label": "Ligne 16",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-016030",
+            "name": "TERMINUS OULAD OUJIH     نهاية الخط أولاد اجيه",
+            "coordinates": {
+                "latitude": 34.2533529,
+                "longitude": -6.6204103
+            }
+        },
+        "line": "16",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-017001",
+            "name": "UNIVERSITE IBN TOFAIL     نهاية الخط جامعة ابن طفيل",
+            "coordinates": {
+                "latitude": 34.24578897335522,
+                "longitude": -6.59052542007121
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-17-FORWARD",
+        "label": "Ligne 17",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-017020",
+            "name": "LAABABDA     نهاية الخط لعبابدة",
+            "coordinates": {
+                "latitude": 34.3110789,
+                "longitude": -6.5124622
+            }
+        },
+        "line": "17",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-017001",
+            "name": "LAABABDA     نهاية الخط لعبابدة",
+            "coordinates": {
+                "latitude": 34.3110789,
+                "longitude": -6.5124622
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-17-BACKWARD",
+        "label": "Ligne 17",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-017021",
+            "name": "UNIVERSITE IBN TOFAIL     نهاية الخط جامعة ابن طفيل",
+            "coordinates": {
+                "latitude": 34.24578897335522,
+                "longitude": -6.59052542007121
+            }
+        },
+        "line": "17",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-030001",
+            "name": "BIRANZARANE AV RIAD      بئر آ نزران شارع الرياض",
+            "coordinates": {
+                "latitude": 34.2610395,
+                "longitude": -6.5638927
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-18-FORWARD",
+        "label": "Ligne 30",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-030030",
+            "name": "TERMINUS OULED SBITA     نهاية الخط آولاد السبيطة",
+            "coordinates": {
+                "latitude": 34.1629399,
+                "longitude": -6.7045869
+            }
+        },
+        "line": "30",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-030001",
+            "name": "TERMINUS OULED SBITA     نهاية الخط آولاد السبيطة",
+            "coordinates": {
+                "latitude": 34.1629399,
+                "longitude": -6.7045869
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-18-BACKWARD",
+        "label": "Ligne 30",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-030030",
+            "name": "BIRANZARANE AV RIAD      بئر آ نزران شارع الرياض",
+            "coordinates": {
+                "latitude": 34.2615297,
+                "longitude": -6.5632673
+            }
+        },
+        "line": "30",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-031001",
+            "name": "BIRANZARANE AV PALESTINE      نهاية الخط بئر آ نزران شارع فلسطين",
+            "coordinates": {
+                "latitude": 34.2609595,
+                "longitude": -6.5636521
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-19-FORWARD",
+        "label": "Ligne 31",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-031035",
+            "name": "TERMINUS OULED SBITA     نهاية الخط آولاد السبيطة",
+            "coordinates": {
+                "latitude": 34.1629399,
+                "longitude": -6.7045869
+            }
+        },
+        "line": "31",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-031001",
+            "name": "TERMINUS OULED SBITA     نهاية الخط آولاد السبيطة",
+            "coordinates": {
+                "latitude": 34.1629399,
+                "longitude": -6.7045869
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-19-BACKWARD",
+        "label": "Ligne 31",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-031035",
+            "name": "BIRANZARANE AV PALESTINE      نهاية الخط بئر آ نزران شارع فلسطين",
+            "coordinates": {
+                "latitude": 34.2614715,
+                "longitude": -6.5632861
+            }
+        },
+        "line": "31",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-032001",
+            "name": "UNIVERSITE IBN TOFAIL     نهاية الخط جامعة إبن طفيل",
+            "coordinates": {
+                "latitude": 34.2449814,
+                "longitude": -6.5909984
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-20-FORWARD",
+        "label": "Ligne 32",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-032034",
+            "name": "TERMINUS OULED BOURAHMA     نهاية الخط أولاد بورحمة",
+            "coordinates": {
+                "latitude": 34.3427315285991,
+                "longitude": -6.38416931773343
+            }
+        },
+        "line": "32",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-032001",
+            "name": "TERMINUS OULED BOURAHMA     نهاية الخط أولاد بورحمة",
+            "coordinates": {
+                "latitude": 34.3427315285991,
+                "longitude": -6.38416931773343
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-20-BACKWARD",
+        "label": "Ligne 32",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-032035",
+            "name": "UNIVERSITE IBN TOFAIL     نهاية الخط جامعة إبن طفيل",
+            "coordinates": {
+                "latitude": 34.2449814,
+                "longitude": -6.5909984
+            }
+        },
+        "line": "32",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-033001",
+            "name": "TERMINUS SIDI ALLAL TAZI     نهاية الخط سيدي علال التازي",
+            "coordinates": {
+                "latitude": 34.5226265,
+                "longitude": -6.3207345
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-21-BACKWARD",
+        "label": "Ligne 33",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-033042",
+            "name": "UNIVERSITE IBN TOFAIL     نهاية الخط جامعة إبن طفيل",
+            "coordinates": {
+                "latitude": 34.24578897335522,
+                "longitude": -6.59052542007121
+            }
+        },
+        "line": "33",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-033001",
+            "name": "UNIVERSITE IBN TOFAIL     نهاية الخط جامعة إبن طفيل",
+            "coordinates": {
+                "latitude": 34.24578897335522,
+                "longitude": -6.59052542007121
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-21-FORWARD",
+        "label": "Ligne 33",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-033042",
+            "name": "TERMINUS SIDI ALLAL TAZI     نهاية الخط سيدي علال التازي",
+            "coordinates": {
+                "latitude": 34.5226265,
+                "longitude": -6.3207345
+            }
+        },
+        "line": "33",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "FORWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-034001",
+            "name": "UNIVERSITE IBN TOFAIL     نهاية الخط جامعة إبن طفيل",
+            "coordinates": {
+                "latitude": 34.24578897335522,
+                "longitude": -6.59052542007121
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-22-FORWARD",
+        "label": "Ligne 34",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-FORWARD-034051",
+            "name": "TERMINUS HAD OULAD  JELLOUL     نهاية الخط حد آولاد جلول",
+            "coordinates": {
+                "latitude": 34.5376148,
+                "longitude": -6.3656292
+            }
+        },
+        "line": "34",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    },
+    {
+        "city": "KENITRA",
+        "company": "FOUGHALBUS-KENITRA",
+        "direction": "BACKWARD",
+        "enabled": true,
+        "firstStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-034001",
+            "name": "TERMINUS HAD OULAD  JELLOUL     نهاية الخط حد آولاد جلول",
+            "coordinates": {
+                "latitude": 34.5376148,
+                "longitude": -6.3656292
+            }
+        },
+        "id": "FOUGHALBUS-KENITRA-22-BACKWARD",
+        "label": "Ligne 34",
+        "lastStop": {
+            "id": "FOUGHALBUS-KENITRA-BACKWARD-034052",
+            "name": "UNIVERSITE IBN TOFAIL     نهاية الخط جامعة إبن طفيل",
+            "coordinates": {
+                "latitude": 34.24578897335522,
+                "longitude": -6.59052542007121
+            }
+        },
+        "line": "34",
+        "ticketPrice": null,
+        "type": "BUS",
+        "zones": []
+    }
+]
