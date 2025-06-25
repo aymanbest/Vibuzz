@@ -206,7 +206,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-blue-50">
+    <div className="min-h-screen w-full bg-gradient-to-br from-slate-50 to-blue-50/30">
       {/* Floating Header */}
       <FloatingHeader
         currentStep={currentStep}
@@ -220,7 +220,7 @@ function App() {
       />
 
       {/* Main Content */}
-      <div className={`${currentStep === 3 ? 'pt-0' : 'pt-24'} min-h-screen`}>
+      <div className={`${currentStep === 3 ? 'pt-0' : isMobile ? 'pt-20' : 'pt-24'} min-h-screen`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
@@ -239,7 +239,7 @@ function App() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="fixed bottom-6 right-6 bg-red-500 text-white p-4 rounded-2xl shadow-lg max-w-sm z-50"
+          className="fixed bottom-6 right-6 bg-red-500/90 backdrop-blur text-white p-4 rounded-2xl shadow-xl max-w-sm z-50 border border-red-400/20"
         >
           <h4 className="font-semibold mb-2">Connection Error</h4>
           <p className="text-sm text-red-100">{errors[0]}</p>

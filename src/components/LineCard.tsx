@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  IconBus, 
+  IconMapPin, 
   IconArrowRight, 
-  IconArrowLeft,
-  IconCoin,
-  IconCheck
+  IconClock,
+  IconRoute,
+  IconChevronRight
 } from '@tabler/icons-react';
 import type { BusLine } from '../types';
 
@@ -16,153 +16,153 @@ interface LineCardProps {
   showDirection?: boolean;
 }
 
-const LineCard: React.FC<LineCardProps> = ({ 
-  line, 
-  isSelected, 
+const LineCard: React.FC<LineCardProps> = ({
+  line,
+  isSelected,
   onSelect,
-  showDirection = true 
+  showDirection = false
 }) => {
-  const directionConfig = {
-    FORWARD: {
-      icon: <IconArrowRight size={20} />,
-      label: 'Forward',
-      gradient: 'from-green-500 to-emerald-600',
-      bgColor: 'bg-green-100',
-      textColor: 'text-green-700'
-    },
-    BACKWARD: {
-      icon: <IconArrowLeft size={20} />,
-      label: 'Backward', 
-      gradient: 'from-orange-500 to-red-600',
-      bgColor: 'bg-orange-100',
-      textColor: 'text-orange-700'
+  const getDirectionIcon = () => {
+    switch (line.direction) {
+      case 'FORWARD':
+        return <IconArrowRight size={16} className="text-emerald-500" />;
+      case 'BACKWARD':
+        return <IconArrowRight size={16} className="text-orange-500 rotate-180" />;
+      default:
+        return <IconRoute size={16} className="text-blue-500" />;
     }
   };
 
-  const config = directionConfig[line.direction];
+  const getDirectionColor = () => {
+    switch (line.direction) {
+      case 'FORWARD':
+        return 'from-emerald-500 to-teal-600';
+      case 'BACKWARD':
+        return 'from-orange-500 to-red-600';
+      default:
+        return 'from-blue-500 to-indigo-600';
+    }
+  };
 
   return (
     <motion.div
-      whileHover={{ scale: 1.02 }}
+      whileHover={{ scale: 1.02, y: -2 }}
       whileTap={{ scale: 0.98 }}
       onClick={() => onSelect(line.id)}
       className={`
-        relative cursor-pointer transition-all duration-300
+        relative cursor-pointer rounded-2xl border-2 transition-all duration-300 overflow-hidden
         ${isSelected 
-          ? `bg-gradient-to-br ${config.gradient} text-white shadow-2xl transform scale-105` 
-          : 'bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-indigo-300 hover:shadow-lg'
+          ? `bg-gradient-to-br ${getDirectionColor()} text-white shadow-xl border-transparent` 
+          : 'bg-white hover:bg-gray-50 border-gray-200 hover:border-gray-300 shadow-md hover:shadow-lg'
         }
-        rounded-2xl p-6 shadow-md
-        overflow-hidden
       `}
     >
-      {/* Selection indicator */}
+      {/* Selection Indicator */}
       {isSelected && (
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className="absolute top-4 right-4 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg"
+          transition={{ duration: 0.2 }}
+          className="absolute top-3 right-3 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-lg"
         >
-          <IconCheck size={16} className="text-indigo-600" />
+          <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
         </motion.div>
       )}
 
-      {/* Line number badge */}
-      <div className={`
-        absolute -top-3 -left-3 w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold shadow-lg
-        ${isSelected ? 'bg-white text-indigo-600' : `bg-gradient-to-br ${config.gradient} text-white`}
-      `}>
-        {line.line}
-      </div>
-
-      {/* Content */}
-      <div className="space-y-4 mt-4">
-        {/* Title */}
-        <div>
-          <h3 className={`
-            text-lg font-bold mb-2
-            ${isSelected ? 'text-white' : 'text-gray-800'}
-          `}>
-            {line.label}
-          </h3>
-          
-          {showDirection && (
-            <div className={`
-              inline-flex items-center px-3 py-1.5 rounded-xl text-sm font-medium space-x-2
-              ${isSelected 
-                ? 'bg-white/20 text-white backdrop-blur-sm' 
-                : `${config.bgColor} ${config.textColor}`
-              }
-            `}>
-              {config.icon}
-              <span>{config.label}</span>
+      <div className="p-4">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center space-x-2">
+            {showDirection && (
+              <div className="flex items-center">
+                {getDirectionIcon()}
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <h4 className={`font-semibold text-sm truncate ${
+                isSelected ? 'text-white' : 'text-gray-800'
+              }`}>
+                {line.label}
+              </h4>
+              {showDirection && (
+                <span className={`text-xs font-medium ${
+                  isSelected ? 'text-white/80' : 'text-gray-500'
+                }`}>
+                  {line.direction === 'FORWARD' ? 'Forward' : 'Backward'}
+                </span>
+              )}
             </div>
-          )}
+          </div>
+          
+          <IconChevronRight 
+            size={16} 
+            className={`${isSelected ? 'text-white/60' : 'text-gray-400'} transition-transform duration-200`}
+          />
         </div>
 
         {/* Route Info */}
         {line.firstStop && line.lastStop && (
-          <div className={`
-            space-y-3 text-sm
-            ${isSelected ? 'text-white/90' : 'text-gray-600'}
-          `}>
-            <div className="flex items-start space-x-3">
-              <div className={`
-                w-3 h-3 rounded-full mt-1 flex-shrink-0
-                ${isSelected ? 'bg-white/60' : 'bg-green-400'}
-              `} />
-              <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">{line.firstStop.name}</p>
-                <p className={`text-xs ${isSelected ? 'text-white/70' : 'text-gray-500'}`}>
-                  Starting point
-                </p>
-              </div>
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <div className={`w-2 h-2 rounded-full ${
+                isSelected ? 'bg-white/60' : 'bg-emerald-400'
+              }`} />
+              <span className={`text-xs truncate ${
+                isSelected ? 'text-white/90' : 'text-gray-600'
+              }`}>
+                {line.firstStop.name}
+              </span>
             </div>
             
-            <div className="flex items-center justify-center">
-              <div className={`
-                w-0.5 h-8 rounded-full
-                ${isSelected ? 'bg-white/40' : 'bg-gray-300'}
-              `} />
+            <div className="flex items-center space-x-2 ml-1">
+              <div className={`w-0.5 h-4 rounded-full ${
+                isSelected ? 'bg-white/40' : 'bg-gray-300'
+              }`} />
             </div>
             
-            <div className="flex items-start space-x-3">
-              <div className={`
-                w-3 h-3 rounded-full mt-1 flex-shrink-0
-                ${isSelected ? 'bg-white/60' : 'bg-red-400'}
-              `} />
-              <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">{line.lastStop.name}</p>
-                <p className={`text-xs ${isSelected ? 'text-white/70' : 'text-gray-500'}`}>
-                  Final destination
-                </p>
-              </div>
+            <div className="flex items-center space-x-2">
+              <div className={`w-2 h-2 rounded-full ${
+                isSelected ? 'bg-white/60' : 'bg-red-400'
+              }`} />
+              <span className={`text-xs truncate ${
+                isSelected ? 'text-white/90' : 'text-gray-600'
+              }`}>
+                {line.lastStop.name}
+              </span>
             </div>
           </div>
         )}
 
-        {/* Additional Info */}
-        <div className={`
-          flex items-center justify-between text-xs pt-4 border-t
-          ${isSelected ? 'text-white/75 border-white/20' : 'text-gray-500 border-gray-200'}
-        `}>
-          <span className="flex items-center space-x-1">
-            <IconCoin size={14} />
-            <span>{line.ticketPrice ? `${line.ticketPrice} MAD` : 'Free'}</span>
-          </span>
-          <span className="flex items-center space-x-1">
-            <IconBus size={14} />
-            <span>{line.type}</span>
-          </span>
+        {/* Footer */}
+        <div className="mt-3 pt-3 border-t border-gray-200/50 flex items-center justify-between">
+          <div className="flex items-center space-x-3 text-xs">
+            <div className="flex items-center space-x-1">
+              <IconMapPin size={12} />
+              <span className={`${isSelected ? 'text-white/80' : 'text-gray-500'}`}>
+                Live
+              </span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <IconClock size={12} />
+              <span className={`${isSelected ? 'text-white/80' : 'text-gray-500'}`}>
+                Real-time
+              </span>
+            </div>
+          </div>
+          
+          {line.company && (
+            <span className={`text-xs font-medium ${
+              isSelected ? 'text-white/70' : 'text-gray-400'
+            }`}>
+              {line.company}
+            </span>
+          )}
         </div>
       </div>
 
-      {/* Decorative background pattern */}
-      {isSelected && (
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full translate-y-12 -translate-x-12" />
-        </div>
+      {/* Gradient Overlay for unselected cards */}
+      {!isSelected && (
+        <div className="absolute inset-0 opacity-0 hover:opacity-5 bg-gradient-to-br from-indigo-500 to-blue-600 transition-opacity duration-300 pointer-events-none" />
       )}
     </motion.div>
   );
