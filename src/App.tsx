@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FloatingHeader from './components/FloatingHeader';
 import LineSelector from './components/LineSelector';
@@ -7,30 +7,69 @@ import BusTrackingView from './components/BusTrackingView';
 import { useUserLocation } from './hooks/useLocation';
 import { useBusLines, useBusStops, useBusPositions } from './hooks/useApi';
 import { findClosestBusStop } from './utils';
-import type { BusLine, BusPosition } from './types';
+import type { BusLine, BusPosition, BusStopResponse } from './types';
 import './App.css';
 
+// Custom hook to fetch bus stops for both directions
+function useBusStopsForBothDirections(forwardLineId: string | null, backwardLineId: string | null) {
+  const [forwardStops, setForwardStops] = useState<BusStopResponse | null>(null);
+  const [backwardStops, setBackwardStops] = useState<BusStopResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchStops = async () => {
+      if (!forwardLineId && !backwardLineId) {
+        setForwardStops(null);
+        setBackwardStops(null);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const promises = [];
+        
+        if (forwardLineId) {
+          promises.push(
+            fetch(`https://BaseURL.com/routes/paths/${forwardLineId}`)
+              .then(res => res.json())
+              .catch(() => null)
+          );
+        } else {
+          promises.push(Promise.resolve(null));
+        }
+
+        if (backwardLineId) {
+          promises.push(
+            fetch(`https://BaseURL.com/routes/paths/${backwardLineId}`)
+              .then(res => res.json())
+              .catch(() => null)
+          );
+        } else {
+          promises.push(Promise.resolve(null));
+        }
+
+        const [forwardData, backwardData] = await Promise.all(promises);
+        
+        setForwardStops(forwardData);
+        setBackwardStops(backwardData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStops();
+  }, [forwardLineId, backwardLineId]);
+
+  return { forwardStops, backwardStops, loading, error };
+}
+
 // Define the steps for the user flow
-const STEPS = [
-  {
-    id: 1,
-    title: 'Choose Bus Line',
-    description: 'Select your preferred bus route',
-    icon: '🚌'
-  },
-  {
-    id: 2, 
-    title: 'Select Direction',
-    description: 'Choose forward or backward route',
-    icon: '🧭'
-  },
-  {
-    id: 3,
-    title: 'Track Buses',
-    description: 'View real-time bus locations',
-    icon: '📍'
-  }
-];
 
 function App() {
   // Step management
@@ -41,9 +80,31 @@ function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
   // API hooks
-  const { location: userLocation, loading: locationLoading, error: locationError } = useUserLocation();
+  const { location: userLocation, loading: locationLoading, error: locationError, refreshLocation } = useUserLocation();
   const { data: busLines, loading: linesLoading, error: linesError } = useBusLines('KENITRA');
-  const { data: busStopsData, loading: stopsLoading, error: stopsError } = useBusStops(selectedLineId);
+  
+  // Group lines by line number for direction selection
+  const linesByNumber = useMemo(() => {
+    return busLines.reduce((acc, line) => {
+      const key = line.line;
+      if (!acc[key]) acc[key] = { forward: null, backward: null };
+      if (line.direction === 'FORWARD') acc[key].forward = line;
+      if (line.direction === 'BACKWARD') acc[key].backward = line;
+      return acc;
+    }, {} as Record<string, { forward: BusLine | null; backward: BusLine | null }>);
+  }, [busLines]);
+
+  // Get available directions for selected line number
+  const availableDirections = selectedLineNumber ? linesByNumber[selectedLineNumber] : null;
+  
+  // Fetch stops for both directions when line number is selected
+  const { forwardStops, backwardStops, loading: stopsLoading, error: stopsError } = useBusStopsForBothDirections(
+    availableDirections?.forward?.id || null,
+    availableDirections?.backward?.id || null
+  );
+
+  // Get bus stops data for the selected direction
+  const { data: busStopsData, loading: currentStopsLoading, error: currentStopsError } = useBusStops(selectedLineId);
   
   // Extract bus info from selected line
   const selectedLine = useMemo(() => {
@@ -62,20 +123,6 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  // Group lines by line number for direction selection
-  const linesByNumber = useMemo(() => {
-    return busLines.reduce((acc, line) => {
-      const key = line.line;
-      if (!acc[key]) acc[key] = { forward: null, backward: null };
-      if (line.direction === 'FORWARD') acc[key].forward = line;
-      if (line.direction === 'BACKWARD') acc[key].backward = line;
-      return acc;
-    }, {} as Record<string, { forward: BusLine | null; backward: BusLine | null }>);
-  }, [busLines]);
-
-  // Get available directions for selected line number
-  const availableDirections = selectedLineNumber ? linesByNumber[selectedLineNumber] : null;
 
   // Extract bus stops and route path
   const busStops = busStopsData?.stops || [];
@@ -112,8 +159,8 @@ function App() {
     return findClosestBusStop(userLocation, busStops);
   }, [userLocation, busStops]);
 
-  const isLoading = locationLoading || linesLoading || stopsLoading || positionsLoading;
-  const errors = [locationError, linesError, stopsError, positionsError].filter(Boolean);
+  const isLoading = locationLoading || linesLoading || stopsLoading || currentStopsLoading || positionsLoading;
+  const errors = [locationError, linesError, stopsError, currentStopsError, positionsError].filter(Boolean);
   const hasError = errors.length > 0;
 
   // Step handlers
@@ -150,8 +197,8 @@ function App() {
   };
 
   const handleLocationClick = () => {
-    // This will trigger the location hook to get user location
-    // The map component will handle the actual map display
+    // Manually refresh location
+    refreshLocation();
   };
 
   // Determine which view to show
@@ -176,6 +223,9 @@ function App() {
             backwardLine={availableDirections.backward}
             selectedDirection={selectedDirection}
             onDirectionSelect={handleDirectionSelect}
+            forwardStops={forwardStops?.stops || []}
+            backwardStops={backwardStops?.stops || []}
+            userLocation={userLocation}
           />
         );
       

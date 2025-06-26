@@ -9,7 +9,9 @@ import {
   IconMap,
   IconLocation,
   IconChevronLeft,
-  IconClock
+  IconClock,
+  IconRefresh,
+  IconGps
 } from '@tabler/icons-react';
 import type { BusLine, BusStop, BusPosition, UserLocation } from '../types';
 import MapComponent from './MapComponent';
@@ -328,12 +330,70 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
                   onStopSelect={handleStopSelect}
                 />
                 
+                {/* Automatic Bus Info Panel - Always visible */}
+                <div className="absolute top-4 left-4 right-4">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-3 border border-gray-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="font-medium text-gray-900 flex items-center">
+                        <IconBus size={16} className="mr-2 text-primary-600" />
+                        Live Bus Tracking
+                      </h3>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
+                          {busPositions.length} active
+                        </span>
+                        <button
+                          onClick={handleRefreshLocation}
+                          className="p-1 rounded-full hover:bg-gray-100"
+                          disabled={isLoading}
+                        >
+                          <IconRefresh size={14} className={`${isLoading ? 'animate-spin text-gray-400' : 'text-primary-600'}`} />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Bus positions info */}
+                    {busPositions.length > 0 && (
+                      <div className="space-y-2">
+                        {busPositions.slice(0, 2).map((bus, index) => (
+                          <div key={`${bus.trackerId}-${index}`} className="flex items-center justify-between bg-blue-50 rounded-md p-2">
+                            <div className="flex items-center">
+                              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-2">
+                                <span className="text-white text-xs font-bold">{bus.number}</span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium text-gray-800">Bus #{bus.number}</div>
+                                <div className="text-xs text-gray-500">{bus.speed} km/h • {bus.bearing}°</div>
+                              </div>
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {new Date(bus.date).toLocaleTimeString()}
+                            </div>
+                          </div>
+                        ))}
+                        {busPositions.length > 2 && (
+                          <div className="text-xs text-center text-gray-500">
+                            +{busPositions.length - 2} more buses available
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    
+                    {busPositions.length === 0 && (
+                      <div className="text-center py-2">
+                        <div className="text-sm text-gray-500">No active buses found</div>
+                        <div className="text-xs text-gray-400">Refresh to check for updates</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
                 {/* Floating quick info panel */}
                 <div className="absolute bottom-20 left-4 right-4">
                   <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-3 border border-gray-200">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-medium text-gray-900">Quick Info</h3>
-                      <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full">{busPositions.length} buses</span>
+                      <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full">{busStops.length} stops</span>
                     </div>
                     
                     {closestStop && (
@@ -362,13 +422,21 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
                   </div>
                 </div>
                 
-                {/* Floating action buttons */}
+                {/* Enhanced Floating action buttons */}
                 <div className="absolute bottom-6 right-4 flex flex-col space-y-2">
                   <button 
                     onClick={handleRefreshLocation} 
-                    className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center border border-gray-200"
+                    className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center border border-gray-200 hover:bg-gray-50"
+                    disabled={isLoading}
                   >
-                    <IconCurrentLocation size={24} className="text-primary-600" />
+                    <IconGps size={20} className={`${isLoading ? 'text-gray-400' : 'text-blue-600'}`} />
+                  </button>
+                  <button 
+                    onClick={handleRefreshLocation} 
+                    className="w-12 h-12 rounded-full bg-primary-600 shadow-lg flex items-center justify-center border border-primary-700 hover:bg-primary-700"
+                    disabled={isLoading}
+                  >
+                    <IconRefresh size={20} className={`text-white ${isLoading ? 'animate-spin' : ''}`} />
                   </button>
                 </div>
               </motion.div>

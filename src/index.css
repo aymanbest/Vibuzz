@@ -38,6 +38,140 @@
   animation: marker-pulse 2s infinite;
 }
 
+/* Line Card Styles */
+.line-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 300ms;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: white;
+  border: 1px solid #f3f4f6;
+}
+
+.line-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-color: var(--primary-100);
+  transform: translateY(-2px);
+}
+
+.line-card.selected {
+  background-color: var(--primary-50);
+  border-color: var(--primary-200);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Line type pills */
+.line-type-pill {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.line-type-frequent {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.line-type-urban {
+  background-color: #dbeafe;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.line-type-night {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+  border: 1px solid #e9d5ff;
+}
+
+/* Sticky header */
+.sticky-search {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background-color: white;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+/* Line number badges */
+.line-number {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.line-number-forward {
+  background-image: linear-gradient(to bottom right, #22c55e, #16a34a);
+}
+
+.line-number-backward {
+  background-image: linear-gradient(to bottom right, #f97316, #ea580c);
+}
+
+/* Scrollbar styling */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 9999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom transitions */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Section styles */
+.section-header {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
 /* Global CSS Variables */
 :root {
   /* Primary colors */

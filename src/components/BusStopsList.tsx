@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { IconMapPin, IconRoute, IconClockHour3, IconArrowRight } from '@tabler/icons-react';
+import { IconMapPin, IconRoute, IconClockHour3, IconArrowNarrowRight } from '@tabler/icons-react';
 import type { BusStop, UserLocation } from '../types';
 import { calculateDistance, formatDistance, formatTime } from '../utils';
 
@@ -133,7 +133,7 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
                     <span className="text-sm font-medium text-gray-700">{formatDistance(distance)}</span>
                     <div className="flex items-center justify-end mt-0.5 text-primary-600">
                       <span className="text-xs">View</span>
-                      <IconArrowRight size={12} className="ml-0.5" />
+                      <IconArrowNarrowRight size={12} className="ml-0.5" />
                     </div>
                   </div>
                 )}

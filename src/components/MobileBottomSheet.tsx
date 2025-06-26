@@ -9,7 +9,7 @@ import {
   IconChevronUp,
   IconCircleDotFilled,
   IconCircleDot,
-  IconArrowRight,
+  IconArrowNarrowRight,
   IconArrowBarToDown
 } from '@tabler/icons-react';
 import type { BusStop, BusPosition, UserLocation, BusLine } from '../types';

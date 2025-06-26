@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   IconMapPin, 
-  IconArrowRight, 
+  IconArrowNarrowRight, 
   IconClock,
   IconRoute,
   IconChevronRight,
@@ -139,7 +139,7 @@ const LineCard: React.FC<LineCardProps> = ({
                 <span className={`text-sm inline-flex items-center ${
                   line.direction === 'FORWARD' ? 'text-green-700' : 'text-orange-700'
                 }`}>
-                  <IconArrowRight 
+                  <IconArrowNarrowRight 
                     size={14} 
                     className={`mr-1 ${line.direction === 'BACKWARD' ? 'rotate-180' : ''}`} 
                   />
