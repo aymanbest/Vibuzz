@@ -1,8 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  IconCircleDot,
-  IconCircleDotFilled,
   IconChevronRight
 } from '@tabler/icons-react';
 import type { BusLine } from '../types';
@@ -65,9 +63,9 @@ const CompactLineCard: React.FC<CompactLineCardProps> = ({
           </div>
           
           <div className="mt-0.5 text-xs text-gray-500 flex items-center">
-            <span className="truncate max-w-[80px]">{line.firstStop?.name || 'N/A'}</span>
+            <span className="flex-grow">{line.firstStop?.name || 'N/A'}</span>
             <span className="mx-1 text-gray-400">•</span>
-            <span className="truncate max-w-[80px]">{line.lastStop?.name || 'N/A'}</span>
+            <span className="flex-grow">{line.lastStop?.name || 'N/A'}</span>
           </div>
         </div>
 

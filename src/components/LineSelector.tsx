@@ -3,20 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   IconSearch, 
   IconBus, 
-  IconRoute,
-  IconMapPin,
-  IconClock,
-  IconTrendingUp,
-  IconFilter,
-  IconArrowRight,
-  IconStarFilled,
-  IconGridDots,
-  IconList,
-  IconCircleDot
+  IconStarFilled
 } from '@tabler/icons-react';
 import type { BusLine } from '../types';
-import LineCard from './LineCard';
-import CompactLineCard from './CompactLineCard';
 
 interface LineSelectorProps {
   lines: BusLine[];
@@ -27,8 +16,7 @@ interface LineSelectorProps {
   title?: string;
 }
 
-type ViewMode = 'compact' | 'grid' | 'list';
-type FilterTab = 'all' | 'frequent' | 'urban' | 'regional';
+type FilterTab = 'all' | 'frequent' | 'urban';
 
 const LineSelector: React.FC<LineSelectorProps> = ({
   lines,
@@ -39,7 +27,6 @@ const LineSelector: React.FC<LineSelectorProps> = ({
   title = "Select Bus Line"
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState<ViewMode>('compact');
   const [activeTab, setActiveTab] = useState<FilterTab>('all');
   
   // Group lines by line number for better organization
@@ -81,9 +68,7 @@ const LineSelector: React.FC<LineSelectorProps> = ({
       if (activeTab === 'frequent') {
         filtered = filtered.filter(([_, lines]) => parseInt(lines[0].line) < 30);
       } else if (activeTab === 'urban') {
-        filtered = filtered.filter(([_, lines]) => parseInt(lines[0].line) >= 30 && parseInt(lines[0].line) < 70);
-      } else if (activeTab === 'regional') {
-        filtered = filtered.filter(([_, lines]) => parseInt(lines[0].line) >= 70);
+        filtered = filtered.filter(([_, lines]) => parseInt(lines[0].line) >= 30);
       }
     }
     
@@ -157,7 +142,6 @@ const LineSelector: React.FC<LineSelectorProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-                <p className="text-gray-500 text-sm">Choose from {lines.length} available routes</p>
               </div>
               
               <div className="flex items-center space-x-2 mt-3 sm:mt-0">
@@ -171,20 +155,6 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                     className="pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 shadow-sm"
                   />
                 </div>
-                
-                <button 
-                  className={`p-2 rounded-lg hover:text-gray-800 border transition-colors
-                    ${viewMode === 'compact'
-                      ? 'text-gray-700 bg-gray-100 border-gray-300' 
-                      : 'text-gray-600 hover:bg-gray-100 border-gray-300'
-                    }`}
-                  onClick={() => setViewMode(viewMode === 'compact' ? 'grid' : 'compact')}
-                >
-                  {viewMode === 'compact'
-                    ? <IconList size={20} /> 
-                    : <IconGridDots size={20} />
-                  }
-                </button>
               </div>
             </div>
             
@@ -222,16 +192,6 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                 >
                   Urban
                 </button>
-                <button 
-                  onClick={() => setActiveTab('regional')}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all
-                    ${activeTab === 'regional' 
-                      ? 'bg-primary-100 text-primary-700' 
-                      : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                >
-                  Regional
-                </button>
               </div>
             </div>
           </div>
@@ -258,14 +218,14 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                   <p className="text-gray-500">Try a different search term or filter</p>
                 </div>
               </motion.div>
-            ) : viewMode === 'compact' ? (
+            ) : (
               <motion.div 
                 key="compact-view"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                   {filteredGroups.map(([number, groupLines]) => (
                     <div key={number} className="col-span-1">
                       <motion.div 
@@ -284,9 +244,6 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                                   : 'bg-gradient-to-br from-orange-500 to-orange-600'
                                 }
                               `}>{number}</span>
-                              <span className="text-xs ml-1.5 bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full">
-                                {groupLines.length}
-                              </span>
                             </div>
                             
                             {groupLines.some(line => line.id === selectedLineId) && (
@@ -305,7 +262,7 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                                 {groupLines[0].label || `Line ${number}`}
                               </div>
                             )}
-                            {groupLines.map((line, idx) => (
+                            {groupLines.map((line) => (
                               <div 
                                 key={line.id} 
                                 onClick={() => onLineSelect(line.id)}
@@ -319,53 +276,15 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                                 <span className={`w-1.5 h-1.5 rounded-full mr-1 
                                   ${line.direction === 'FORWARD' ? 'bg-green-500' : 'bg-orange-500'}`
                                 }></span>
-                                <span className="truncate flex-1">
+                                <div className="flex-1">
                                   {line.direction === 'FORWARD' ? 'To ' : 'From '}
                                   {(line.direction === 'FORWARD' ? line.lastStop?.name : line.firstStop?.name) || 'N/A'}
-                                </span>
+                                </div>
                               </div>
                             ))}
                           </div>
                         </div>
                       </motion.div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div 
-                key="grid-view"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {filteredGroups.map(([number, groupLines]) => (
-                    <div key={number} className="col-span-1">
-                      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div className="p-4 border-b border-gray-100">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                              <span className="w-10 h-10 rounded-lg bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-lg mr-3">{number}</span>
-                              <h3 className="font-semibold text-gray-800">Line {number}</h3>
-                            </div>
-                            <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{groupLines.length} routes</span>
-                          </div>
-                        </div>
-                        
-                        <div className="divide-y divide-gray-100">
-                          {groupLines.map(line => (
-                            <LineCard
-                              key={line.id}
-                              line={line}
-                              isSelected={selectedLineId === line.id}
-                              onSelect={onLineSelect}
-                              showDirection
-                              compact
-                            />
-                          ))}
-                        </div>
-                      </div>
                     </div>
                   ))}
                 </div>
