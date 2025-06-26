@@ -128,6 +128,11 @@ function App() {
   const handleDirectionSelect = (direction: 'FORWARD' | 'BACKWARD', line: BusLine) => {
     setSelectedDirection(direction);
     setSelectedLineId(line.id);
+    
+    // Store the line ID in session storage to persist between refreshes
+    window.sessionStorage.setItem('selectedLineId', line.id);
+    window.sessionStorage.setItem('selectedDirection', direction);
+    
     setCurrentStep(3);
   };
 

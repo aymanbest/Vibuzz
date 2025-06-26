@@ -39,16 +39,33 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
 }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
   // Default to map view for better UX
-const [view, setView] = useState<'stops' | 'map'>('map');
+  const [view, setView] = useState<'stops' | 'map'>('map');
+  // Track which stop is selected for highlighting on the map
+  const [selectedStop, setSelectedStop] = useState<BusStop | null>(null);
   
+  // Handle resize events
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 1024);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+  
+  // Check for selected stop ID in session storage
+  useEffect(() => {
+    const selectedStopId = window.sessionStorage.getItem('selectedStopId');
+    if (selectedStopId && busStops.length > 0) {
+      const stop = busStops.find(stop => stop.id === selectedStopId);
+      if (stop) {
+        setSelectedStop(stop);
+        // Clear the session storage so it doesn't persist unnecessarily
+        window.sessionStorage.removeItem('selectedStopId');
+      }
+    }
+  }, [busStops]);
 
-  const handleStopSelect = (_stop: BusStop) => {
-    // Show map and focus on the selected stop
+  const handleStopSelect = (stop: BusStop) => {
+    // Set the selected stop and switch to map view
+    setSelectedStop(stop);
     setView('map');
   };
 
@@ -307,6 +324,8 @@ const [view, setView] = useState<'stops' | 'map'>('map');
                   userLocation={userLocation}
                   closestStop={closestStop}
                   selectedLine={selectedLine}
+                  selectedStop={selectedStop}
+                  onStopSelect={handleStopSelect}
                 />
                 
                 {/* Floating quick info panel */}
@@ -538,6 +557,8 @@ const [view, setView] = useState<'stops' | 'map'>('map');
                 userLocation={userLocation}
                 closestStop={closestStop}
                 selectedLine={selectedLine}
+                selectedStop={selectedStop}
+                onStopSelect={handleStopSelect}
               />
               
               {/* Floating action buttons */}

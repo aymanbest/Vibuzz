@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { formatTime } from '../utils';
 import { 
-  IconArrowRight, 
+  IconArrowRight,
   IconArrowLeft,
   IconMapPin,
   IconCheck,
@@ -11,7 +11,9 @@ import {
   IconCircleDotFilled,
   IconList,
   IconChevronsRight,
-  IconMapSearch
+  IconMapSearch,
+  IconClock,
+  IconClockHour3
 } from '@tabler/icons-react';
 import type { BusLine, BusStop } from '../types';
 
@@ -147,31 +149,48 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
             
             <div className="p-4">
               {busStops.map((stop, index) => (
-                <div key={stop.id} className="mb-3 last:mb-0">
+                <motion.div 
+                  key={stop.id} 
+                  className="mb-3 last:mb-0 hover:bg-primary-50 p-3 rounded-lg cursor-pointer transition-colors border-2 border-transparent hover:border-primary-300 shadow-sm"
+                  whileHover={{ x: 4, boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                  onClick={() => {
+                    // Save selected stop ID in session storage to highlight it on the map
+                    window.sessionStorage.setItem('selectedStopId', stop.id);
+                    onDirectionSelect(selectedLine!.direction, selectedLine!);
+                  }}
+                >
                   <div className="flex">
                     <div className="flex flex-col items-center mr-3">
-                      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600">
+                      {/* Enhanced visibility with larger, brighter number indicator */}
+                      <div className="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center text-sm font-bold text-white border-2 border-white shadow-md">
                         {index + 1}
                       </div>
-                      {index < busStops.length - 1 && <div className="w-0.5 h-8 bg-gray-200"></div>}
+                      {/* More pronounced connection line */}
+                      {index < busStops.length - 1 && <div className="w-1 h-8 bg-primary-300"></div>}
                     </div>
                     
                     <div className="flex-1">
-                      <div className="font-medium text-gray-800">{stop.name}</div>
-                      <div className="flex items-center text-xs text-gray-500 mt-1">
-                        <span className="flex items-center">
-                          <span className="w-2 h-2 bg-blue-400 rounded-full mr-1"></span>
-                          ETA: {formatTime(stop.eta)}
-                        </span>
-                        <span className="mx-2">•</span>
-                        <span className="flex items-center">
-                          <span className="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
-                          Travel: {formatTime(stop.travelTimeTo)}
-                        </span>
+                      {/* More visible stop name */}
+                      <div className="font-bold text-gray-900 text-base">{stop.name}</div>
+                      <div className="grid grid-cols-2 gap-2 mt-2">
+                        {/* Better visual indicator for ETA */}
+                        <div className="bg-blue-100 rounded-lg p-2 flex items-center border border-blue-200">
+                          <IconClock size={18} className="mr-1.5 text-blue-600" />
+                          <span className="text-sm text-blue-800 font-medium">
+                            {formatTime(stop.eta)}
+                          </span>
+                        </div>
+                        {/* Better visual indicator for travel time */}
+                        <div className="bg-green-100 rounded-lg p-2 flex items-center border border-green-200">
+                          <IconRoute size={18} className="mr-1.5 text-green-600" />
+                          <span className="text-sm text-green-800 font-medium">
+                            {formatTime(stop.travelTimeTo)}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
@@ -183,12 +202,23 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
             transition={{ duration: 0.3, delay: 0.2 }}
             className="bg-white rounded-xl shadow-sm p-4"
           >
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center text-sm text-gray-600">
+                <IconMapPin size={18} className="mr-2 text-primary-500" />
+                <span>{busStops.length} bus stops available</span>
+              </div>
+              <div className="flex items-center text-xs bg-primary-50 text-primary-700 px-2 py-1 rounded-full">
+                <IconClock size={14} className="mr-1" />
+                <span>Updated recently</span>
+              </div>
+            </div>
+            
             <button
-              onClick={() => console.log('View live map')}
+              onClick={() => onDirectionSelect(selectedLine!.direction, selectedLine!)}
               className="w-full py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg flex items-center justify-center font-medium transition-colors"
             >
               <IconMapSearch size={18} className="mr-2" />
-              View Live Map
+              View Live Bus Map
             </button>
           </motion.div>
         </div>

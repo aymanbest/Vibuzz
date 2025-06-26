@@ -46,10 +46,10 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
                 transition={{ duration: 0.2, delay: index * 0.02 }}
                 onClick={() => onStopSelect?.(stop)}
                 className={`
-                  p-2 rounded-lg cursor-pointer flex items-center
+                  p-3 rounded-lg cursor-pointer flex items-center transition-all
                   ${isClosest 
-                    ? 'bg-yellow-50 border border-yellow-200' 
-                    : 'bg-white border border-gray-100 hover:bg-gray-50'}
+                    ? 'bg-yellow-50 border-l-4 border-yellow-400 shadow-sm' 
+                    : 'bg-white border border-gray-100 hover:bg-gray-50 hover:border-l-4 hover:border-l-primary-400'}
                 `}
               >
                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3 text-xs text-gray-600 font-medium">
