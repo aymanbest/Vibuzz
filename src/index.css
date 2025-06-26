@@ -16,6 +16,28 @@
   animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Add smooth pulsing marker animation */
+@keyframes marker-pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(27, 147, 235, 0.7);
+  }
+  
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(27, 147, 235, 0);
+  }
+  
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(27, 147, 235, 0);
+  }
+}
+
+.pulse-marker {
+  animation: marker-pulse 2s infinite;
+}
+
 /* Global CSS Variables */
 :root {
   /* Primary colors */
@@ -201,6 +223,35 @@ body {
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   @apply bg-gray-300 rounded-full transition-colors hover:bg-gray-400;
+}
+
+/* Hide scrollbar but maintain functionality */
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Thin scrollbar for better aesthetics */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 /* Glass Morphism Effects */
