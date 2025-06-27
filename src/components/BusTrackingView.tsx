@@ -361,17 +361,21 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
           
           <div className="flex items-center space-x-2">
             <button
-              onClick={() => setShowStopsList(!showStopsList)}
-              className={`p-2 rounded-full transition-colors relative z-10 ${
+              onClick={() => {
+                console.log('Stops list button clicked, current state:', showStopsList);
+                setShowStopsList(!showStopsList);
+              }}
+              className={`p-3 rounded-full transition-all duration-200 relative z-10 ${
                 showStopsList
                   ? isDark
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-blue-500 text-white'
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'bg-blue-500 text-white shadow-lg'
                   : isDark 
                     ? 'hover:bg-gray-800 text-gray-300' 
                     : 'hover:bg-gray-100 text-gray-600'
               }`}
               style={{ zIndex: 1003 }}
+              title={showStopsList ? 'Hide stops list' : 'Show all stops'}
             >
               <IconList size={18} />
             </button>
@@ -870,19 +874,22 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'tween', duration: 0.3 }}
-              className={`absolute inset-y-0 right-0 w-full md:w-96 z-40 shadow-xl ${
+              className={`fixed inset-y-0 right-0 w-full md:w-96 z-50 shadow-xl flex flex-col ${
                 isDark ? 'bg-gray-900' : 'bg-white'
               } border-l ${isDark ? 'border-gray-700' : 'border-gray-200'}`}
+              style={{ height: '100vh' }}
             >
-              {/* Stops Panel Header */}
-              <div className={`sticky top-0 z-10 backdrop-blur-lg border-b ${
+              {/* Stops Panel Header - Fixed */}
+              <div className={`flex-shrink-0 backdrop-blur-lg border-b ${
                 isDark 
-                  ? 'bg-gray-900/90 border-gray-700' 
-                  : 'bg-white/90 border-gray-200'
+                  ? 'bg-gray-900/95 border-gray-700' 
+                  : 'bg-white/95 border-gray-200'
               }`}>
                 <div className="px-4 py-3 flex items-center justify-between">
                   <h2 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    All Stops
+                    All Stops ({busStops.filter(stop =>
+                      stop.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    ).length})
                   </h2>
                   <button
                     onClick={() => setShowStopsList(false)}
@@ -917,8 +924,15 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
                 </div>
               </div>
               
-              {/* Stops List */}
-              <div className="flex-1 overflow-y-auto">
+              {/* Stops List - Scrollable */}
+              <div 
+                className="flex-1 overflow-y-auto min-h-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100" 
+                style={{ 
+                  height: 'calc(100vh - 140px)',
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: '#d1d5db #f3f4f6'
+                }}
+              >
                 <BusStopsList
                   stops={busStops.filter(stop =>
                     stop.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -929,6 +943,7 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
                   }}
                   userLocation={userLocation}
                   closestStop={closestStop}
+                  listType="modern"
                 />
               </div>
             </motion.div>

@@ -21,12 +21,12 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
 }) => {
   if (stops.length === 0) {
     return (
-      <div className="p-6 text-center text-gray-500 bg-gray-50 rounded-lg">
-        <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
-          🚏
+      <div className="p-6 text-center text-gray-500">
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <IconMapPin size={24} className="text-gray-400" />
         </div>
-        <p className="font-medium text-gray-600">No bus stops available</p>
-        <p className="text-sm text-gray-500 mt-1">Try selecting a different route</p>
+        <p className="font-medium text-gray-600">No bus stops found</p>
+        <p className="text-sm text-gray-500 mt-1">Try a different search term</p>
       </div>
     );
   }
@@ -73,8 +73,8 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
   // Modern list view that's more visually appealing
   if (listType === 'modern') {
     return (
-      <div className="overflow-hidden">
-        <div className="px-4 py-2">
+      <div className="h-full">
+        <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800 sticky top-0 z-10">
           {stops.length > 0 && (
             <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
               <span>All stops ({stops.length})</span>
@@ -83,7 +83,7 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
           )}
         </div>
         
-        <div className="divide-y divide-gray-100">
+        <div className="pb-4">
           {stops.map((stop, index) => {
             const isClosest = closestStop?.id === stop.id;
             const distance = userLocation 
@@ -98,45 +98,60 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
                 key={stop.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.03 }}
+                transition={{ duration: 0.3, delay: Math.min(index * 0.03, 0.5) }}
                 onClick={() => onStopSelect?.(stop)}
-                className="px-4 py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition-colors"
+                className={`mx-4 mb-3 p-4 rounded-xl cursor-pointer transition-all duration-200 border-2 ${
+                  isClosest
+                    ? 'bg-yellow-50 border-yellow-200 shadow-md hover:shadow-lg'
+                    : 'bg-white border-gray-100 hover:bg-gray-50 hover:border-blue-200 hover:shadow-md'
+                }`}
               >
-                <div className="flex items-center max-w-[75%]">
-                  <div className={`
-                    w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mr-3
-                    ${isClosest ? 'bg-yellow-100' : index === 0 ? 'bg-green-100' : index === stops.length - 1 ? 'bg-red-100' : 'bg-gray-100'}
-                  `}>
-                    {isClosest ? (
-                      <IconMapPin size={16} className="text-yellow-600" />
-                    ) : index === 0 ? (
-                      <IconRoute size={16} className="text-green-600" />
-                    ) : index === stops.length - 1 ? (
-                      <IconRoute size={16} className="text-red-600" />
-                    ) : (
-                      <span className="text-sm font-semibold text-gray-600">{index + 1}</span>
-                    )}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center flex-1 min-w-0">
+                    <div className={`
+                      w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mr-3 shadow-sm
+                      ${isClosest ? 'bg-yellow-500 text-white' : 
+                        index === 0 ? 'bg-green-500 text-white' : 
+                        index === stops.length - 1 ? 'bg-red-500 text-white' : 
+                        'bg-gray-200 text-gray-600'}
+                    `}>
+                      {isClosest ? (
+                        <IconMapPin size={18} />
+                      ) : index === 0 ? (
+                        <IconRoute size={18} />
+                      ) : index === stops.length - 1 ? (
+                        <IconRoute size={18} />
+                      ) : (
+                        <span className="text-sm font-bold">{index + 1}</span>
+                      )}
+                    </div>
+                    
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-gray-900 truncate mb-1">{stop.name}</p>
+                      <div className="flex items-center text-sm text-gray-600">
+                        <IconClockHour3 size={14} className="mr-1 flex-shrink-0" />
+                        <span>ETA: {formatTime(stop.eta)}</span>
+                        {isClosest && (
+                          <span className="ml-2 px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+                            Closest
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="min-w-0">
-                    <p className="font-medium text-gray-900 truncate">{stop.name}</p>
-                    <div className="flex items-center text-xs text-gray-500 mt-0.5">
-                      <IconClockHour3 size={12} className="mr-1" />
-                      <span>ETA: {formatTime(stop.eta)}</span>
-                      {isClosest && <span className="ml-2 px-1.5 py-0.5 bg-yellow-100 text-yellow-800 rounded-sm text-xs font-medium">Closest</span>}
+                  <div className="flex flex-col items-end ml-3">
+                    {distance !== null && (
+                      <span className="text-sm font-semibold text-gray-700 mb-1">
+                        {formatDistance(distance)}
+                      </span>
+                    )}
+                    <div className="flex items-center text-blue-600">
+                      <span className="text-xs font-medium">View</span>
+                      <IconArrowNarrowRight size={14} className="ml-1" />
                     </div>
                   </div>
                 </div>
-                
-                {distance !== null && (
-                  <div className="text-right">
-                    <span className="text-sm font-medium text-gray-700">{formatDistance(distance)}</span>
-                    <div className="flex items-center justify-end mt-0.5 text-primary-600">
-                      <span className="text-xs">View</span>
-                      <IconArrowNarrowRight size={12} className="ml-0.5" />
-                    </div>
-                  </div>
-                )}
               </motion.div>
             );
           })}
