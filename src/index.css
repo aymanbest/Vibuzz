@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dark mode custom properties */
+:root {
+  --color-primary: #5409DA;
+  --color-secondary: #4E71FF;
+  --color-accent: #8DD8FF;
+  --color-surface: #BBFBFF;
+  --color-background: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-secondary: #666666;
+}
+
+.dark {
+  --color-primary: #52357B;
+  --color-secondary: #5459AC;
+  --color-accent: #648DB3;
+  --color-surface: #B2D8CE;
+  --color-background: #1a1a1a;
+  --color-text: #ffffff;
+  --color-text-secondary: #b3b3b3;
+}
+
 /* Custom animations */
 @keyframes pulse-slow {
   0%, 100% {
@@ -49,16 +70,32 @@
   border: 1px solid #f3f4f6;
 }
 
+.dark .line-card {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: white;
+}
+
 .line-card:hover {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   border-color: var(--primary-100);
   transform: translateY(-2px);
 }
 
+.dark .line-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
 .line-card.selected {
   background-color: var(--primary-50);
   border-color: var(--primary-200);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark .line-card.selected {
+  background-color: var(--color-primary);
+  border-color: var(--color-accent);
 }
 
 /* Line type pills */

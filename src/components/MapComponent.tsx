@@ -16,6 +16,7 @@ interface MapComponentProps {
   closestStop: BusStop | null;
   selectedLine?: BusLine | null;
   selectedStop?: BusStop | null;
+  highlightedBus?: string | null;
   onStopSelect?: (stop: BusStop) => void;
 }
 
@@ -79,7 +80,8 @@ const closestStopIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="icon 
 
 // Enhanced icons with Tabler Icons design - making them more visible
 const userIcon = createTablerIconMarker(userIconSvg, 'bg-primary-600', 'You', true, 40);
-const busIcon = createTablerIconMarker(busIconSvg, 'bg-error-600', 'Bus', false, 40);
+const busIcon = createTablerIconMarker(busIconSvg, 'bg-error-600', '', false, 40);
+const highlightedBusIcon = createTablerIconMarker(busIconSvg, 'bg-blue-600', 'Selected', true, 48);
 
 // Enhanced stop icon with better visibility
 const stopIcon = new DivIcon({
@@ -128,6 +130,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   closestStop,
   selectedLine,
   selectedStop,
+  highlightedBus,
   onStopSelect
 }) => {
   // Default center (Kenitra, Morocco)
@@ -255,38 +258,55 @@ const MapComponent: React.FC<MapComponentProps> = ({
         })}
         
         {/* Bus positions */}
-        {busPositions.map((bus, index) => (
-          <Marker
-            key={`${bus.trackerId}-${index}`}
-            position={[bus.coordinates.latitude, bus.coordinates.longitude]}
-            icon={busIcon}
-          >
-            <Popup>
-              <div className="p-3">
-                <h3 className="font-semibold text-red-600 text-base mb-2">Bus #{bus.number}</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="bg-gray-50 p-2 rounded">
-                    <div className="text-xs text-gray-600 font-medium">Speed</div>
-                    <div className="text-sm font-bold text-gray-800">{bus.speed} km/h</div>
-                  </div>
-                  <div className="bg-gray-50 p-2 rounded">
-                    <div className="text-xs text-gray-600 font-medium">Heading</div>
-                    <div className="text-sm font-bold text-gray-800">{bus.bearing}°</div>
-                  </div>
-                  <div className="col-span-2 bg-gray-50 p-2 rounded">
-                    <div className="text-xs text-gray-600 font-medium">Last Update</div>
-                    <div className="text-sm font-bold text-gray-800">
-                      {new Date(bus.date).toLocaleTimeString()}
+        {busPositions.map((bus, index) => {
+          const isHighlighted = highlightedBus === bus.trackerId;
+          const currentBusIcon = isHighlighted ? highlightedBusIcon : busIcon;
+          
+          return (
+            <Marker
+              key={`${bus.trackerId}-${index}`}
+              position={[bus.coordinates.latitude, bus.coordinates.longitude]}
+              icon={currentBusIcon}
+            >
+              <Popup>
+                <div className={`p-3 border-t-4 border-b-0 border-l-0 border-r-0 rounded-t-none rounded-b-lg shadow-lg ${
+                  isHighlighted ? 'border-blue-500' : 'border-red-500'
+                }`}>
+                  <h3 className={`font-semibold text-base mb-2 ${
+                    isHighlighted ? 'text-blue-600' : 'text-red-600'
+                  }`}>
+                    {isHighlighted ? '🔍 Selected Bus' : 'Bus'} #{bus.number}
+                  </h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-gray-50 p-2 rounded">
+                      <div className="text-xs text-gray-600 font-medium">Speed</div>
+                      <div className="text-sm font-bold text-gray-800">{bus.speed} km/h</div>
                     </div>
-                  </div>
-                  <div className="col-span-2 text-xs text-gray-500 mt-1">
-                    Tracker ID: {bus.trackerId}
+                    <div className="bg-gray-50 p-2 rounded">
+                      <div className="text-xs text-gray-600 font-medium">Heading</div>
+                      <div className="text-sm font-bold text-gray-800">{bus.bearing}°</div>
+                    </div>
+                    <div className="col-span-2 bg-gray-50 p-2 rounded">
+                      <div className="text-xs text-gray-600 font-medium">Last Update</div>
+                      <div className="text-sm font-bold text-gray-800">
+                        {new Date(bus.date).toLocaleTimeString()}
+                      </div>
+                    </div>
+                    <div className="col-span-2 text-xs text-gray-500 mt-1">
+                      Tracker ID: {bus.trackerId}
+                    </div>
+                    {selectedLine && (
+                      <div className="col-span-2 bg-blue-50 p-2 rounded">
+                        <div className="text-xs text-blue-800 font-medium">Route</div>
+                        <div className="text-sm font-bold text-blue-600">{selectedLine.line}</div>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+              </Popup>
+            </Marker>
+          );
+        })}
       </MapContainer>
     </div>
   );

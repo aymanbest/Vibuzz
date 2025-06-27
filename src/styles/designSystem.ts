@@ -1,8 +1,22 @@
 // Design System for Bus Location App
 // This file contains consistent design tokens used throughout the application
 
-// Updated color palette for more visual harmony
+// Custom color palettes for dark and light modes as specified
 export const colors = {
+  // Light mode colors
+  light: {
+    primary: '#5409DA',
+    secondary: '#4E71FF', 
+    accent: '#8DD8FF',
+    surface: '#BBFBFF'
+  },
+  // Dark mode colors  
+  dark: {
+    primary: '#52357B',
+    secondary: '#5459AC',
+    accent: '#648DB3', 
+    surface: '#B2D8CE'
+  },
   // Primary colors - Modern blue for brand recognition
   primary: {
     50: '#ebf5ff',

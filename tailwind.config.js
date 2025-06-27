@@ -11,16 +11,34 @@ export default {
       },
       colors: {
         primary: {
-          50: '#f0f7ff',
-          100: '#e0efff',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
+          50: '#f5f3ff',
+          100: '#ede9fe',
+          200: '#ddd6fe',
+          300: '#c4b5fd',
+          400: '#a78bfa',
+          500: '#8b5cf6',
+          600: '#7c3aed',
+          700: '#6d28d9',
+          800: '#5b21b6',
+          900: '#4c1d95',
+        },
+        // Theme colors for dark mode: #52357B, #5459AC, #648DB3, #B2D8CE
+        // Theme colors for light mode: #5409DA, #4E71FF, #8DD8FF, #BBFBFF
+        'theme-primary': {
+          light: '#5409DA',
+          dark: '#52357B',
+        },
+        'theme-secondary': {
+          light: '#4E71FF',
+          dark: '#5459AC',
+        },
+        'theme-accent': {
+          light: '#8DD8FF',
+          dark: '#648DB3',
+        },
+        'theme-surface': {
+          light: '#BBFBFF',
+          dark: '#B2D8CE',
         },
         secondary: {
           50: '#f0fdfa',
