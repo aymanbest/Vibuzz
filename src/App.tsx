@@ -489,7 +489,14 @@ function DirectionStopsPage() {
 
 function TrackingPage() {
   const { lineNumber, direction } = useParams<{ lineNumber: string; direction: string }>();
-  const { location: userLocation, loading: locationLoading, refreshLocation } = useUserLocation();
+  const { 
+    location: userLocation, 
+    loading: locationLoading, 
+    accuracy: locationAccuracy, 
+    refreshLocation,
+    setUserLocation,
+    canSetManualLocation
+  } = useUserLocation();
   const { data: busLines, loading: busLinesLoading } = useBusLines('KENITRA');
   
   // Find the selected line
@@ -585,6 +592,9 @@ function TrackingPage() {
             busPositions={busPositions}
             routePath={routePath}
             userLocation={userLocation}
+            locationAccuracy={locationAccuracy}
+            canSelectManually={canSetManualLocation}
+            onManualLocationSelect={(lat, lng) => setUserLocation({ lat, lng })}
             closestStop={closestStop}
             isLoading={isLoading}
             onLocateClick={handleLocationClick}

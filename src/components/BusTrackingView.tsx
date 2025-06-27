@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatTime, calculateDistance } from '../utils';
 import { 
   IconBus,
   IconList,
   IconChevronLeft,
+  IconChevronRight,
   IconRefresh,
   IconRoute,
   IconTarget,
   IconNavigation,
   IconEye,
   IconSearch,
-  IconBookmark
+  IconBookmark,
+  IconArrowsLeftRight,
+  IconChevronDown,
+  IconMapPin
 } from '@tabler/icons-react';
 import type { BusLine, BusStop, BusPosition, UserLocation } from '../types';
 import MapComponent from './MapComponent';
 import BusStopsList from './BusStopsList';
 import ThemeToggle from './ThemeToggle';
+import LocationTips from './LocationTips';
 import { useTheme } from '../contexts/ThemeContext';
+import { useBusLines } from '../hooks/useApi';
 
 interface BusTrackingViewProps {
   selectedLine: BusLine;
@@ -26,6 +32,11 @@ interface BusTrackingViewProps {
   busPositions: BusPosition[];
   routePath: Array<{ lat: number; lng: number }>;
   userLocation: UserLocation | null;
+  locationAccuracy?: number | null;
+  retryCount?: number;
+  maxRetries?: number;
+  canSelectManually?: boolean;
+  onManualLocationSelect?: (lat: number, lng: number) => void;
   closestStop: BusStop | null;
   isLoading: boolean;
   onLocateClick: () => void;
@@ -37,16 +48,41 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
   busPositions,
   routePath,
   userLocation,
+  locationAccuracy,
+  retryCount,
+  maxRetries,
+  canSelectManually,
+  onManualLocationSelect,
   closestStop,
   isLoading,
   onLocateClick
 }) => {
   const navigate = useNavigate();
+  const params = useParams();
   const { isDark } = useTheme();
   const [showStopsList, setShowStopsList] = useState(false);
   const [selectedStop, setSelectedStop] = useState<BusStop | null>(null);
   const [highlightedBus, setHighlightedBus] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showLineSelector, setShowLineSelector] = useState(false);
+  
+  // Fetch available bus lines for line switching
+  const { data: busLines } = useBusLines('KENITRA');
+  
+  // Direction switching handler
+  const handleDirectionSwitch = () => {
+    const currentDirection = selectedLine.direction;
+    const newDirection = currentDirection === 'FORWARD' ? 'backward' : 'forward';
+    const lineNumber = params.lineNumber;
+    navigate(`/lines/${lineNumber}/directions/${newDirection}/tracking`);
+  };
+  
+  // Line switching handler
+  const handleLineSwitch = (lineNumber: string) => {
+    const currentDirection = selectedLine.direction.toLowerCase();
+    navigate(`/lines/${lineNumber}/directions/${currentDirection}/tracking`);
+    setShowLineSelector(false);
+  };
   
   // Check for selected stop ID in session storage
   useEffect(() => {
@@ -59,6 +95,20 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
       }
     }
   }, [busStops]);
+  
+  // Close line selector when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showLineSelector && !(event.target as Element).closest('.line-selector')) {
+        setShowLineSelector(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showLineSelector]);
 
   const handleStopSelect = (stop: BusStop) => {
     setSelectedStop(stop);
@@ -72,7 +122,25 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
     setHighlightedBus(highlightedBus === busId ? null : busId);
   };
 
-  // Calculate bus status relative to closest stop
+  // Calculate the ETA of the next bus approaching the closest stop
+  const getNextBusETA = (): { bus: BusPosition; eta: number } | null => {
+    if (!closestStop || !busPositions.length) return null;
+    
+    let nextBus: { bus: BusPosition; eta: number } | null = null;
+    let shortestETA = Infinity;
+    
+    busPositions.forEach((bus) => {
+      const busStatus = getBusStatusForClosestStop(bus);
+      if (busStatus.status === 'approaching' && busStatus.eta !== null && busStatus.eta < shortestETA) {
+        shortestETA = busStatus.eta;
+        nextBus = { bus, eta: busStatus.eta };
+      }
+    });
+    
+    return nextBus;
+  };
+
+  // Calculate bus status relative to closest stop using proper stop order
   const getBusStatusForClosestStop = (bus: BusPosition) => {
     if (!closestStop || !userLocation) return { status: 'unknown', eta: null };
     
@@ -81,61 +149,192 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
       { lat: closestStop.coordinates.latitude, lng: closestStop.coordinates.longitude }
     );
     
-    const userToStop = calculateDistance(
-      userLocation,
-      { lat: closestStop.coordinates.latitude, lng: closestStop.coordinates.longitude }
-    );
-    
     // If bus is very close to the stop (within 100m), it's "at stop"
     if (busToStop < 0.1) {
       return { status: 'at_stop', eta: 0 };
     }
     
-    // If bus is closer to stop than user, it has "passed"
-    if (busToStop > userToStop) {
+    // Find the closest stop index in the bus stops list
+    const closestStopIndex = busStops.findIndex(stop => stop.id === closestStop.id);
+    if (closestStopIndex === -1) {
+      return { status: 'unknown', eta: null };
+    }
+    
+    // Find the bus's closest stop to determine its position in the route
+    let busClosestStopIndex = -1;
+    let minDistanceToBusStops = Infinity;
+    
+    busStops.forEach((stop, index) => {
+      const distanceToBusStop = calculateDistance(
+        { lat: bus.coordinates.latitude, lng: bus.coordinates.longitude },
+        { lat: stop.coordinates.latitude, lng: stop.coordinates.longitude }
+      );
+      
+      if (distanceToBusStop < minDistanceToBusStops) {
+        minDistanceToBusStops = distanceToBusStop;
+        busClosestStopIndex = index;
+      }
+    });
+    
+    // Determine status based on bus direction and stop positions
+    const busDirection = selectedLine.direction; // Use selected line direction, not bus direction
+    const isForward = busDirection === 'FORWARD';
+    
+    let hasPassed = false;
+    if (isForward) {
+      // For forward direction: bus has passed if it's at a higher index than closest stop
+      hasPassed = busClosestStopIndex > closestStopIndex;
+    } else {
+      // For backward direction: bus has passed if it's at a lower index than closest stop
+      hasPassed = busClosestStopIndex < closestStopIndex;
+    }
+    
+    if (hasPassed) {
       return { status: 'passed', eta: null };
     }
     
-    // If bus is approaching (farther from stop than user but moving towards it)
-    // Estimate ETA based on current speed and distance
-    const speedKmh = bus.speed || 30; // Default speed if not available
+    // Bus is approaching - calculate realistic ETA
+    const speedKmh = bus.speed || 25; // Default speed if not available
     const speedMs = speedKmh / 3.6; // Convert to m/s
-    const etaMinutes = speedMs > 0 ? (busToStop * 1000) / (speedMs * 60) : null;
     
-    return { status: 'approaching', eta: Math.round(etaMinutes || 0) };
+    // Calculate distance through route stops instead of direct distance
+    let routeDistance = 0;
+    if (isForward) {
+      // Calculate distance from bus's current stop to user's closest stop
+      for (let i = busClosestStopIndex; i < closestStopIndex; i++) {
+        if (i + 1 < busStops.length) {
+          routeDistance += calculateDistance(
+            { lat: busStops[i].coordinates.latitude, lng: busStops[i].coordinates.longitude },
+            { lat: busStops[i + 1].coordinates.latitude, lng: busStops[i + 1].coordinates.longitude }
+          );
+        }
+      }
+    } else {
+      // For backward direction
+      for (let i = busClosestStopIndex; i > closestStopIndex; i--) {
+        if (i - 1 >= 0) {
+          routeDistance += calculateDistance(
+            { lat: busStops[i].coordinates.latitude, lng: busStops[i].coordinates.longitude },
+            { lat: busStops[i - 1].coordinates.latitude, lng: busStops[i - 1].coordinates.longitude }
+          );
+        }
+      }
+    }
+    
+    // Add distance from bus to its closest stop
+    routeDistance += minDistanceToBusStops;
+    
+    // Calculate ETA in minutes (more realistic calculation)
+    let etaMinutes = 5; // Minimum realistic ETA
+    if (speedMs > 0 && routeDistance > 0) {
+      const estimatedTimeMinutes = (routeDistance * 1000) / (speedMs * 60); // Convert to minutes
+      // Add buffer time for stops (1 minute per stop)
+      const stopsBetween = Math.abs(closestStopIndex - busClosestStopIndex);
+      const bufferTime = stopsBetween * 1;
+      etaMinutes = Math.max(5, Math.round(estimatedTimeMinutes + bufferTime));
+    }
+    
+    // Cap maximum ETA at 45 minutes for realism
+    etaMinutes = Math.min(etaMinutes, 45);
+    
+    return { status: 'approaching', eta: etaMinutes };
   };
 
-  // Modern Header Component
+  // Modern Header Component with proper z-index
   const ModernHeader = () => (
     <div className={`sticky top-0 z-50 backdrop-blur-lg border-b shadow-lg ${
       isDark 
-        ? 'bg-gray-900/90 border-gray-700' 
-        : 'bg-white/90 border-gray-200'
-    }`}>
+        ? 'bg-gray-900/95 border-gray-700' 
+        : 'bg-white/95 border-gray-200'
+    }`} style={{ zIndex: 1000 }}>
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button 
               onClick={() => navigate(-1)}
-              className={`p-2 rounded-full transition-colors ${
+              className={`p-2 rounded-full transition-colors relative z-10 ${
                 isDark 
                   ? 'hover:bg-gray-800 text-gray-300' 
                   : 'hover:bg-gray-100 text-gray-600'
               }`}
+              style={{ zIndex: 1001 }}
             >
               <IconChevronLeft size={20} />
             </button>
             
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${
-              selectedLine.direction === 'FORWARD' 
-                ? isDark 
-                  ? 'bg-gradient-to-br from-green-500 to-green-700' 
-                  : 'bg-gradient-to-br from-green-400 to-green-600'
-                : isDark 
-                  ? 'bg-gradient-to-br from-orange-500 to-orange-700' 
-                  : 'bg-gradient-to-br from-orange-400 to-orange-600'
-            }`}>
-              <span className="text-white font-bold text-lg">{selectedLine.line}</span>
+            {/* Line Selector Button */}
+            <div className="relative line-selector" style={{ zIndex: 1002 }}>
+              <button
+                onClick={() => setShowLineSelector(!showLineSelector)}
+                className={`flex items-center space-x-2 px-3 py-2 rounded-xl transition-all relative z-10 ${
+                  isDark 
+                    ? 'bg-gray-800 hover:bg-gray-700 text-white border border-gray-600' 
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-900 border border-gray-300'
+                }`}
+              >
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shadow-sm ${
+                  selectedLine.direction === 'FORWARD' 
+                    ? isDark 
+                      ? 'bg-gradient-to-br from-green-500 to-green-700' 
+                      : 'bg-gradient-to-br from-green-400 to-green-600'
+                    : isDark 
+                      ? 'bg-gradient-to-br from-orange-500 to-orange-700' 
+                      : 'bg-gradient-to-br from-orange-400 to-orange-600'
+                }`}>
+                  <span className="text-white font-bold text-sm">{selectedLine.line}</span>
+                </div>
+                <IconChevronDown size={16} className={isDark ? 'text-gray-400' : 'text-gray-600'} />
+              </button>
+              
+              {/* Line Dropdown */}
+              <AnimatePresence>
+                {showLineSelector && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className={`absolute top-full left-0 mt-2 w-48 rounded-xl shadow-lg border z-50 ${
+                      isDark 
+                        ? 'bg-gray-800 border-gray-600' 
+                        : 'bg-white border-gray-300'
+                    }`}
+                  >
+                    <div className="p-2 max-h-60 overflow-y-auto">
+                      {busLines
+                        .reduce((acc: string[], line) => {
+                          if (!acc.includes(line.line)) acc.push(line.line);
+                          return acc;
+                        }, [])
+                        .map((lineNumber) => (
+                          <button
+                            key={lineNumber}
+                            onClick={() => handleLineSwitch(lineNumber)}
+                            className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
+                              lineNumber === selectedLine.line
+                                ? isDark
+                                  ? 'bg-blue-600 text-white'
+                                  : 'bg-blue-500 text-white'
+                                : isDark
+                                  ? 'hover:bg-gray-700 text-gray-300'
+                                  : 'hover:bg-gray-100 text-gray-700'
+                            }`}
+                          >
+                            <div className={`w-6 h-6 rounded flex items-center justify-center text-xs font-bold ${
+                              lineNumber === selectedLine.line
+                                ? 'bg-white/20 text-white'
+                                : isDark
+                                  ? 'bg-gray-600 text-gray-200'
+                                  : 'bg-gray-200 text-gray-700'
+                            }`}>
+                              {lineNumber}
+                            </div>
+                            <span className="text-sm font-medium">Line {lineNumber}</span>
+                          </button>
+                        ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
             
             <div>
@@ -163,7 +362,7 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setShowStopsList(!showStopsList)}
-              className={`p-2 rounded-full transition-colors ${
+              className={`p-2 rounded-full transition-colors relative z-10 ${
                 showStopsList
                   ? isDark
                     ? 'bg-blue-600 text-white'
@@ -172,6 +371,7 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
                     ? 'hover:bg-gray-800 text-gray-300' 
                     : 'hover:bg-gray-100 text-gray-600'
               }`}
+              style={{ zIndex: 1003 }}
             >
               <IconList size={18} />
             </button>
@@ -179,11 +379,12 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
             <button
               onClick={handleRefreshLocation}
               disabled={isLoading}
-              className={`p-2 rounded-full transition-colors disabled:opacity-50 ${
+              className={`p-2 rounded-full transition-colors disabled:opacity-50 relative z-10 ${
                 isDark 
                   ? 'hover:bg-gray-800 text-gray-300' 
                   : 'hover:bg-gray-100 text-gray-600'
               }`}
+              style={{ zIndex: 1003 }}
             >
               <IconRefresh size={18} className={isLoading ? 'animate-spin' : ''} />
             </button>
@@ -253,12 +454,23 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
               <IconTarget size={22} className="text-white" />
             </div>
             <div>
-              <p className={`text-2xl font-bold ${
-                isDark ? 'text-orange-100' : 'text-orange-900'
-              }`}>{formatTime(closestStop.eta)}</p>
-              <p className={`text-sm font-medium ${
-                isDark ? 'text-orange-300' : 'text-orange-600'
-              }`}>Closest ETA</p>
+              {(() => {
+                const nextBus = getNextBusETA();
+                return (
+                  <>
+                    <p className={`text-2xl font-bold ${
+                      isDark ? 'text-orange-100' : 'text-orange-900'
+                    }`}>
+                      {nextBus ? `${nextBus.eta} min` : 'No bus'}
+                    </p>
+                    <p className={`text-sm font-medium ${
+                      isDark ? 'text-orange-300' : 'text-orange-600'
+                    }`}>
+                      {nextBus ? 'Next Bus ETA' : 'Closest Stop'}
+                    </p>
+                  </>
+                );
+              })()}
             </div>
           </div>
         </div>
@@ -276,13 +488,39 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
             }`}>
               <IconNavigation size={22} className="text-white" />
             </div>
-            <div>
-              <p className={`text-lg font-bold ${
-                isDark ? 'text-indigo-100' : 'text-purple-900'
-              }`}>Located</p>
+            <div className="flex-1">
+              <div className="flex items-center space-x-2">
+                <p className={`text-lg font-bold ${
+                  isDark ? 'text-indigo-100' : 'text-purple-900'
+                }`}>Located</p>
+                {locationAccuracy && (
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                    locationAccuracy <= 50 
+                      ? isDark ? 'bg-green-800 text-green-300' : 'bg-green-100 text-green-700'
+                      : locationAccuracy <= 100
+                        ? isDark ? 'bg-yellow-800 text-yellow-300' : 'bg-yellow-100 text-yellow-700'
+                        : isDark ? 'bg-red-800 text-red-300' : 'bg-red-100 text-red-700'
+                  }`}>
+                    ±{Math.round(locationAccuracy)}m
+                  </span>
+                )}
+              </div>
               <p className={`text-sm font-medium ${
                 isDark ? 'text-indigo-300' : 'text-purple-600'
-              }`}>GPS Active</p>
+              }`}>
+                {locationAccuracy && locationAccuracy <= 50 
+                  ? 'High Precision GPS' 
+                  : locationAccuracy && locationAccuracy <= 100 
+                    ? 'GPS Active' 
+                    : 'Network Location'}
+              </p>
+              {locationAccuracy && locationAccuracy > 100 && (
+                <p className={`text-xs mt-1 ${
+                  isDark ? 'text-orange-300' : 'text-orange-600'
+                }`}>
+                  Try refreshing for better accuracy
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -344,6 +582,14 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
               </div>
             )}
             
+            {/* Location Accuracy Tips */}
+            <div className="mx-6 mb-6">
+              <LocationTips 
+                accuracy={locationAccuracy} 
+                onRefresh={handleRefreshLocation}
+              />
+            </div>
+
             {/* Real-time Bus Updates */}
             <div className="mx-6 mb-8">
               <div className={`rounded-2xl p-6 border shadow-sm ${
@@ -525,11 +771,43 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
               selectedLine={selectedLine}
               closestStop={closestStop}
               highlightedBus={highlightedBus}
+              onLocationSelect={onManualLocationSelect ? (location) => onManualLocationSelect(location.lat, location.lng) : undefined}
+              canSetManualLocation={canSelectManually}
             />
             
-            {/* Floating Bus Count */}
+            {/* Floating Direction Switch Button - Top Right of Map */}
+            <div className="absolute top-4 right-4 z-40">
+              <button
+                onClick={() => handleDirectionSwitch()}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-xl shadow-xl border-2 transition-all duration-200 transform hover:scale-105 active:scale-95 ${
+                  selectedLine.direction === 'FORWARD'
+                    ? isDark
+                      ? 'bg-gradient-to-r from-green-600 to-green-700 border-green-500 text-white'
+                      : 'bg-gradient-to-r from-green-500 to-green-600 border-green-400 text-white'
+                    : isDark
+                      ? 'bg-gradient-to-r from-orange-600 to-orange-700 border-orange-500 text-white'
+                      : 'bg-gradient-to-r from-orange-500 to-orange-600 border-orange-400 text-white'
+                } backdrop-blur-sm`}
+                style={{ zIndex: 1003 }}
+              >
+                <div className="flex items-center space-x-2">
+                  <IconArrowsLeftRight size={20} />
+                  <div className="text-left">
+                    <div className="text-sm font-bold">
+                      {selectedLine.direction === 'FORWARD' ? 'Forward' : 'Return'}
+                    </div>
+                    <div className="text-xs opacity-90">
+                      Tap to switch
+                    </div>
+                  </div>
+                </div>
+                <IconChevronRight size={16} className="opacity-70" />
+              </button>
+            </div>
+            
+            {/* Floating Bus Count - Bottom Right */}
             {busPositions.length > 0 && (
-              <div className={`absolute top-4 right-4 px-3 py-2 rounded-lg shadow-lg ${
+              <div className={`absolute bottom-4 right-4 px-3 py-2 rounded-lg shadow-lg ${
                 isDark ? 'bg-gray-800/90 text-white' : 'bg-white/90 text-gray-900'
               }`}>
                 <div className="flex items-center space-x-2 text-sm font-medium">
@@ -538,6 +816,49 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
                 </div>
               </div>
             )}
+            
+            {/* Enhanced Floating Controls */}
+            <div className={`absolute bottom-4 right-4 flex flex-col space-y-3`}>
+              {/* Line Quick Switch */}
+              <div className={`px-4 py-3 rounded-xl shadow-lg border ${
+                isDark ? 'bg-gray-800/95 text-white border-gray-600' : 'bg-white/95 text-gray-900 border-gray-200'
+              }`}>
+                <div className="flex items-center space-x-3">
+                  <IconMapPin size={16} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
+                  <span className="text-sm font-medium">Line {selectedLine.line}</span>
+                  <button
+                    onClick={() => setShowLineSelector(!showLineSelector)}
+                    className={`p-1 rounded-full transition-all hover:scale-110 ${
+                      isDark 
+                        ? 'hover:bg-gray-700 text-gray-400 hover:text-blue-400' 
+                        : 'hover:bg-gray-100 text-gray-500 hover:text-blue-600'
+                    }`}
+                    title="Change line"
+                  >
+                    <IconChevronDown size={14} />
+                  </button>
+                </div>
+              </div>
+              
+              {/* Direction Quick Switch */}
+              <button
+                onClick={handleDirectionSwitch}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-xl shadow-lg transition-all hover:scale-105 ${
+                  isDark 
+                    ? 'bg-blue-600/95 hover:bg-blue-700 text-white' 
+                    : 'bg-blue-500/95 hover:bg-blue-600 text-white'
+                }`}
+                title={`Switch to ${selectedLine.direction === 'FORWARD' ? 'Return' : 'Outbound'} direction`}
+              >
+                <IconArrowsLeftRight size={18} />
+                <div className="text-left">
+                  <div className="text-sm font-medium">Switch Direction</div>
+                  <div className="text-xs opacity-90">
+                    To {selectedLine.direction === 'FORWARD' ? 'Return' : 'Outbound'}
+                  </div>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
         

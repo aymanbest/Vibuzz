@@ -48,7 +48,19 @@ export function findClosestBusStop(
     }
   }
   
-  return closestStop;
+  // Calculate a more realistic ETA based on distance
+  // Assume average walking speed of 5 km/h to the stop + 5-15 min wait time for bus
+  const walkingTimeMinutes = (minDistance / 5) * 60; // Convert km to walking time in minutes
+  const waitTimeMinutes = 8; // Average wait time for a bus
+  const totalEta = Math.max(3, Math.round(walkingTimeMinutes + waitTimeMinutes)); // Minimum 3 minutes
+  
+  // Cap the ETA at 30 minutes for realism
+  const realisticEta = Math.min(totalEta, 30);
+  
+  return {
+    ...closestStop,
+    eta: realisticEta
+  };
 }
 
 // Format distance for display

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMapEvents } from 'react-leaflet';
 import { DivIcon } from 'leaflet';
 // No need for Tabler icons here as we're using SVG strings directly
 import type { UserLocation, BusStop, BusPosition, BusLine } from '../types';
@@ -18,6 +18,8 @@ interface MapComponentProps {
   selectedStop?: BusStop | null;
   highlightedBus?: string | null;
   onStopSelect?: (stop: BusStop) => void;
+  onLocationSelect?: (location: UserLocation) => void;
+  canSetManualLocation?: boolean;
 }
 
 // Custom modern marker icons with Tabler icons
@@ -131,7 +133,9 @@ const MapComponent: React.FC<MapComponentProps> = ({
   selectedLine,
   selectedStop,
   highlightedBus,
-  onStopSelect
+  onStopSelect,
+  onLocationSelect,
+  canSetManualLocation
 }) => {
   // Default center (Kenitra, Morocco)
   const defaultCenter: [number, number] = [34.261, -6.582];
@@ -141,8 +145,30 @@ const MapComponent: React.FC<MapComponentProps> = ({
       ? [userLocation.lat, userLocation.lng] 
       : defaultCenter;
 
+  // Component to handle map clicks for manual location setting
+  const LocationSelector = () => {
+    useMapEvents({
+      click: (e) => {
+        if (canSetManualLocation && onLocationSelect) {
+          const { lat, lng } = e.latlng;
+          onLocationSelect({ lat, lng });
+        }
+      },
+    });
+    return null;
+  };
+
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full relative">
+      {/* Manual location instruction overlay */}
+      {canSetManualLocation && (
+        <div className="absolute top-4 left-4 right-4 z-50 bg-blue-500 text-white p-3 rounded-lg shadow-lg">
+          <p className="text-sm font-medium text-center">
+            📍 Click anywhere on the map to set your location
+          </p>
+        </div>
+      )}
+      
       <MapContainer
         center={mapCenter}
         zoom={14}
@@ -153,6 +179,9 @@ const MapComponent: React.FC<MapComponentProps> = ({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        
+        {/* Location selector for manual location setting */}
+        {canSetManualLocation && <LocationSelector />}
         
         {/* Route path - more vibrant */}
         {routePath.length > 0 && (
@@ -220,8 +249,8 @@ const MapComponent: React.FC<MapComponentProps> = ({
                     isClosest ? 'text-yellow-600' : 
                     'text-green-600'
                   }`}>
-                    {isSelected ? '🔍 Selected Stop' :
-                     isClosest ? '🎯 Closest Stop' : 
+                    {isSelected ? 'Selected Stop' :
+                     isClosest ? 'Closest Stop' : 
                      'Bus Stop'}
                   </h3>
                   <p className="text-sm font-medium text-gray-800 mb-2">{stop.name}</p>
@@ -275,7 +304,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
                   <h3 className={`font-semibold text-base mb-2 ${
                     isHighlighted ? 'text-blue-600' : 'text-red-600'
                   }`}>
-                    {isHighlighted ? '🔍 Selected Bus' : 'Bus'} #{bus.number}
+                    {isHighlighted ? 'Selected Bus' : 'Bus'} #{bus.number}
                   </h3>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="bg-gray-50 p-2 rounded">
