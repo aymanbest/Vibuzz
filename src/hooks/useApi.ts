@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import type { BusStopResponse, BusPositionResponse, BusLine } from '../types';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export function useBusLines(city: string = 'KENITRA') {
   const [data, setData] = useState<BusLine[]>([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +13,7 @@ export function useBusLines(city: string = 'KENITRA') {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://BaseURL.com/routes/buses?keys=id,company,line,enabled,label,firstStop,lastStop,zones,type,ticketPrice,city,direction&city=${city}`
+          `${API_BASE_URL}/routes/buses?keys=id,company,line,enabled,label,firstStop,lastStop,zones,type,ticketPrice,city,direction&city=${city}`
         );
         
         if (!response.ok) {
@@ -53,7 +55,7 @@ export function useBusStops(lineId: string | null) {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://BaseURL.com/routes/paths/${lineId}?direction=FORWARD`
+          `${API_BASE_URL}/routes/paths/${lineId}?direction=FORWARD`
         );
         
         if (!response.ok) {
@@ -93,7 +95,7 @@ export function useBusPositions(company?: string, number?: string, direction?: s
       try {
         setLoading(true);
         const response = await fetch(
-          `https://BaseURL.com/tracking/positions?company=${company}&number=${number}&direction=${direction}`
+          `${API_BASE_URL}/tracking/positions?company=${company}&number=${number}&direction=${direction}`
         );
         
         if (!response.ok) {

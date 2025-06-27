@@ -13,6 +13,8 @@ import { useTheme } from './contexts/ThemeContext';
 import type { BusLine, BusPosition, BusStopResponse } from './types';
 import './App.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 // Custom hook to fetch bus stops for both directions
 function useBusStopsForBothDirections(forwardLineId: string | null, backwardLineId: string | null) {
   const [forwardStops, setForwardStops] = useState<BusStopResponse | null>(null);
@@ -37,7 +39,7 @@ function useBusStopsForBothDirections(forwardLineId: string | null, backwardLine
         
         if (forwardLineId) {
           promises.push(
-            fetch(`https://BaseURL.com/routes/paths/${forwardLineId}`)
+            fetch(`${API_BASE_URL}/routes/paths/${forwardLineId}`)
               .then(res => res.json())
               .catch(() => null)
           );
@@ -47,7 +49,7 @@ function useBusStopsForBothDirections(forwardLineId: string | null, backwardLine
 
         if (backwardLineId) {
           promises.push(
-            fetch(`https://BaseURL.com/routes/paths/${backwardLineId}`)
+            fetch(`${API_BASE_URL}/routes/paths/${backwardLineId}`)
               .then(res => res.json())
               .catch(() => null)
           );
