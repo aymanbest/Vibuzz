@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { formatTime } from '../utils';
 import { 
@@ -25,6 +26,8 @@ interface DirectionSelectorProps {
   forwardStops?: BusStop[]; // Forward direction stops
   backwardStops?: BusStop[]; // Backward direction stops
   userLocation?: UserLocation | null; // User's current location
+  showStopsView?: boolean; // Whether to show the stops view directly
+  onBack?: () => void; // Callback for back navigation
 }
 
 const DirectionSelector: React.FC<DirectionSelectorProps> = ({
@@ -35,10 +38,25 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
   forwardStops = [],
   backwardStops = [],
   userLocation = null,
+  showStopsView = false,
+  onBack,
 }) => {
-  const [showStops, setShowStops] = useState(false);
+  const navigate = useNavigate();
   const [selectedLine, setSelectedLine] = useState<BusLine | null>(null);
   const [selectedStops, setSelectedStops] = useState<BusStop[]>([]);
+  
+  // Set up selected line and stops based on the current direction
+  useEffect(() => {
+    if (showStopsView && selectedDirection) {
+      const line = selectedDirection === 'FORWARD' ? forwardLine : backwardLine;
+      const stops = selectedDirection === 'FORWARD' ? forwardStops : backwardStops;
+      
+      if (line) {
+        setSelectedLine(line);
+        setSelectedStops(stops);
+      }
+    }
+  }, [showStopsView, selectedDirection, forwardLine, backwardLine, forwardStops, backwardStops]);
   
   // Calculate distance between two points using Haversine formula
   function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -103,10 +121,11 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
 
   const availableDirections = directions.filter(d => d.line !== null);
 
-  const handleDirectionClick = (_direction: 'FORWARD' | 'BACKWARD', line: BusLine, stops: BusStop[]) => {
-    setSelectedLine(line);
-    setSelectedStops(stops);
-    setShowStops(true);
+  const handleDirectionClick = (direction: 'FORWARD' | 'BACKWARD', line: BusLine) => {
+    // Navigate to the stops view for this direction
+    const lineNumber = line.line;
+    const directionParam = direction.toLowerCase();
+    navigate(`/lines/${lineNumber}/directions/${directionParam}/stops`);
   };
 
   // Handle the case when no directions are available
@@ -126,7 +145,7 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
             This bus line doesn't have any available directions at the moment.
           </p>
           <button 
-            onClick={() => window.history.back()}
+            onClick={() => navigate(-1)}
             className="w-full py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg flex items-center justify-center font-medium transition-colors"
           >
             Go Back
@@ -137,7 +156,7 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
   }
 
   // Show the bus stops in 2-column grid after direction selection
-  if (showStops && selectedLine && selectedStops.length > 0) {
+  if (showStopsView && selectedLine && selectedStops.length > 0) {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="container-default max-w-4xl mx-auto py-4">
@@ -171,7 +190,7 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
             </div>
             
             <button 
-              onClick={() => setShowStops(false)}
+              onClick={onBack}
               className="p-2 rounded-full hover:bg-gray-100"
             >
               <IconBack size={20} className="text-gray-600" />
@@ -409,7 +428,7 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => handleDirectionClick(direction.key, line, stops)}
+                onClick={() => handleDirectionClick(direction.key, line)}
                 className={`
                   bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transition-all duration-300
                   border-2 ${isSelected 

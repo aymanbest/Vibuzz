@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
+import { Routes, Route, useNavigate, useParams, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import FloatingHeader from './components/FloatingHeader';
 import LineSelector from './components/LineSelector';
 import DirectionSelector from './components/DirectionSelector'; 
 import BusTrackingView from './components/BusTrackingView';
@@ -72,17 +72,59 @@ function useBusStopsForBothDirections(forwardLineId: string | null, backwardLine
 // Define the steps for the user flow
 
 function App() {
-  // Step management
-  const [currentStep, setCurrentStep] = useState(1);
-  const [selectedLineNumber, setSelectedLineNumber] = useState<string | null>(null);
-  const [selectedDirection, setSelectedDirection] = useState<'FORWARD' | 'BACKWARD' | null>(null);
-  const [selectedLineId, setSelectedLineId] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  return (
+    <div className="min-h-screen w-full bg-gradient-to-br from-slate-50 to-blue-50/30">
+      <Routes>
+        <Route path="/" element={<Navigate to="/lines" replace />} />
+        <Route path="/lines" element={<LinesPage />} />
+        <Route path="/lines/:lineNumber/directions" element={<DirectionsPage />} />
+        <Route path="/lines/:lineNumber/directions/:direction/stops" element={<DirectionStopsPage />} />
+        <Route path="/lines/:lineNumber/directions/:direction/tracking" element={<TrackingPage />} />
+      </Routes>
+    </div>
+  );
+}
 
-  // API hooks
-  const { location: userLocation, loading: locationLoading, error: locationError, refreshLocation } = useUserLocation();
+// Individual page components
+function LinesPage() {
+  const navigate = useNavigate();
   const { data: busLines, loading: linesLoading, error: linesError } = useBusLines('KENITRA');
-  
+
+  const handleLineSelect = (lineId: string) => {
+    const line = busLines.find(l => l.id === lineId);
+    if (line) {
+      navigate(`/lines/${line.line}/directions`);
+    }
+  };
+
+  return (
+    <div className="pt-24 min-h-screen">
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+        >
+          <LineSelector
+            lines={busLines}
+            selectedLineId={null}
+            onLineSelect={handleLineSelect}
+            loading={linesLoading}
+            error={linesError}
+          />
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function DirectionsPage() {
+  const { lineNumber } = useParams<{ lineNumber: string }>();
+  const navigate = useNavigate();
+  const { location: userLocation } = useUserLocation();
+  const { data: busLines, loading: busLinesLoading } = useBusLines('KENITRA');
+
   // Group lines by line number for direction selection
   const linesByNumber = useMemo(() => {
     return busLines.reduce((acc, line) => {
@@ -94,35 +136,163 @@ function App() {
     }, {} as Record<string, { forward: BusLine | null; backward: BusLine | null }>);
   }, [busLines]);
 
-  // Get available directions for selected line number
-  const availableDirections = selectedLineNumber ? linesByNumber[selectedLineNumber] : null;
+  const availableDirections = lineNumber ? linesByNumber[lineNumber] : null;
   
   // Fetch stops for both directions when line number is selected
-  const { forwardStops, backwardStops, loading: stopsLoading, error: stopsError } = useBusStopsForBothDirections(
+  const { forwardStops, backwardStops } = useBusStopsForBothDirections(
     availableDirections?.forward?.id || null,
     availableDirections?.backward?.id || null
   );
 
-  // Get bus stops data for the selected direction
-  const { data: busStopsData, loading: currentStopsLoading, error: currentStopsError } = useBusStops(selectedLineId);
-  
-  // Extract bus info from selected line
+  const handleDirectionSelect = (direction: 'FORWARD' | 'BACKWARD', _line: BusLine) => {
+    navigate(`/lines/${lineNumber}/directions/${direction.toLowerCase()}/stops`);
+  };
+
+  // Show loading while bus lines are being fetched
+  if (busLinesLoading) {
+    return (
+      <div className="pt-24 min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading directions...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Only redirect if we have loaded the data and still no directions found
+  if (!busLinesLoading && !availableDirections) {
+    return <Navigate to="/lines" replace />;
+  }
+
+  // Don't render if still loading or no directions available
+  if (!availableDirections) {
+    return null;
+  }
+
+  return (
+    <div className="pt-24 min-h-screen">
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+        >
+          <DirectionSelector
+            forwardLine={availableDirections.forward}
+            backwardLine={availableDirections.backward}
+            selectedDirection={null}
+            onDirectionSelect={handleDirectionSelect}
+            forwardStops={forwardStops?.stops || []}
+            backwardStops={backwardStops?.stops || []}
+            userLocation={userLocation}
+          />
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function DirectionStopsPage() {
+  const { lineNumber, direction } = useParams<{ lineNumber: string; direction: string }>();
+  const navigate = useNavigate();
+  const { location: userLocation } = useUserLocation();
+  const { data: busLines, loading: busLinesLoading } = useBusLines('KENITRA');
+
+  // Find the selected line based on line number and direction
   const selectedLine = useMemo(() => {
-    return busLines.find(line => line.id === selectedLineId) || null;
-  }, [busLines, selectedLineId]);
+    return busLines.find(line => 
+      line.line === lineNumber && 
+      line.direction === direction?.toUpperCase()
+    ) || null;
+  }, [busLines, lineNumber, direction]);
+
+  // Fetch stops for the selected direction
+  const { forwardStops, backwardStops } = useBusStopsForBothDirections(
+    direction?.toUpperCase() === 'FORWARD' ? selectedLine?.id || null : null,
+    direction?.toUpperCase() === 'BACKWARD' ? selectedLine?.id || null : null
+  );
+
+  const stops = direction?.toUpperCase() === 'FORWARD' ? 
+    (forwardStops?.stops || []) : 
+    (backwardStops?.stops || []);
+
+  const handleStopSelect = () => {
+    navigate(`/lines/${lineNumber}/directions/${direction}/tracking`);
+  };
+
+  const handleBack = () => {
+    navigate(`/lines/${lineNumber}/directions`);
+  };
+
+  // Show loading while bus lines are being fetched
+  if (busLinesLoading) {
+    return (
+      <div className="pt-24 min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading stops...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Only redirect if we have loaded the data and still no line found
+  if (!busLinesLoading && !selectedLine) {
+    return <Navigate to="/lines" replace />;
+  }
+
+  // Don't render if still loading or no line available
+  if (!selectedLine) {
+    return null;
+  }
+
+  return (
+    <div className="pt-24 min-h-screen">
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+        >
+          <DirectionSelector
+            forwardLine={direction?.toUpperCase() === 'FORWARD' ? selectedLine : null}
+            backwardLine={direction?.toUpperCase() === 'BACKWARD' ? selectedLine : null}
+            selectedDirection={direction?.toUpperCase() as 'FORWARD' | 'BACKWARD'}
+            onDirectionSelect={handleStopSelect}
+            forwardStops={direction?.toUpperCase() === 'FORWARD' ? stops : []}
+            backwardStops={direction?.toUpperCase() === 'BACKWARD' ? stops : []}
+            userLocation={userLocation}
+            showStopsView={true}
+            onBack={handleBack}
+          />
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function TrackingPage() {
+  const { lineNumber, direction } = useParams<{ lineNumber: string; direction: string }>();
+  const { location: userLocation, loading: locationLoading, refreshLocation } = useUserLocation();
+  const { data: busLines, loading: busLinesLoading } = useBusLines('KENITRA');
   
-  const { data: busPositionsData, loading: positionsLoading, error: positionsError } = useBusPositions(
+  // Find the selected line
+  const selectedLine = useMemo(() => {
+    return busLines.find(line => 
+      line.line === lineNumber && 
+      line.direction === direction?.toUpperCase()
+    ) || null;
+  }, [busLines, lineNumber, direction]);
+
+  const { data: busStopsData, loading: currentStopsLoading } = useBusStops(selectedLine?.id || null);
+  const { data: busPositionsData, loading: positionsLoading } = useBusPositions(
     selectedLine?.company,
     selectedLine?.line,
     selectedLine?.direction
   );
-
-  // Handle window resize for mobile detection
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   // Extract bus stops and route path
   const busStops = busStopsData?.stops || [];
@@ -159,79 +329,43 @@ function App() {
     return findClosestBusStop(userLocation, busStops);
   }, [userLocation, busStops]);
 
-  const isLoading = locationLoading || linesLoading || stopsLoading || currentStopsLoading || positionsLoading;
-  const errors = [locationError, linesError, stopsError, currentStopsError, positionsError].filter(Boolean);
-  const hasError = errors.length > 0;
-
-  // Step handlers
-  const handleLineSelect = (lineId: string) => {
-    const line = busLines.find(l => l.id === lineId);
-    if (line) {
-      setSelectedLineNumber(line.line);
-      setCurrentStep(2);
-    }
-  };
-
-  const handleDirectionSelect = (direction: 'FORWARD' | 'BACKWARD', line: BusLine) => {
-    setSelectedDirection(direction);
-    setSelectedLineId(line.id);
-    
-    // Store the line ID in session storage to persist between refreshes
-    window.sessionStorage.setItem('selectedLineId', line.id);
-    window.sessionStorage.setItem('selectedDirection', direction);
-    
-    setCurrentStep(3);
-  };
-
-  const handleBackToLines = () => {
-    setSelectedLineNumber(null);
-    setSelectedDirection(null);
-    setSelectedLineId(null);
-    setCurrentStep(1);
-  };
-
-  const handleBackToDirections = () => {
-    setSelectedDirection(null);
-    setSelectedLineId(null);
-    setCurrentStep(2);
-  };
+  const isLoading = locationLoading || currentStopsLoading || positionsLoading;
 
   const handleLocationClick = () => {
-    // Manually refresh location
     refreshLocation();
   };
 
-  // Determine which view to show
-  const renderCurrentView = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <LineSelector
-            lines={busLines}
-            selectedLineId={selectedLineId}
-            onLineSelect={handleLineSelect}
-            loading={linesLoading}
-            error={linesError}
-          />
-        );
-      
-      case 2:
-        if (!availableDirections) return null;
-        return (
-          <DirectionSelector
-            forwardLine={availableDirections.forward}
-            backwardLine={availableDirections.backward}
-            selectedDirection={selectedDirection}
-            onDirectionSelect={handleDirectionSelect}
-            forwardStops={forwardStops?.stops || []}
-            backwardStops={backwardStops?.stops || []}
-            userLocation={userLocation}
-          />
-        );
-      
-      case 3:
-        if (!selectedLine) return null;
-        return (
+  // Show loading while bus lines are being fetched
+  if (busLinesLoading) {
+    return (
+      <div className="pt-0 min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading tracking data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Only redirect if we have loaded the data and still no line found
+  if (!busLinesLoading && !selectedLine) {
+    return <Navigate to="/lines" replace />;
+  }
+
+  // Don't render if still loading or no line available
+  if (!selectedLine) {
+    return null;
+  }
+
+  return (
+    <div className="pt-0 min-h-screen">
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+        >
           <BusTrackingView
             selectedLine={selectedLine}
             busStops={busStops}
@@ -242,64 +376,8 @@ function App() {
             isLoading={isLoading}
             onLocateClick={handleLocationClick}
           />
-        );
-      
-      default:
-        return null;
-    }
-  };
-
-  const getBackHandler = () => {
-    switch (currentStep) {
-      case 2:
-        return handleBackToLines;
-      case 3:
-        return handleBackToDirections;
-      default:
-        return undefined;
-    }
-  };
-
-  return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-slate-50 to-blue-50/30">
-      {/* Floating Header */}
-      <FloatingHeader
-        currentStep={currentStep}
-        selectedLineNumber={selectedLineNumber}
-        selectedDirection={selectedDirection}
-        selectedLine={selectedLine}
-        onBack={getBackHandler()}
-        showLocationButton={currentStep === 3}
-        onLocationClick={handleLocationClick}
-        isMobile={isMobile}
-      />
-
-      {/* Main Content */}
-      <div className={`${currentStep === 3 ? 'pt-0' : isMobile ? 'pt-20' : 'pt-24'} min-h-screen`}>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentStep}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-          >
-            {renderCurrentView()}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Error Display */}
-      {hasError && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="fixed bottom-6 right-6 bg-red-500/90 backdrop-blur text-white p-4 rounded-2xl shadow-xl max-w-sm z-50 border border-red-400/20"
-        >
-          <h4 className="font-semibold mb-2">Connection Error</h4>
-          <p className="text-sm text-red-100">{errors[0]}</p>
         </motion.div>
-      )}
+      </AnimatePresence>
     </div>
   );
 }

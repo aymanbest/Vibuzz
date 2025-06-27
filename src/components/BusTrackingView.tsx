@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatTime } from '../utils';
 import { 
@@ -39,6 +40,7 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
   isLoading,
   onLocateClick
 }) => {
+  const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
   // Default to map view for better UX
   const [view, setView] = useState<'stops' | 'map'>('map');
@@ -184,13 +186,12 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
       <div className="h-screen flex flex-col bg-gray-50">
         {/* Mobile header with improved contrast and spacing */}
         <div className="bg-white shadow-md z-10">
-          <div className="flex items-center p-3">
-            <button 
-              onClick={() => window.history.back()}
-              className="p-2 rounded-full hover:bg-gray-100 mr-2"
-            >
-              <IconChevronLeft size={20} className="text-gray-600" />
-            </button>
+          <div className="flex items-center p-3">          <button 
+            onClick={() => navigate(-1)}
+            className="p-2 rounded-full hover:bg-gray-100 mr-2"
+          >
+            <IconChevronLeft size={20} className="text-gray-600" />
+          </button>
             
             <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3
               ${selectedLine.direction === 'FORWARD' 
@@ -454,7 +455,7 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
       <div className="bg-white shadow-sm z-10">
         <div className="flex items-center p-3">
           <button 
-            onClick={() => window.history.back()}
+            onClick={() => navigate(-1)}
             className="p-2 rounded-full hover:bg-gray-100 mr-2"
           >
             <IconChevronLeft size={20} className="text-gray-600" />
