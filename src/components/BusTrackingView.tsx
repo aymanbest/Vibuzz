@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { formatTime, calculateDistance } from '../utils';
+import { formatTime, calculateDistance, formatDistance } from '../utils';
 import { 
   IconBus,
   IconList,
@@ -15,8 +15,7 @@ import {
   IconSearch,
   IconBookmark,
   IconArrowsLeftRight,
-  IconChevronDown,
-  IconMapPin
+  IconChevronDown
 } from '@tabler/icons-react';
 import type { BusLine, BusStop, BusPosition, UserLocation } from '../types';
 import MapComponent from './MapComponent';
@@ -185,7 +184,9 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
       // For forward direction: bus has passed if it's at a higher index than closest stop
       hasPassed = busClosestStopIndex > closestStopIndex;
     } else {
-      // For backward direction: bus has passed if it's at a lower index than closest stop
+      // For backward/return direction: In return, the bus travels from high index to low index
+      // So the bus has passed if it's at a lower index than the closest stop
+      // This means the bus already went past the user's stop
       hasPassed = busClosestStopIndex < closestStopIndex;
     }
     
@@ -539,8 +540,8 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
       <div className="flex-1 flex overflow-hidden">
         {/* Main Content Area - Overview + Map */}
         <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-          {/* Overview Panel - Top on mobile, Left on desktop */}
-          <div className={`lg:w-96 xl:w-[28rem] flex-shrink-0 overflow-y-auto ${isDark ? 'bg-gray-900' : 'bg-gray-50'} lg:border-r ${isDark ? 'lg:border-gray-700' : 'lg:border-gray-200'}`}>
+          {/* Overview Panel - Hidden on mobile, Left on desktop */}
+          <div className={`hidden lg:block lg:w-96 xl:w-[28rem] flex-shrink-0 overflow-y-auto ${isDark ? 'bg-gray-900' : 'bg-gray-50'} lg:border-r ${isDark ? 'lg:border-gray-700' : 'lg:border-gray-200'}`}>
             <QuickStats />
             
             {/* Closest Stop Hero Card */}
@@ -557,7 +558,7 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
                       <h3 className="text-lg font-bold">Closest Stop</h3>
                     </div>
                     <span className="bg-white/20 rounded-full px-3 py-1 text-sm font-medium">
-                      {formatTime(closestStop.eta)} min
+                      {formatTime(closestStop.eta)}
                     </span>
                   </div>
                   <p className="text-white/90 mb-4 font-medium text-base">{closestStop.name}</p>
@@ -763,7 +764,7 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
             </div>
           </div>
           
-          {/* Map Area - Bottom on mobile, Right on desktop */}
+          {/* Map Area - Full screen on mobile, Right on desktop */}
           <div className="flex-1 relative">
             <MapComponent
               busPositions={busPositions}
@@ -779,131 +780,388 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
               canSetManualLocation={canSelectManually}
             />
             
-            {/* Floating Direction Switch Button - Top Right of Map */}
-            <div className="absolute top-4 right-4 z-40">
-              <button
-                onClick={() => handleDirectionSwitch()}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-xl shadow-xl border-2 transition-all duration-200 transform hover:scale-105 active:scale-95 ${
-                  selectedLine.direction === 'FORWARD'
-                    ? isDark
-                      ? 'bg-gradient-to-r from-green-600 to-green-700 border-green-500 text-white'
-                      : 'bg-gradient-to-r from-green-500 to-green-600 border-green-400 text-white'
-                    : isDark
-                      ? 'bg-gradient-to-r from-orange-600 to-orange-700 border-orange-500 text-white'
-                      : 'bg-gradient-to-r from-orange-500 to-orange-600 border-orange-400 text-white'
-                } backdrop-blur-sm`}
-                style={{ zIndex: 1003 }}
-              >
-                <div className="flex items-center space-x-2">
-                  <IconArrowsLeftRight size={20} />
-                  <div className="text-left">
-                    <div className="text-sm font-bold">
-                      {selectedLine.direction === 'FORWARD' ? 'Forward' : 'Return'}
-                    </div>
-                    <div className="text-xs opacity-90">
-                      Tap to switch
-                    </div>
+            {/* Mobile Floating Controls - Simplified for mobile priority */}
+            <div className="lg:hidden">
+              {/* Top Bar - Line & Direction Controls */}
+              <div className="absolute top-4 left-4 right-4 z-50">
+                <div className="flex items-center justify-between space-x-3">
+                  {/* Line Selector */}
+                  <div className="relative line-selector">
+                    <button
+                      onClick={() => setShowLineSelector(!showLineSelector)}
+                      className={`flex items-center space-x-2 px-3 py-2 rounded-2xl shadow-xl transition-all backdrop-blur-md ${
+                        isDark 
+                          ? 'bg-gray-800/90 hover:bg-gray-700/90 text-white border border-gray-600' 
+                          : 'bg-white/90 hover:bg-gray-50/90 text-gray-900 border border-gray-300'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shadow-sm ${
+                        selectedLine.direction === 'FORWARD' 
+                          ? 'bg-gradient-to-br from-green-500 to-green-600' 
+                          : 'bg-gradient-to-br from-orange-500 to-orange-600'
+                      }`}>
+                        <span className="text-white font-bold text-sm">{selectedLine.line}</span>
+                      </div>
+                      <IconChevronDown size={16} className={isDark ? 'text-gray-400' : 'text-gray-600'} />
+                    </button>
+                    
+                    {/* Line Dropdown */}
+                    <AnimatePresence>
+                      {showLineSelector && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className={`absolute top-full left-0 mt-2 w-48 rounded-xl shadow-xl border z-50 backdrop-blur-md ${
+                            isDark 
+                              ? 'bg-gray-800/95 border-gray-600' 
+                              : 'bg-white/95 border-gray-300'
+                          }`}
+                        >
+                          <div className="p-2 max-h-60 overflow-y-auto">
+                            {busLines
+                              .reduce((acc: string[], line) => {
+                                if (!acc.includes(line.line)) acc.push(line.line);
+                                return acc;
+                              }, [])
+                              .map((lineNumber) => (
+                                <button
+                                  key={lineNumber}
+                                  onClick={() => handleLineSwitch(lineNumber)}
+                                  className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
+                                    lineNumber === selectedLine.line
+                                      ? isDark
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-blue-500 text-white'
+                                      : isDark
+                                        ? 'hover:bg-gray-700 text-gray-300'
+                                        : 'hover:bg-gray-100 text-gray-700'
+                                  }`}
+                                >
+                                  <div className={`w-6 h-6 rounded flex items-center justify-center text-xs font-bold ${
+                                    lineNumber === selectedLine.line
+                                      ? 'bg-white/20 text-white'
+                                      : isDark
+                                        ? 'bg-gray-600 text-gray-200'
+                                        : 'bg-gray-200 text-gray-700'
+                                  }`}>
+                                    {lineNumber}
+                                  </div>
+                                  <span className="text-sm font-medium">Line {lineNumber}</span>
+                                </button>
+                              ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                </div>
-                <IconChevronRight size={16} className="opacity-70" />
-              </button>
-            </div>
-            
-            {/* Floating Bus Count - Bottom Right */}
-            {busPositions.length > 0 && (
-              <div className={`absolute bottom-4 right-4 px-3 py-2 rounded-lg shadow-lg ${
-                isDark ? 'bg-gray-800/90 text-white' : 'bg-white/90 text-gray-900'
-              }`}>
-                <div className="flex items-center space-x-2 text-sm font-medium">
-                  <IconBus size={16} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
-                  <span>{busPositions.length} active</span>
-                </div>
-              </div>
-            )}
-            
-            {/* Enhanced Floating Controls */}
-            <div className={`absolute bottom-4 right-4 flex flex-col space-y-3`}>
-              {/* Line Quick Switch */}
-              <div className={`px-4 py-3 rounded-xl shadow-lg border ${
-                isDark ? 'bg-gray-800/95 text-white border-gray-600' : 'bg-white/95 text-gray-900 border-gray-200'
-              }`}>
-                <div className="flex items-center space-x-3">
-                  <IconMapPin size={16} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
-                  <span className="text-sm font-medium">Line {selectedLine.line}</span>
+
+                  {/* Direction Switch */}
                   <button
-                    onClick={() => setShowLineSelector(!showLineSelector)}
-                    className={`p-1 rounded-full transition-all hover:scale-110 ${
-                      isDark 
-                        ? 'hover:bg-gray-700 text-gray-400 hover:text-blue-400' 
-                        : 'hover:bg-gray-100 text-gray-500 hover:text-blue-600'
+                    onClick={() => handleDirectionSwitch()}
+                    className={`flex items-center space-x-2 px-4 py-3 rounded-2xl shadow-xl transition-all duration-200 transform active:scale-95 backdrop-blur-md ${
+                      selectedLine.direction === 'FORWARD'
+                        ? isDark
+                          ? 'bg-green-600/90 border border-green-500 text-white'
+                          : 'bg-green-500/90 border border-green-400 text-white'
+                        : isDark
+                          ? 'bg-orange-600/90 border border-orange-500 text-white'
+                          : 'bg-orange-500/90 border border-orange-400 text-white'
                     }`}
-                    title="Change line"
                   >
-                    <IconChevronDown size={14} />
+                    <IconArrowsLeftRight size={18} />
+                    <div className="text-left">
+                      <div className="text-sm font-bold">
+                        {selectedLine.direction === 'FORWARD' ? 'Forward' : 'Return'}
+                      </div>
+                    </div>
                   </button>
                 </div>
               </div>
-              
-              {/* Direction Quick Switch */}
-              <button
-                onClick={handleDirectionSwitch}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-xl shadow-lg transition-all hover:scale-105 ${
+
+              {/* Bottom Essential Info - Compact */}
+              <div className="absolute bottom-4 left-4 right-4 z-40">
+                <div className={`rounded-2xl p-3 shadow-xl backdrop-blur-lg border ${
                   isDark 
-                    ? 'bg-blue-600/95 hover:bg-blue-700 text-white' 
-                    : 'bg-blue-500/95 hover:bg-blue-600 text-white'
-                }`}
-                title={`Switch to ${selectedLine.direction === 'FORWARD' ? 'Return' : 'Outbound'} direction`}
-              >
-                <IconArrowsLeftRight size={18} />
-                <div className="text-left">
-                  <div className="text-sm font-medium">Switch Direction</div>
-                  <div className="text-xs opacity-90">
-                    To {selectedLine.direction === 'FORWARD' ? 'Return' : 'Outbound'}
+                    ? 'bg-gray-900/95 border-gray-700' 
+                    : 'bg-white/95 border-gray-200'
+                }`}>
+                  {/* Primary Info Row - Always Visible */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-4">
+                      {/* Bus Count */}
+                      <div className="flex items-center space-x-2">
+                        <IconBus size={18} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
+                        <span className={`font-bold text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                          {busPositions.length}
+                        </span>
+                        <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                          buses
+                        </span>
+                      </div>
+                      
+                      {/* Next Bus ETA */}
+                      {(() => {
+                        const nextBus = getNextBusETA();
+                        return nextBus ? (
+                          <div className="flex items-center space-x-2">
+                            <IconTarget size={18} className={isDark ? 'text-green-400' : 'text-green-600'} />
+                            <span className={`font-bold text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                              {nextBus.eta}
+                            </span>
+                            <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                              min
+                            </span>
+                          </div>
+                        ) : null;
+                      })()}
+                    </div>
+
+                    {/* Action Buttons - Compact */}
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={handleRefreshLocation}
+                        disabled={isLoading}
+                        className={`w-9 h-9 rounded-xl transition-all duration-200 transform active:scale-95 flex items-center justify-center disabled:opacity-50 ${
+                          isDark 
+                            ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' 
+                            : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                        }`}
+                      >
+                        <IconRefresh size={14} className={isLoading ? 'animate-spin' : ''} />
+                      </button>
+                      
+                      <button
+                        onClick={() => setShowStopsList(!showStopsList)}
+                        className={`w-9 h-9 rounded-xl transition-all duration-200 transform active:scale-95 flex items-center justify-center ${
+                          showStopsList
+                            ? isDark
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-blue-500 text-white'
+                            : isDark 
+                              ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' 
+                              : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                        }`}
+                      >
+                        <IconList size={14} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Closest Stop Info - Collapsible on tap */}
+                  {closestStop && userLocation && (
+                    <div className={`text-sm border-t pt-2 ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 min-w-0">
+                          <p className={`font-medium truncate text-xs ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                            {closestStop.name}
+                          </p>
+                          <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                            {formatDistance(calculateDistance(userLocation, {
+                              lat: closestStop.coordinates.latitude,
+                              lng: closestStop.coordinates.longitude
+                            }))} • {formatTime(closestStop.eta)}
+                          </p>
+                        </div>
+                        <button 
+                          onClick={() => setSelectedStop(closestStop)}
+                          className={`ml-2 px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
+                            isDark
+                              ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                              : 'bg-blue-500 hover:bg-blue-600 text-white'
+                          }`}
+                        >
+                          Focus
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop Floating Controls - Only visible on desktop */}
+            <div className="hidden lg:block">
+              {/* Floating Direction Switch Button - Top Right of Map */}
+              <div className="absolute top-4 right-4 z-40">
+                <button
+                  onClick={() => handleDirectionSwitch()}
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-xl shadow-xl border-2 transition-all duration-200 transform hover:scale-105 active:scale-95 ${
+                    selectedLine.direction === 'FORWARD'
+                      ? isDark
+                        ? 'bg-gradient-to-r from-green-600 to-green-700 border-green-500 text-white'
+                        : 'bg-gradient-to-r from-green-500 to-green-600 border-green-400 text-white'
+                      : isDark
+                        ? 'bg-gradient-to-r from-orange-600 to-orange-700 border-orange-500 text-white'
+                        : 'bg-gradient-to-r from-orange-500 to-orange-600 border-orange-400 text-white'
+                  } backdrop-blur-sm`}
+                  style={{ zIndex: 1003 }}
+                >
+                  <div className="flex items-center space-x-2">
+                    <IconArrowsLeftRight size={20} />
+                    <div className="text-left">
+                      <div className="text-sm font-bold">
+                        {selectedLine.direction === 'FORWARD' ? 'Forward' : 'Return'}
+                      </div>
+                      <div className="text-xs opacity-90">
+                        Tap to switch
+                      </div>
+                    </div>
+                  </div>
+                  <IconChevronRight size={16} className="opacity-70" />
+                </button>
+              </div>
+              
+              {/* Floating Bus Count - Bottom Right */}
+              {busPositions.length > 0 && (
+                <div className={`absolute bottom-4 right-4 px-3 py-2 rounded-lg shadow-lg ${
+                  isDark ? 'bg-gray-800/90 text-white' : 'bg-white/90 text-gray-900'
+                }`}>
+                  <div className="flex items-center space-x-2 text-sm font-medium">
+                    <IconBus size={16} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
+                    <span>{busPositions.length} active</span>
                   </div>
                 </div>
-              </button>
+              )}
             </div>
           </div>
         </div>
         
-        {/* Sliding Stops Panel */}
+        {/* Mobile Stops List Overlay - Full screen on mobile when showStopsList is true */}
+        <AnimatePresence>
+          {showStopsList && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+              onClick={() => setShowStopsList(false)}
+            />
+          )}
+        </AnimatePresence>
+        
+        <AnimatePresence>
+          {showStopsList && (
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className={`lg:hidden fixed inset-x-0 bottom-0 top-16 z-50 shadow-2xl flex flex-col ${
+                isDark ? 'bg-gray-900' : 'bg-white'
+              }`}
+              style={{ zIndex: 1004 }}
+            >
+              {/* Mobile Header */}
+              <div className={`flex-shrink-0 border-b ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+                <div className="flex items-center justify-between p-4">
+                  <div className="flex items-center space-x-3">
+                    <button
+                      onClick={() => setShowStopsList(false)}
+                      className={`p-2 rounded-full transition-colors ${
+                        isDark ? 'hover:bg-gray-800 text-gray-400' : 'hover:bg-gray-100 text-gray-600'
+                      }`}
+                    >
+                      <IconChevronLeft size={24} />
+                    </button>
+                    <div>
+                      <h3 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        All Bus Stops
+                      </h3>
+                      <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                        {busStops.length} stops • Line {selectedLine.line}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Mobile Search Bar */}
+                <div className="px-4 pb-4">
+                  <div className="relative">
+                    <IconSearch size={20} className={`absolute left-4 top-1/2 transform -translate-y-1/2 ${
+                      isDark ? 'text-gray-400' : 'text-gray-500'
+                    }`} />
+                    <input
+                      type="text"
+                      placeholder="Search bus stops..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className={`w-full pl-12 pr-4 py-4 rounded-2xl border text-base ${
+                        isDark 
+                          ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' 
+                          : 'bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500'
+                      }`}
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Mobile Stops List - Scrollable */}
+              <div 
+                className="flex-1 overflow-y-auto min-h-0" 
+                style={{ 
+                  height: 'calc(100vh - 180px)',
+                }}
+              >
+                <BusStopsList
+                  stops={busStops.filter(stop =>
+                    stop.name.toLowerCase().includes(searchTerm.toLowerCase())
+                  )}
+                  onStopSelect={(stop) => {
+                    handleStopSelect(stop);
+                    setShowStopsList(false);
+                  }}
+                  userLocation={userLocation}
+                  closestStop={closestStop}
+                  listType="detailed"
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        {/* Desktop Stops List Overlay - Only visible on desktop when showStopsList is true */}
+        <AnimatePresence>
+          {showStopsList && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="hidden lg:block fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+              onClick={() => setShowStopsList(false)}
+            />
+          )}
+        </AnimatePresence>
+        
         <AnimatePresence>
           {showStopsList && (
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'tween', duration: 0.3 }}
-              className={`fixed inset-y-0 right-0 w-full md:w-96 z-50 shadow-xl flex flex-col ${
-                isDark ? 'bg-gray-900' : 'bg-white'
-              } border-l ${isDark ? 'border-gray-700' : 'border-gray-200'}`}
-              style={{ height: '100vh' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className={`hidden lg:block fixed right-0 top-0 h-full w-96 z-50 shadow-2xl border-l flex flex-col ${
+                isDark ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200'
+              }`}
+              style={{ zIndex: 1004 }}
             >
-              {/* Stops Panel Header - Fixed */}
-              <div className={`flex-shrink-0 backdrop-blur-lg border-b ${
-                isDark 
-                  ? 'bg-gray-900/95 border-gray-700' 
-                  : 'bg-white/95 border-gray-200'
-              }`}>
-                <div className="px-4 py-3 flex items-center justify-between">
-                  <h2 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                    All Stops ({busStops.filter(stop =>
-                      stop.name.toLowerCase().includes(searchTerm.toLowerCase())
-                    ).length})
-                  </h2>
+              {/* Desktop Header */}
+              <div className={`flex-shrink-0 border-b ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
+                <div className="flex items-center justify-between p-4">
+                  <h3 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    All Bus Stops
+                  </h3>
                   <button
                     onClick={() => setShowStopsList(false)}
                     className={`p-2 rounded-full transition-colors ${
-                      isDark 
-                        ? 'hover:bg-gray-800 text-gray-300' 
-                        : 'hover:bg-gray-100 text-gray-600'
+                      isDark ? 'hover:bg-gray-800 text-gray-400' : 'hover:bg-gray-100 text-gray-600'
                     }`}
                   >
                     <IconChevronLeft size={20} />
                   </button>
                 </div>
                 
-                {/* Search Bar */}
+                {/* Desktop Search Bar */}
                 <div className="px-4 pb-3">
                   <div className="relative">
                     <IconSearch size={20} className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${
@@ -924,7 +1182,7 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
                 </div>
               </div>
               
-              {/* Stops List - Scrollable */}
+              {/* Desktop Stops List - Scrollable */}
               <div 
                 className="flex-1 overflow-y-auto min-h-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100" 
                 style={{ 

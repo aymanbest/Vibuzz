@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { formatTime } from '../utils';
+import { useTheme } from '../contexts/ThemeContext';
 import { 
   IconArrowRight,
   IconArrowLeft,
@@ -15,6 +16,9 @@ import {
   IconClock,
   IconGps,
   IconArrowLeft as IconBack,
+  IconArrowUp,
+  IconArrowDown,
+  IconEye,
 } from '@tabler/icons-react';
 import type { BusLine, BusStop, UserLocation } from '../types';
 
@@ -41,9 +45,12 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
   showStopsView = false,
   onBack,
 }) => {
+  const { isDark } = useTheme();
   const navigate = useNavigate();
   const [selectedLine, setSelectedLine] = useState<BusLine | null>(null);
   const [selectedStops, setSelectedStops] = useState<BusStop[]>([]);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
+  const [showScrollToBottom, setShowScrollToBottom] = useState(false);
   
   // Set up selected line and stops based on the current direction
   useEffect(() => {
@@ -57,6 +64,44 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
       }
     }
   }, [showStopsView, selectedDirection, forwardLine, backwardLine, forwardStops, backwardStops]);
+
+  // Handle scroll events for navigation buttons
+  useEffect(() => {
+    if (!showStopsView) return;
+
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      // Show scroll to top when scrolled down 200px
+      setShowScrollToTop(scrollTop > 200);
+      
+      // Show scroll to bottom when not at bottom
+      setShowScrollToBottom(scrollTop + windowHeight < documentHeight - 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial state
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [showStopsView]);
+
+  // Scroll utility functions
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const scrollToBottom = () => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+  };
+
+  const scrollToMapButton = () => {
+    const mapButton = document.getElementById('view-live-map-button');
+    if (mapButton) {
+      mapButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
   
   // Calculate distance between two points using Haversine formula
   function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -131,17 +176,27 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
   // Handle the case when no directions are available
   if (availableDirections.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className={`min-h-screen flex items-center justify-center p-4 ${
+        isDark ? 'bg-gray-900' : 'bg-gray-50'
+      }`}>
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-white rounded-xl shadow-md p-6 max-w-sm mx-auto text-center"
+          className={`rounded-xl shadow-md p-6 max-w-sm mx-auto text-center ${
+            isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white'
+          }`}
         >
-          <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-            <IconRoute size={32} className="text-gray-400" />
+          <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
+            isDark ? 'bg-gray-700' : 'bg-gray-100'
+          }`}>
+            <IconRoute size={32} className={isDark ? 'text-gray-400' : 'text-gray-400'} />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No Directions Available</h3>
-          <p className="text-gray-600 mb-4">
+          <h3 className={`text-lg font-medium mb-2 ${
+            isDark ? 'text-white' : 'text-gray-900'
+          }`}>No Directions Available</h3>
+          <p className={`mb-4 ${
+            isDark ? 'text-gray-300' : 'text-gray-600'
+          }`}>
             This bus line doesn't have any available directions at the moment.
           </p>
           <button 
@@ -158,30 +213,39 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
   // Show the bus stops in 2-column grid after direction selection
   if (showStopsView && selectedLine && selectedStops.length > 0) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <div className="container-default max-w-4xl mx-auto py-4">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-white rounded-xl shadow-sm p-4 mb-4 flex items-center sticky top-0 z-10"
+            className={`rounded-xl shadow-sm p-4 mb-4 flex items-center sticky top-0 z-20 ${
+              isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white'
+            }`}
           >
             <div className={`w-12 h-12 rounded-full flex items-center justify-center mr-4
               ${selectedLine.direction === 'FORWARD' 
-                ? 'bg-green-100 text-green-600' 
-                : 'bg-orange-100 text-orange-600'
+                ? isDark ? 'bg-green-800 text-green-200' : 'bg-green-100 text-green-600'
+                : isDark ? 'bg-orange-800 text-orange-200' : 'bg-orange-100 text-orange-600'
               }`}
             >
               <span className="text-lg font-bold">{selectedLine.line}</span>
             </div>
             
             <div className="flex-1">
-              <h1 className="text-lg font-bold text-gray-800 mb-1">
+              <h1 className={`text-lg font-bold mb-1 ${
+                isDark ? 'text-white' : 'text-gray-800'
+              }`}>
                 {selectedLine.label}
               </h1>
-              <div className="flex items-center text-sm text-gray-600">
-                <span className={selectedLine.direction === 'FORWARD' ? 'text-green-600' : 'text-orange-600'}>
+              <div className={`flex items-center text-sm ${
+                isDark ? 'text-gray-300' : 'text-gray-600'
+              }`}>
+                <span className={selectedLine.direction === 'FORWARD' 
+                  ? isDark ? 'text-green-400' : 'text-green-600' 
+                  : isDark ? 'text-orange-400' : 'text-orange-600'
+                }>
                   {selectedLine.direction === 'FORWARD' ? 'Outbound' : 'Return'}
                 </span>
                 <span className="mx-2">•</span>
@@ -191,44 +255,125 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
             
             <button 
               onClick={onBack}
-              className="p-2 rounded-full hover:bg-gray-100"
+              className={`p-2 rounded-full transition-colors ${
+                isDark 
+                  ? 'hover:bg-gray-700 text-gray-400 hover:text-gray-200' 
+                  : 'hover:bg-gray-100 text-gray-600'
+              }`}
             >
-              <IconBack size={20} className="text-gray-600" />
+              <IconBack size={20} />
             </button>
+          </motion.div>
+
+          {/* Quick Navigation Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className={`rounded-xl shadow-sm p-3 mb-4 ${
+              isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className={`flex items-center text-sm ${
+                isDark ? 'text-gray-300' : 'text-gray-600'
+              }`}>
+                <IconEye size={16} className="mr-2 text-primary-600" />
+                <span className="font-medium">Quick Navigation</span>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={scrollToMapButton}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center ${
+                    isDark 
+                      ? 'bg-primary-700 text-primary-100 hover:bg-primary-600 border border-primary-600' 
+                      : 'bg-primary-100 text-primary-700 hover:bg-primary-200 border border-primary-200'
+                  }`}
+                >
+                  <IconMapSearch size={14} className="mr-1" />
+                  Jump to Map
+                </button>
+                
+                {showScrollToBottom && (
+                  <button
+                    onClick={scrollToBottom}
+                    className={`p-1.5 rounded-lg transition-all ${
+                      isDark 
+                        ? 'hover:bg-gray-700 text-gray-400 hover:text-gray-200' 
+                        : 'hover:bg-gray-100 text-gray-600'
+                    }`}
+                    title="Scroll to bottom"
+                  >
+                    <IconArrowDown size={14} />
+                  </button>
+                )}
+                
+                {showScrollToTop && (
+                  <button
+                    onClick={scrollToTop}
+                    className={`p-1.5 rounded-lg transition-all ${
+                      isDark 
+                        ? 'hover:bg-gray-700 text-gray-400 hover:text-gray-200' 
+                        : 'hover:bg-gray-100 text-gray-600'
+                    }`}
+                    title="Scroll to top"
+                  >
+                    <IconArrowUp size={14} />
+                  </button>
+                )}
+              </div>
+            </div>
           </motion.div>
 
           {/* Bus stops in 2-column grid */}
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-            className="bg-white rounded-xl shadow-md mb-4 overflow-hidden"
+            transition={{ duration: 0.3, delay: 0.2 }}
+            className={`rounded-xl shadow-md mb-4 overflow-hidden ${
+              isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white'
+            }`}
           >
-            <div className="p-4 border-b border-gray-100">
-              <h2 className="font-semibold text-gray-800 flex items-center">
+            <div className={`p-4 border-b ${
+              isDark ? 'border-gray-700' : 'border-gray-100'
+            }`}>
+              <h2 className={`font-semibold flex items-center ${
+                isDark ? 'text-white' : 'text-gray-800'
+              }`}>
                 <IconMapPin size={18} className="mr-2 text-primary-600" />
                 All Bus Stops ({selectedStops.length})
               </h2>
               
               {/* Route summary */}
               {selectedStops.length > 0 && (
-                <div className="bg-gray-50 rounded-lg p-3 mt-3 flex items-center justify-between">
+                <div className={`rounded-lg p-3 mt-3 flex items-center justify-between ${
+                  isDark ? 'bg-gray-700' : 'bg-gray-50'
+                }`}>
                   <div className="flex items-center text-sm">
                     <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs mr-1.5">
                       1
                     </div>
-                    <span className="font-medium text-gray-800 truncate max-w-[140px]">{selectedStops[0].name}</span>
+                    <span className={`font-medium truncate max-w-[140px] ${
+                      isDark ? 'text-white' : 'text-gray-800'
+                    }`}>{selectedStops[0].name}</span>
                   </div>
                   
-                  <div className="flex-1 mx-2 h-0.5 bg-gray-300 relative">
-                    <div className="absolute inset-x-0 top-1/2 border-t border-dashed border-gray-400"></div>
+                  <div className={`flex-1 mx-2 h-0.5 relative ${
+                    isDark ? 'bg-gray-600' : 'bg-gray-300'
+                  }`}>
+                    <div className={`absolute inset-x-0 top-1/2 border-t border-dashed ${
+                      isDark ? 'border-gray-500' : 'border-gray-400'
+                    }`}></div>
                   </div>
                   
                   <div className="flex items-center text-sm">
                     <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white text-xs mr-1.5">
                       {selectedStops.length}
                     </div>
-                    <span className="font-medium text-gray-800 truncate max-w-[140px]">{selectedStops[selectedStops.length - 1].name}</span>
+                    <span className={`font-medium truncate max-w-[140px] ${
+                      isDark ? 'text-white' : 'text-gray-800'
+                    }`}>{selectedStops[selectedStops.length - 1].name}</span>
                   </div>
                 </div>
               )}
@@ -248,12 +393,20 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
                       className={`
                         p-3 rounded-lg cursor-pointer transition-all duration-300
                         ${isClosest 
-                          ? 'bg-blue-50 border-2 border-blue-400 shadow-md' 
+                          ? isDark 
+                            ? 'bg-blue-900 border-2 border-blue-500 shadow-md' 
+                            : 'bg-blue-50 border-2 border-blue-400 shadow-md'
                           : isFirstStop
-                            ? 'border-2 border-green-200 bg-green-50 shadow-sm'
+                            ? isDark
+                              ? 'border-2 border-green-600 bg-green-900 shadow-sm'
+                              : 'border-2 border-green-200 bg-green-50 shadow-sm'
                             : isLastStop
-                              ? 'border-2 border-red-200 bg-red-50 shadow-sm'
-                              : 'hover:bg-primary-50 border hover:border-primary-300 shadow-sm bg-white border-gray-200'}
+                              ? isDark
+                                ? 'border-2 border-red-600 bg-red-900 shadow-sm'
+                                : 'border-2 border-red-200 bg-red-50 shadow-sm'
+                              : isDark 
+                                ? 'hover:bg-gray-700 border hover:border-purple-600 shadow-sm bg-gray-800 border-gray-700'
+                                : 'hover:bg-primary-50 border hover:border-primary-300 shadow-sm bg-white border-gray-200'}
                       `}
                       whileHover={{ scale: 1.02, boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
                       onClick={() => {
@@ -281,24 +434,38 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
                           
                           {/* Special badges */}
                           {isClosest && (
-                            <span className="bg-blue-200 text-blue-800 text-xs px-2 py-0.5 rounded font-semibold">
+                            <span className={`text-xs px-2 py-0.5 rounded font-semibold ${
+                              isDark 
+                                ? 'bg-blue-200 text-blue-800' 
+                                : 'bg-blue-200 text-blue-800'
+                            }`}>
                               Closest
                             </span>
                           )}
                           {isFirstStop && !isClosest && (
-                            <span className="bg-green-200 text-green-800 text-xs px-2 py-0.5 rounded font-semibold">
+                            <span className={`text-xs px-2 py-0.5 rounded font-semibold ${
+                              isDark 
+                                ? 'bg-green-200 text-green-800' 
+                                : 'bg-green-200 text-green-800'
+                            }`}>
                               First
                             </span>
                           )}
                           {isLastStop && !isClosest && (
-                            <span className="bg-red-200 text-red-800 text-xs px-2 py-0.5 rounded font-semibold">
+                            <span className={`text-xs px-2 py-0.5 rounded font-semibold ${
+                              isDark 
+                                ? 'bg-red-200 text-red-800' 
+                                : 'bg-red-200 text-red-800'
+                            }`}>
                               Last
                             </span>
                           )}
                         </div>
                         
                         {/* Stop name */}
-                        <div className="font-medium text-gray-900 text-sm mb-2 leading-tight">
+                        <div className={`font-medium text-sm mb-2 leading-tight ${
+                          isDark ? 'text-white' : 'text-gray-900'
+                        }`}>
                           {stop.name}
                         </div>
                         
@@ -325,8 +492,12 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
                           className={`
                             mt-2 w-full py-1 text-xs font-medium rounded flex items-center justify-center transition-colors
                             ${isClosest 
-                              ? 'bg-blue-200 text-blue-800 hover:bg-blue-300' 
-                              : 'bg-primary-100 text-primary-700 hover:bg-primary-200'
+                              ? isDark
+                                ? 'bg-blue-700 text-blue-100 hover:bg-blue-600'
+                                : 'bg-blue-200 text-blue-800 hover:bg-blue-300'
+                              : isDark
+                                ? 'bg-primary-700 text-primary-100 hover:bg-primary-600'
+                                : 'bg-primary-100 text-primary-700 hover:bg-primary-200'
                             }
                           `}
                         >
@@ -343,23 +514,34 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
           
           {/* View Live Map Button */}
           <motion.div
+            id="view-live-map-button"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-            className="bg-white rounded-xl shadow-md p-4 border border-primary-100"
+            transition={{ duration: 0.3, delay: 0.3 }}
+            className={`rounded-xl shadow-md p-4 border ${
+              isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-primary-100'
+            }`}
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3">
-              <div className="flex items-center text-sm text-gray-700 font-medium mb-2 sm:mb-0">
-                <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center mr-2">
+              <div className={`flex items-center text-sm font-medium mb-2 sm:mb-0 ${
+                isDark ? 'text-gray-200' : 'text-gray-700'
+              }`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 ${
+                  isDark ? 'bg-primary-800' : 'bg-primary-100'
+                }`}>
                   <IconRoute size={18} className="text-primary-600" />
                 </div>
                 <div>
                   <span className="font-semibold">{selectedStops.length} bus stops</span>
-                  <span className="px-2 text-gray-500">•</span>
+                  <span className={`px-2 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>•</span>
                   <span>{formatTime(selectedLine?.firstStop?.eta || 0)} travel time</span>
                 </div>
               </div>
-              <div className="flex items-center text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-lg border border-green-200 font-medium shadow-sm">
+              <div className={`flex items-center text-xs px-2.5 py-1 rounded-lg border font-medium shadow-sm ${
+                isDark 
+                  ? 'bg-green-900 text-green-200 border-green-700' 
+                  : 'bg-green-100 text-green-700 border-green-200'
+              }`}>
                 <IconClock size={14} className="mr-1.5" />
                 <span>Live data available</span>
               </div>
@@ -376,17 +558,93 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
             </motion.button>
             
             {closestStop && (
-              <div className="mt-3 bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-center">
-                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+              <div className={`mt-3 border rounded-lg p-3 flex items-center ${
+                isDark 
+                  ? 'bg-blue-900 border-blue-700' 
+                  : 'bg-blue-50 border-blue-200'
+              }`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
+                  isDark ? 'bg-blue-800' : 'bg-blue-100'
+                }`}>
                   <IconGps size={18} className="text-blue-600" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-blue-800">Closest stop detected</p>
-                  <p className="text-xs text-blue-600 mt-0.5">{(closestStop as BusStop).name}</p>
+                  <p className={`text-sm font-medium ${
+                    isDark ? 'text-blue-200' : 'text-blue-800'
+                  }`}>Closest stop detected</p>
+                  <p className={`text-xs mt-0.5 ${
+                    isDark ? 'text-blue-300' : 'text-blue-600'
+                  }`}>{(closestStop as BusStop).name}</p>
                 </div>
               </div>
             )}
           </motion.div>
+        </div>
+
+        {/* Sticky Floating Action Buttons */}
+        <div className="fixed right-4 bottom-4 z-30 flex flex-col space-y-3">
+          {/* Main View Live Map Button - Always visible when in stops view */}
+          <motion.button
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.5 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => onDirectionSelect(selectedLine!.direction, selectedLine!)}
+            className="w-14 h-14 bg-primary-600 hover:bg-primary-700 rounded-full shadow-xl flex items-center justify-center text-white transition-all relative group"
+          >
+            <IconMapSearch size={24} />
+            
+            {/* Tooltip */}
+            <div className={`absolute right-16 top-1/2 transform -translate-y-1/2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none ${
+              isDark ? 'bg-gray-700 text-white' : 'bg-gray-900 text-white'
+            }`}>
+              View Live Map
+              <div className={`absolute left-full top-1/2 transform -translate-y-1/2 w-0 h-0 border-l-4 border-r-0 border-t-4 border-b-4 border-t-transparent border-b-transparent ${
+                isDark ? 'border-l-gray-700' : 'border-l-gray-900'
+              }`}></div>
+            </div>
+            
+            {/* Pulse animation */}
+            <span className="animate-ping absolute top-0 right-0 w-14 h-14 inline-flex rounded-full bg-primary-400 opacity-30"></span>
+          </motion.button>
+
+          {/* Quick scroll buttons */}
+          {showScrollToTop && (
+            <motion.button
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={scrollToTop}
+              className={`w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all ${
+                isDark 
+                  ? 'bg-gray-700 hover:bg-gray-600 text-gray-200' 
+                  : 'bg-white hover:bg-gray-50 text-gray-600'
+              }`}
+            >
+              <IconArrowUp size={20} />
+            </motion.button>
+          )}
+
+          {showScrollToBottom && (
+            <motion.button
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={scrollToMapButton}
+              className={`w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all ${
+                isDark 
+                  ? 'bg-gray-700 hover:bg-gray-600 text-gray-200' 
+                  : 'bg-white hover:bg-gray-50 text-gray-600'
+              }`}
+            >
+              <IconArrowDown size={20} />
+            </motion.button>
+          )}
         </div>
       </div>
     );
@@ -394,7 +652,7 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
 
   // Show view for selecting a direction
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="container-default py-6 max-w-xl mx-auto">
         {/* Header */}
         <motion.div
@@ -403,11 +661,17 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
           transition={{ duration: 0.4 }}
           className="mb-8 text-center"
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-2xl mb-5 text-white">
+          <div className={`inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-2xl mb-5 text-white ${
+            isDark ? 'shadow-lg' : ''
+          }`}>
             <IconRoute size={32} />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Choose Your Direction</h1>
-          <p className="text-gray-600 max-w-md mx-auto text-lg">
+          <h1 className={`text-2xl sm:text-3xl font-bold mb-3 ${
+            isDark ? 'text-white' : 'text-gray-900'
+          }`}>Choose Your Direction</h1>
+          <p className={`max-w-md mx-auto text-lg ${
+            isDark ? 'text-gray-300' : 'text-gray-600'
+          }`}>
             Select the direction you want to travel
           </p>
         </motion.div>
@@ -430,11 +694,11 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleDirectionClick(direction.key, line)}
                 className={`
-                  bg-white rounded-xl shadow-md overflow-hidden cursor-pointer transition-all duration-300
+                  rounded-xl shadow-md overflow-hidden cursor-pointer transition-all duration-300
                   border-2 ${isSelected 
                     ? isForward ? 'border-green-500' : 'border-orange-500' 
-                    : 'border-transparent hover:border-gray-200'
-                  }
+                    : isDark ? 'border-transparent hover:border-gray-600' : 'border-transparent hover:border-gray-200'
+                  } ${isDark ? 'bg-gray-800' : 'bg-white'}
                 `}
               >
                 <div className="p-5">
@@ -453,10 +717,14 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
                       </div>
                       
                       <div>
-                        <h3 className="font-bold text-gray-900 text-lg mb-1">
+                        <h3 className={`font-bold text-lg mb-1 ${
+                          isDark ? 'text-white' : 'text-gray-900'
+                        }`}>
                           {direction.label}
                         </h3>
-                        <p className="text-sm text-gray-600">
+                        <p className={`text-sm ${
+                          isDark ? 'text-gray-300' : 'text-gray-600'
+                        }`}>
                           {direction.description}
                         </p>
                       </div>
@@ -471,29 +739,43 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
                   
                   {/* Route endpoints visualization */}
                   {line.firstStop && line.lastStop && (
-                    <div className="bg-gray-50 rounded-lg p-4 mt-3 border border-gray-200">
+                    <div className={`rounded-lg p-4 mt-3 border ${
+                      isDark 
+                        ? 'bg-gray-700 border-gray-600' 
+                        : 'bg-gray-50 border-gray-200'
+                    }`}>
                       <div className="flex items-start">
-                        <div className="flex flex-col items-center mr-4">
+                        <div className="flex items-center mr-4">
                           <IconCircleDotFilled size={20} className={isForward ? "text-green-600" : "text-orange-600"} />
-                          <div className="w-1 bg-gray-300 h-12"></div>
+                          <div className={`w-1 h-12 ${
+                            isDark ? 'bg-gray-600' : 'bg-gray-300'
+                          }`}></div>
                           <IconCircle size={20} className={isForward ? "text-green-400" : "text-orange-400"} />
                         </div>
                         
                         <div className="flex-1 flex flex-col justify-between">
                           <div className="mb-5">
-                            <div className="text-sm font-semibold text-gray-900">
+                            <div className={`text-sm font-semibold ${
+                              isDark ? 'text-white' : 'text-gray-900'
+                            }`}>
                               {line.firstStop.name}
                             </div>
-                            <div className="text-xs text-gray-600 mt-0.5 flex items-center">
+                            <div className={`text-xs mt-0.5 flex items-center ${
+                              isDark ? 'text-gray-400' : 'text-gray-600'
+                            }`}>
                               <IconMapPin size={12} className="mr-1" />
                               <span>Starting point</span>
                             </div>
                           </div>
                           <div>
-                            <div className="text-sm font-semibold text-gray-900">
+                            <div className={`text-sm font-semibold ${
+                              isDark ? 'text-white' : 'text-gray-900'
+                            }`}>
                               {line.lastStop.name}
                             </div>
-                            <div className="text-xs text-gray-600 mt-0.5 flex items-center">
+                            <div className={`text-xs mt-0.5 flex items-center ${
+                              isDark ? 'text-gray-400' : 'text-gray-600'
+                            }`}>
                               <IconMapPin size={12} className="mr-1" />
                               <span>Final destination</span>
                             </div>
@@ -502,14 +784,22 @@ const DirectionSelector: React.FC<DirectionSelectorProps> = ({
                       </div>
                       
                       {/* Stops count */}
-                      <div className="mt-3 border-t border-gray-200 pt-3 flex items-center justify-between">
-                        <span className="text-xs text-gray-500 flex items-center">
+                      <div className={`mt-3 border-t pt-3 flex items-center justify-between ${
+                        isDark ? 'border-gray-600' : 'border-gray-200'
+                      }`}>
+                        <span className={`text-xs flex items-center ${
+                          isDark ? 'text-gray-400' : 'text-gray-500'
+                        }`}>
                           <IconRoute size={14} className="mr-1" />
                           {stops.length} stops available
                         </span>
                         
                         {userLocation && stops.length > 0 && (
-                          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                            isDark 
+                              ? 'bg-blue-900 text-blue-300' 
+                              : 'bg-blue-100 text-blue-700'
+                          }`}>
                             <IconGps size={10} className="inline mr-1" />
                             Location available
                           </span>

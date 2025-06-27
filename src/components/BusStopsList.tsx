@@ -21,12 +21,12 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
 }) => {
   if (stops.length === 0) {
     return (
-      <div className="p-6 text-center text-gray-500">
-        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <IconMapPin size={24} className="text-gray-400" />
+      <div className="p-6 text-center text-gray-500 dark:text-gray-400">
+        <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+          <IconMapPin size={24} className="text-gray-400 dark:text-gray-500" />
         </div>
-        <p className="font-medium text-gray-600">No bus stops found</p>
-        <p className="text-sm text-gray-500 mt-1">Try a different search term</p>
+        <p className="font-medium text-gray-600 dark:text-gray-300">No bus stops found</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Try a different search term</p>
       </div>
     );
   }
@@ -48,18 +48,18 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
                 className={`
                   p-3 rounded-lg cursor-pointer flex items-center transition-all
                   ${isClosest 
-                    ? 'bg-yellow-50 border-l-4 border-yellow-400 shadow-sm' 
-                    : 'bg-white border border-gray-100 hover:bg-gray-50 hover:border-l-4 hover:border-l-primary-400'}
+                    ? 'bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-400 shadow-sm' 
+                    : 'bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-l-4 hover:border-l-primary-400'}
                 `}
               >
-                <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3 text-xs text-gray-600 font-medium">
+                <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-600 flex items-center justify-center mr-3 text-xs text-gray-600 dark:text-gray-300 font-medium">
                   {index + 1}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-800 truncate">{stop.name}</p>
-                  <div className="flex items-center text-xs text-gray-500 mt-0.5">
+                  <p className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">{stop.name}</p>
+                  <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                     <span>{formatTime(stop.eta)}</span>
-                    {isClosest && <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs bg-yellow-100 text-yellow-800">Closest</span>}
+                    {isClosest && <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300">Closest</span>}
                   </div>
                 </div>
               </motion.div>
@@ -102,8 +102,8 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
                 onClick={() => onStopSelect?.(stop)}
                 className={`mx-4 mb-3 p-4 rounded-xl cursor-pointer transition-all duration-200 border-2 ${
                   isClosest
-                    ? 'bg-yellow-50 border-yellow-200 shadow-md hover:shadow-lg'
-                    : 'bg-white border-gray-100 hover:bg-gray-50 hover:border-blue-200 hover:shadow-md'
+                    ? 'bg-yellow-50 dark:bg-yellow-900/30 border-yellow-200 dark:border-yellow-700 shadow-md hover:shadow-lg'
+                    : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-blue-200 dark:hover:border-blue-600 hover:shadow-md'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -113,7 +113,7 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
                       ${isClosest ? 'bg-yellow-500 text-white' : 
                         index === 0 ? 'bg-green-500 text-white' : 
                         index === stops.length - 1 ? 'bg-red-500 text-white' : 
-                        'bg-gray-200 text-gray-600'}
+                        'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300'}
                     `}>
                       {isClosest ? (
                         <IconMapPin size={18} />
@@ -127,12 +127,12 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
                     </div>
                     
                     <div className="min-w-0 flex-1">
-                      <p className="font-semibold text-gray-900 truncate mb-1">{stop.name}</p>
-                      <div className="flex items-center text-sm text-gray-600">
+                      <p className="font-semibold text-gray-900 dark:text-gray-100 truncate mb-1">{stop.name}</p>
+                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                         <IconClockHour3 size={14} className="mr-1 flex-shrink-0" />
                         <span>ETA: {formatTime(stop.eta)}</span>
                         {isClosest && (
-                          <span className="ml-2 px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+                          <span className="ml-2 px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-300 rounded-full text-xs font-medium">
                             Closest
                           </span>
                         )}
@@ -142,11 +142,11 @@ const BusStopsList: React.FC<BusStopsListProps> = ({
                   
                   <div className="flex flex-col items-end ml-3">
                     {distance !== null && (
-                      <span className="text-sm font-semibold text-gray-700 mb-1">
+                      <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
                         {formatDistance(distance)}
                       </span>
                     )}
-                    <div className="flex items-center text-blue-600">
+                    <div className="flex items-center text-blue-600 dark:text-blue-400">
                       <span className="text-xs font-medium">View</span>
                       <IconArrowNarrowRight size={14} className="ml-1" />
                     </div>

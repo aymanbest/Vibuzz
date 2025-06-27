@@ -10,6 +10,7 @@ import {
   IconArrowNarrowRight,
   IconArrowLeft
 } from '@tabler/icons-react';
+import { useTheme } from '../contexts/ThemeContext';
 import type { BusLine } from '../types';
 
 interface LineSelectorProps {
@@ -41,6 +42,7 @@ const LineSelector: React.FC<LineSelectorProps> = ({
   error,
   title = "Select Bus Line"
 }) => {
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<FilterTab>('all');
   
@@ -48,19 +50,19 @@ const LineSelector: React.FC<LineSelectorProps> = ({
   const lineCategories: Record<string, LineCategory> = useMemo(() => ({
     frequent: {
       title: 'Frequent Lines',
-      icon: <IconStarFilled size={18} className="text-yellow-500 mr-2" />,
+      icon: <IconStarFilled size={18} className={`mr-2 ${isDark ? 'text-yellow-400' : 'text-yellow-500'}`} />,
       description: 'High frequency routes with departures every 5-10 minutes',
       filter: (groupLines: BusLine[]) => parseInt(groupLines[0].line) < 30,
       color: 'from-green-500 to-green-600'
     },
     urban: {
       title: 'Urban Lines',
-      icon: <IconBus size={18} className="text-blue-500 mr-2" />,
+      icon: <IconBus size={18} className={`mr-2 ${isDark ? 'text-blue-400' : 'text-blue-500'}`} />,
       description: 'City center routes connecting major destinations',
       filter: (groupLines: BusLine[]) => parseInt(groupLines[0].line) >= 30,
       color: 'from-blue-500 to-blue-600'
     }
-  }), []);
+  }), [isDark]);
 
   // Group lines by line number for better organization
   const lineGroups = useMemo(() => {
@@ -131,11 +133,15 @@ const LineSelector: React.FC<LineSelectorProps> = ({
   // Loading state with improved animation
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className={`min-h-screen flex items-center justify-center p-4 ${
+        isDark ? 'bg-gray-900' : 'bg-gray-50'
+      }`}>
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-white rounded-2xl shadow-md p-8 w-full max-w-md text-center"
+          className={`rounded-2xl shadow-md p-8 w-full max-w-md text-center ${
+            isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white'
+          }`}
         >
           <div className="relative w-20 h-20 mx-auto mb-6">
             <motion.div 
@@ -147,8 +153,10 @@ const LineSelector: React.FC<LineSelectorProps> = ({
               <IconBus size={28} className="text-primary-600" />
             </div>
           </div>
-          <h3 className="text-2xl font-semibold text-gray-800 mb-2">Loading Routes</h3>
-          <p className="text-gray-600">
+          <h3 className={`text-2xl font-semibold mb-2 ${
+            isDark ? 'text-white' : 'text-gray-800'
+          }`}>Loading Routes</h3>
+          <p className={isDark ? 'text-gray-300' : 'text-gray-600'}>
             Finding available bus lines...
           </p>
         </motion.div>
@@ -159,18 +167,28 @@ const LineSelector: React.FC<LineSelectorProps> = ({
   // Error state with improved design
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className={`min-h-screen flex items-center justify-center p-4 ${
+        isDark ? 'bg-gray-900' : 'bg-gray-50'
+      }`}>
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md"
+          className={`rounded-2xl shadow-lg p-8 w-full max-w-md ${
+            isDark ? 'bg-gray-800 border border-gray-700' : 'bg-white'
+          }`}
         >
           <div className="text-center">
-            <div className="w-20 h-20 mx-auto mb-6 bg-red-100 rounded-full flex items-center justify-center">
+            <div className={`w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center ${
+              isDark ? 'bg-red-900 border border-red-700' : 'bg-red-100'
+            }`}>
               <span className="text-red-500 text-2xl">!</span>
             </div>
-            <h3 className="text-2xl font-semibold text-gray-800 mb-3">Connection Error</h3>
-            <p className="text-gray-600 mb-6">{error}</p>
+            <h3 className={`text-2xl font-semibold mb-3 ${
+              isDark ? 'text-white' : 'text-gray-800'
+            }`}>Connection Error</h3>
+            <p className={`mb-6 ${
+              isDark ? 'text-gray-300' : 'text-gray-600'
+            }`}>{error}</p>
             <motion.button 
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -186,16 +204,22 @@ const LineSelector: React.FC<LineSelectorProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className={`min-h-screen flex flex-col ${
+      isDark ? 'bg-gray-900' : 'bg-gray-50'
+    }`}>
       {/* Enhanced Sticky Header with modern search */}
-      <div className="sticky top-0 z-30 bg-white shadow-md">
+      <div className={`sticky top-0 z-30 shadow-md ${
+        isDark ? 'bg-gray-900 border-b border-gray-700' : 'bg-white'
+      }`}>
         <div className="max-w-6xl mx-auto py-4 px-4">
           <div className="flex flex-col space-y-4">
             {/* Title and search bar */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex-shrink-0">
                 <motion.h1 
-                  className="text-2xl font-bold text-gray-900"
+                  className={`text-2xl font-bold ${
+                    isDark ? 'text-white' : 'text-gray-900'
+                  }`}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3 }}
@@ -211,18 +235,28 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.1 }}
                 >
-                  <IconSearch size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <IconSearch size={18} className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${
+                    isDark ? 'text-gray-400' : 'text-gray-400'
+                  }`} />
                   <input
                     type="text"
                     placeholder="Search by number, stop name, or destination..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 pr-4 py-3.5 text-sm border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 shadow-sm bg-gray-50 hover:bg-white focus:bg-white transition-all"
+                    className={`pl-10 pr-4 py-3.5 text-sm border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 shadow-sm transition-all ${
+                      isDark 
+                        ? 'border-gray-600 bg-gray-800 text-white placeholder-gray-400 hover:bg-gray-700 focus:bg-gray-700' 
+                        : 'border-gray-300 bg-gray-50 hover:bg-white focus:bg-white'
+                    }`}
                   />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1 hover:bg-gray-100 rounded-full transition-colors"
+                      className={`absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-full transition-colors ${
+                        isDark 
+                          ? 'text-gray-400 hover:text-gray-200 hover:bg-gray-700' 
+                          : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'
+                      }`}
                     >
                       <span className="sr-only">Clear search</span>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -246,8 +280,12 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                   onClick={() => setActiveTab('all')}
                   className={`px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all
                     ${activeTab === 'all' 
-                      ? 'bg-primary-100 text-primary-700 shadow-sm border border-primary-200' 
-                      : 'text-gray-600 hover:bg-gray-100 border border-transparent'
+                      ? isDark
+                        ? 'bg-primary-600 text-white shadow-sm border border-primary-500'
+                        : 'bg-primary-100 text-primary-700 shadow-sm border border-primary-200'
+                      : isDark
+                        ? 'text-gray-300 hover:bg-gray-800 hover:text-white border border-transparent'
+                        : 'text-gray-600 hover:bg-gray-100 border border-transparent'
                     }`}
                 >
                   All Lines
@@ -259,8 +297,12 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                     onClick={() => setActiveTab(key as FilterTab)}
                     className={`px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all flex items-center
                       ${activeTab === key 
-                        ? 'bg-primary-100 text-primary-700 shadow-sm border border-primary-200' 
-                        : 'text-gray-600 hover:bg-gray-100 border border-transparent'
+                        ? isDark
+                          ? 'bg-primary-600 text-white shadow-sm border border-primary-500'
+                          : 'bg-primary-100 text-primary-700 shadow-sm border border-primary-200'
+                        : isDark
+                          ? 'text-gray-300 hover:bg-gray-800 hover:text-white border border-transparent'
+                          : 'text-gray-600 hover:bg-gray-100 border border-transparent'
                       }`}
                     disabled={groupedLinesByCategory[key].length === 0}
                   >
@@ -287,11 +329,17 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                 className="flex items-center justify-center h-64"
               >
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <IconSearch size={24} className="text-gray-400" />
+                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                    isDark ? 'bg-gray-800' : 'bg-gray-100'
+                  }`}>
+                    <IconSearch size={24} className={isDark ? 'text-gray-400' : 'text-gray-400'} />
                   </div>
-                  <h3 className="text-lg font-medium text-gray-700 mb-1">No Routes Found</h3>
-                  <p className="text-gray-500">Try a different search term or filter</p>
+                  <h3 className={`text-lg font-medium mb-1 ${
+                    isDark ? 'text-white' : 'text-gray-700'
+                  }`}>No Routes Found</h3>
+                  <p className={isDark ? 'text-gray-400' : 'text-gray-500'}>
+                    Try a different search term or filter
+                  </p>
                 </div>
               </motion.div>
             ) : (
@@ -308,15 +356,21 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         {category.icon}
-                        <h2 className="text-lg font-semibold text-gray-800">{category.title}</h2>
+                        <h2 className={`text-lg font-semibold ${
+                          isDark ? 'text-white' : 'text-gray-800'
+                        }`}>{category.title}</h2>
                       </div>
-                      <p className="text-sm text-gray-500">
+                      <p className={`text-sm ${
+                        isDark ? 'text-gray-400' : 'text-gray-500'
+                      }`}>
                         {groupedLinesByCategory[categoryKey].length} lines available
                       </p>
                     </div>
                     
                     {/* Section description */}
-                    <p className="text-sm text-gray-600">{category.description}</p>
+                    <p className={`text-sm ${
+                      isDark ? 'text-gray-300' : 'text-gray-600'
+                    }`}>{category.description}</p>
                     
                     {/* Cards grid with responsive column count */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -329,7 +383,10 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                             key={number}
                             className={`
                               relative overflow-hidden transition-all duration-300 rounded-xl cursor-pointer
-                              bg-white border border-gray-200 hover:border-primary-200 hover:shadow-md
+                              ${isDark 
+                                ? 'bg-gray-800 border border-gray-700 hover:border-primary-500 hover:shadow-lg' 
+                                : 'bg-white border border-gray-200 hover:border-primary-200 hover:shadow-md'
+                              }
                               ${groupLines.some(line => line.id === selectedLineId) ? 'ring-2 ring-primary-500 ring-opacity-60' : ''}
                             `}
                             initial={{ opacity: 0, y: 20 }}
@@ -355,10 +412,14 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                                   </div>
                                   
                                   <div>
-                                    <h3 className="font-semibold text-gray-900 text-base">
+                                    <h3 className={`font-semibold text-base ${
+                                      isDark ? 'text-white' : 'text-gray-900'
+                                    }`}>
                                       {primaryLine.label || `Line ${number}`}
                                     </h3>
-                                    <div className="flex items-center text-xs text-gray-500 mt-1">
+                                    <div className={`flex items-center text-xs mt-1 ${
+                                      isDark ? 'text-gray-400' : 'text-gray-500'
+                                    }`}>
                                       <IconMapPin size={14} className="mr-1 text-primary-500" />
                                       <span>{primaryLine.city}</span>
                                     </div>
@@ -367,7 +428,11 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                               </div>
                               
                               {/* Bidirectional Route Preview */}
-                              <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-700 overflow-hidden">
+                              <div className={`rounded-lg p-3 text-sm overflow-hidden ${
+                                isDark 
+                                  ? 'bg-gray-700 text-gray-200' 
+                                  : 'bg-gray-50 text-gray-700'
+                              }`}>
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center space-x-2">
                                     <div className="mt-1 flex-shrink-0">
@@ -381,8 +446,8 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                                   </div>
                                   
                                   <div className="flex items-center space-x-1">
-                                    <IconArrowNarrowRight size={14} className="text-gray-400" />
-                                    <IconArrowLeft size={14} className="text-gray-400" />
+                                    <IconArrowNarrowRight size={14} className={isDark ? 'text-gray-400' : 'text-gray-400'} />
+                                    <IconArrowLeft size={14} className={isDark ? 'text-gray-400' : 'text-gray-400'} />
                                   </div>
                                   
                                   <div className="flex items-center space-x-2">
@@ -396,7 +461,9 @@ const LineSelector: React.FC<LineSelectorProps> = ({
                                     </div>
                                   </div>
                                 </div>
-                                <div className="text-xs text-gray-500 mt-2 text-center">
+                                <div className={`text-xs mt-2 text-center ${
+                                  isDark ? 'text-gray-400' : 'text-gray-500'
+                                }`}>
                                   Bidirectional route • Tap to select direction
                                 </div>
                               </div>

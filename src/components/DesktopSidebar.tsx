@@ -31,13 +31,13 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
   const [activeSection, setActiveSection] = useState<'overview' | 'stops' | 'buses'>('overview');
 
   return (
-    <div className="h-full bg-white shadow-xl flex flex-col">
+    <div className="h-full bg-white dark:bg-gray-900 shadow-xl flex flex-col">
       {/* Header */}
-      <div className="p-6 border-b border-gray-100">
+      <div className="p-6 border-b border-gray-100 dark:border-gray-700">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Bus Tracker</h1>
-            <p className="text-sm text-gray-500 mt-1">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Bus Tracker</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               {selectedLine ? selectedLine.label : 'Real-time bus tracking'}
             </p>
           </div>
@@ -48,7 +48,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex space-x-1 bg-gray-50 rounded-lg p-1">
+        <div className="flex space-x-1 bg-gray-50 dark:bg-gray-800 rounded-lg p-1">
           {[
             { id: 'overview', label: 'Overview', icon: '📊' },
             { id: 'stops', label: 'Stops', icon: '🚏' },
@@ -59,8 +59,8 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
               onClick={() => setActiveSection(tab.id as any)}
               className={`flex-1 flex items-center justify-center py-2 px-3 rounded-md text-sm font-medium transition-all ${
                 activeSection === tab.id
-                  ? 'bg-white text-blue-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
               }`}
             >
               <span className="mr-2">{tab.icon}</span>
@@ -73,10 +73,10 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto">
         {error && (
-          <div className="m-6 bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="m-6 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg p-4">
             <div className="flex items-center">
               <span className="text-red-500 text-xl mr-3">⚠️</span>
-              <p className="text-red-700 text-sm">{error}</p>
+              <p className="text-red-700 dark:text-red-300 text-sm">{error}</p>
             </div>
           </div>
         )}
@@ -85,11 +85,11 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
           <div className="p-6 space-y-6">
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-1 gap-4">
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4">
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-lg p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-medium text-blue-600">Your Location</h3>
-                    <p className="text-lg font-semibold text-blue-900">
+                    <h3 className="text-sm font-medium text-blue-600 dark:text-blue-400">Your Location</h3>
+                    <p className="text-lg font-semibold text-blue-900 dark:text-blue-200">
                       {userLocation ? 'Active' : 'Not Found'}
                     </p>
                   </div>
@@ -97,21 +97,21 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4">
+              <div className="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 rounded-lg p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-medium text-green-600">Bus Stops</h3>
-                    <p className="text-lg font-semibold text-green-900">{busStops.length}</p>
+                    <h3 className="text-sm font-medium text-green-600 dark:text-green-400">Bus Stops</h3>
+                    <p className="text-lg font-semibold text-green-900 dark:text-green-200">{busStops.length}</p>
                   </div>
                   <div className="text-3xl">🚏</div>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-lg p-4">
+              <div className="bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30 rounded-lg p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-medium text-red-600">Active Buses</h3>
-                    <p className="text-lg font-semibold text-red-900">{busPositions.length}</p>
+                    <h3 className="text-sm font-medium text-red-600 dark:text-red-400">Active Buses</h3>
+                    <p className="text-lg font-semibold text-red-900 dark:text-red-200">{busPositions.length}</p>
                   </div>
                   <div className="text-3xl">🚌</div>
                 </div>
@@ -119,16 +119,16 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
             </div>
 
             {/* User Location Details */}
-            <div className="bg-white rounded-lg border border-gray-200 p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-gray-900 flex items-center">
+                <h3 className="font-semibold text-gray-900 dark:text-white flex items-center">
                   <span className="text-xl mr-2">📍</span>
                   Your Location
                 </h3>
                 {onRefreshLocation && (
                   <button
                     onClick={onRefreshLocation}
-                    className="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium border border-blue-200 hover:bg-blue-100 transition-colors"
+                    className="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg text-sm font-medium border border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
                   >
                     🔄 Refresh
                   </button>
@@ -137,20 +137,20 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
               
               {userLocation ? (
                 <div className="space-y-2">
-                  <div className="text-sm text-gray-600 font-mono bg-gray-50 p-2 rounded">
+                  <div className="text-sm text-gray-600 dark:text-gray-300 font-mono bg-gray-50 dark:bg-gray-700 p-2 rounded">
                     {userLocation.lat.toFixed(6)}, {userLocation.lng.toFixed(6)}
                   </div>
                   {locationAccuracy && (
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
                       Accuracy: ±{Math.round(locationAccuracy)}m
                       {locationAccuracy > 100 && (
-                        <span className="text-orange-600 ml-1">(Low accuracy - try refreshing)</span>
+                        <span className="text-orange-600 dark:text-orange-400 ml-1">(Low accuracy - try refreshing)</span>
                       )}
                     </div>
                   )}
                 </div>
               ) : (
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-gray-500 dark:text-gray-400">
                   <p>Location not available</p>
                   <p className="text-xs mt-1">Enable location access in your browser</p>
                 </div>
@@ -159,15 +159,15 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
 
             {/* Closest Stop */}
             {closestStop && userLocation && (
-              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/30 dark:to-orange-900/30 rounded-lg p-4 border border-yellow-200 dark:border-yellow-700">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center mb-2">
                       <span className="text-xl mr-2">🎯</span>
-                      <h3 className="font-semibold text-gray-900">Closest Stop</h3>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">Closest Stop</h3>
                     </div>
-                    <p className="text-sm font-medium text-gray-800 mb-2">{closestStop.name}</p>
-                    <div className="space-y-1 text-xs text-gray-600">
+                    <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">{closestStop.name}</p>
+                    <div className="space-y-1 text-xs text-gray-600 dark:text-gray-300">
                       <div>📍 Distance: {formatDistance(calculateDistance(userLocation, {
                         lat: closestStop.coordinates.latitude,
                         lng: closestStop.coordinates.longitude
@@ -178,7 +178,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
                   </div>
                   <button
                     onClick={() => onStopSelect?.(closestStop)}
-                    className="ml-3 px-3 py-1 bg-yellow-100 text-yellow-700 rounded-lg text-xs font-medium border border-yellow-300 hover:bg-yellow-200 transition-colors"
+                    className="ml-3 px-3 py-1 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300 rounded-lg text-xs font-medium border border-yellow-300 dark:border-yellow-600 hover:bg-yellow-200 dark:hover:bg-yellow-900/70 transition-colors"
                   >
                     View on Map
                   </button>
@@ -188,15 +188,15 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
 
             {/* Route Information */}
             {selectedLine && (
-              <div className="bg-white rounded-lg border border-gray-200 p-4">
-                <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
+              <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
                   <span className="text-xl mr-2">🚌</span>
                   Route Information
                 </h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Line:</span>
-                    <span className="font-medium">{selectedLine.line}</span>
+                    <span className="text-gray-600 dark:text-gray-400">Line:</span>
+                    <span className="font-medium dark:text-gray-200">{selectedLine.line}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Direction:</span>
