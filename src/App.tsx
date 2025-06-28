@@ -124,7 +124,7 @@ function LinesPage() {
                 <IconBus size={20} className="text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">Bus Tracker</h1>
+                <h1 className="text-xl font-bold text-white">Vibuzz</h1>
                 <p className="text-primary-100 text-sm">Choose your bus line to get started</p>
               </div>
             </div>

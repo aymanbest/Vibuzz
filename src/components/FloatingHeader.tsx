@@ -57,7 +57,7 @@ const FloatingHeader: React.FC<FloatingHeaderProps> = ({
         };
       default:
         return {
-          title: 'Bus Tracker',
+          title: 'Vibuzz',
           subtitle: 'Real-time tracking',
           icon: <IconBus size={isMobile ? 18 : 20} />,
           color: 'primary-600'

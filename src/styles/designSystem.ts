@@ -1,4 +1,4 @@
-// Design System for Bus Location App
+// Design System for Vibuzz App
 // This file contains consistent design tokens used throughout the application
 
 // Custom color palettes for dark and light modes as specified

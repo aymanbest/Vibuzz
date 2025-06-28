@@ -48,8 +48,6 @@ const BusTrackingView: React.FC<BusTrackingViewProps> = ({
   routePath,
   userLocation,
   locationAccuracy,
-  retryCount,
-  maxRetries,
   canSelectManually,
   onManualLocationSelect,
   closestStop,

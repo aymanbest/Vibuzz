@@ -106,7 +106,7 @@ const MobileBottomSheet: React.FC<MobileBottomSheetProps> = ({
               
               <div className="ml-4">
                 <h2 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {selectedLine?.label || 'Bus Tracker'}
+                  {selectedLine?.label || 'Vibuzz'}
                 </h2>
                 <div className={`text-sm flex items-center ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
                   <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${

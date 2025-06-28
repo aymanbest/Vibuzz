@@ -36,7 +36,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
       <div className="p-6 border-b border-gray-100 dark:border-gray-700">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Bus Tracker</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Vibuzz</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               {selectedLine ? selectedLine.label : 'Real-time bus tracking'}
             </p>
